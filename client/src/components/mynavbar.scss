@@ -21,6 +21,21 @@
   }
 }
 
+#navbarStyle {
+  background-color: #23272a !important;
+}
+
+#navbarLogo {
+  font-family: Saira Stencil One;
+  color: #7289da;
+  font-size: 40px;
+  padding: 0;
+  text-decoration: none;
+  &:hover {
+    color: #8d9edb !important;
+  }
+}
+
 .navLink {
   color: #99aab5 !important;
   &:hover {

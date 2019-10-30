@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Form, Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Formik, ErrorMessage } from "formik";
-import "./modaleditclient.scss";
 import API from "../utils/API";
 import * as yup from "yup";
 import PropTypes from "prop-types";
@@ -32,12 +31,9 @@ function ModalEditClient(props) {
 
   return user.role === "Admin" ? (
     <>
-      <Button
-        variant="transparent"
-        className="noglowButton"
-        onClick={handleShow}
-      >
-        <i className="fas fa-edit lead editIcon" />
+      <Button className="purplebttn mr-2" size="sm" onClick={handleShow}>
+        <i className="fas fa-pencil-alt mr-2" />
+        Editar
       </Button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header className="bg-light">
@@ -196,11 +192,13 @@ function ModalEditClient(props) {
     >
       <span>
         <Button
-          variant="transparent"
+          className="purplebttn mr-2"
+          size="sm"
           style={{ pointerEvents: "none" }}
           disabled
         >
-          <i className="fas fa-edit lead" style={{ color: "#99aab5"}} />
+          <i className="fas fa-pencil-alt mr-2" />
+          Editar
         </Button>
       </span>
     </OverlayTrigger>

@@ -36,6 +36,7 @@ function ModalNewAudit() {
   return user.role === "Admin" ? (
     <>
       <Button className="purplebttn shadow-sm ml-auto" onClick={handleShow}>
+        <i className="fas fa-plus mr-2" />
         Nueva Auditoría
       </Button>
       <Modal show={show} onHide={handleClose}>
@@ -191,6 +192,7 @@ function ModalNewAudit() {
           style={{ pointerEvents: "none" }}
           disabled
         >
+          <i className="fas fa-plus mr-2" />
           Nueva Auditoría
         </Button>
       </span>

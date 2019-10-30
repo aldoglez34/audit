@@ -6,10 +6,17 @@ import {
   setHomeActive
 } from "../redux-actions/navbarActions";
 import { closeAudit } from "../redux-actions/auditActions";
-import { Col, Row, Spinner, ListGroup } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Row,
+  Spinner,
+  ListGroup,
+  Form,
+  FormControl
+} from "react-bootstrap";
 import Layout from "./Layout";
 import API from "../utils/API";
-import "./audits.scss";
 import ModalNewAudit from "../components/ModalNewAudit";
 import FilterByClient from "../components/FilterByClient";
 import SortAudits from "../components/SortAudits";
@@ -147,15 +154,19 @@ class Audits extends Component {
     return (
       <Layout>
         {/* title */}
-        <div className="d-flex flex-row">
-          <h2 className="mb-0">/Auditorías</h2>
-          <ModalNewAudit />
-        </div>
+        <Row>
+          <Col md={8}>
+            <h2 className="mb-0">/Auditorías</h2>
+          </Col>
+          <Col className="mt-1 mt-md-0 text-md-right" md={4}>
+            <ModalNewAudit />
+          </Col>
+        </Row>
         <hr />
         {/* content */}
-        <Row>
+        <Row className="mb-3">
           {/* filters */}
-          <Col className="d-flex align-items-center mb-3">
+          <Col className="d-flex align-items-center">
             <FilterByClient
               data={this.state.allAudits}
               activeClient={this.state.activeClient}
@@ -167,12 +178,17 @@ class Audits extends Component {
             />
           </Col>
           {/* pagination */}
-          <Col className="d-flex align-items-center justify-content-end mb-3">
-            <MyPagination
-              pageCount={this.state.pageCount}
-              activePage={this.state.activePage}
-              handleChangePage={this.handleChangePage}
-            />
+          <Col className="d-flex align-items-center justify-content-end">
+            <Form inline>
+              <FormControl
+                type="text"
+                placeholder="Buscar Auditoría"
+                className="mr-sm-2"
+              />
+              <Button className="purplebttn">
+                <i className="fas fa-search" />
+              </Button>
+            </Form>
           </Col>
         </Row>
         {/* audits row */}
@@ -186,28 +202,29 @@ class Audits extends Component {
                     .map(audit => {
                       return (
                         <ListGroup.Item
-                          action
                           key={audit.auditId}
-                          className="auditItem"
-                          href={"/audit/home/" + audit.auditId}
+                          className="bg-white py-3"
                         >
-                          <div className="d-flex flex-row">
-                            <h4
-                              className="mr-2 mb-0"
-                              style={{ color: "#2c2f33" }}
-                            >
-                              {audit.name}
-                            </h4>
-                          </div>
-                          <p
-                            className="mb-0 description"
+                          <h4
+                            className="mr-2 mb-0"
                             style={{ color: "#2c2f33" }}
                           >
+                            {audit.name}
+                          </h4>
+                          <p className="mb-0" style={{ color: "#2c2f33" }}>
                             {audit.description}
                           </p>
-                          <small className="text-secondary">
-                            Última modificación: {audit.updatedAt}
-                          </small>
+                          <p className="mb-1 text-secondary">
+                            {audit.updatedAt}
+                          </p>
+                          <Button
+                            className="purplebttn"
+                            size="sm"
+                            href={"/audit/home/" + audit.auditId}
+                          >
+                            <i className="fas fa-door-open mr-2" />
+                            Abrir
+                          </Button>
                         </ListGroup.Item>
                       );
                     })}
@@ -222,6 +239,18 @@ class Audits extends Component {
                 <Spinner animation="border" />
               </div>
             )}
+          </Col>
+        </Row>
+        <Row>
+          <Col className="d-flex align-items-center mt-2">
+            <span>{this.state.allAudits.length} Auditorías</span>
+          </Col>
+          <Col className="d-flex align-items-center justify-content-end mt-2">
+            <MyPagination
+              pageCount={this.state.pageCount}
+              activePage={this.state.activePage}
+              handleChangePage={this.handleChangePage}
+            />
           </Col>
         </Row>
       </Layout>

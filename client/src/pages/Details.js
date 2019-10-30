@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import * as navbarActions from "../redux-actions/navbarActions";
 import Layout from "./Layout";
@@ -19,11 +18,13 @@ function Details() {
         <span className="text-muted">Detalles</span>
       </h2>
       <hr />
-      <h5>Descripción</h5>
+      <h5>Descripción de la Auditoría</h5>
       <p>{audit.description}</p>
-      <h5>Última modificación en</h5>
+      <h5>Autor</h5>
+      <p>Aldo Solano</p>
+      <h5>Fecha de creación</h5>
       <p>{audit.createdAt}</p>
-      <h5>Creada en</h5>
+      <h5>Última modificación</h5>
       <p>{audit.createdAt}</p>
     </Layout>
   ) : null;

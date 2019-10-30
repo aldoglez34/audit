@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
-import "./modaldeleteclient.scss";
 import PropTypes from "prop-types";
 
 ModalDeleteClient.propTypes = {
@@ -19,8 +18,9 @@ function ModalDeleteClient(props) {
 
   return user.role === "Admin" ? (
     <>
-      <Button variant="transparent" onClick={handleShow}>
-        <i className="fas fa-trash lead deleteIcon" />
+      <Button variant="danger" size="sm" onClick={handleShow}>
+        <i className="fas fa-trash-alt mr-2" />
+        Borrar
       </Button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header className="bg-light">
@@ -57,12 +57,9 @@ function ModalDeleteClient(props) {
       overlay={<Tooltip>Sólo un administrador puede borrar Clientes</Tooltip>}
     >
       <span className="ml-auto">
-        <Button
-          variant="transparent"
-          style={{ pointerEvents: "none" }}
-          disabled
-        >
-          <i className="fas fa-trash lead" style={{ color: "#99aab5" }} />
+        <Button variant="danger" size="sm" style={{ pointerEvents: "none" }} disabled>
+          <i className="fas fa-trash-alt mr-2" />
+          Borrar
         </Button>
       </span>
     </OverlayTrigger>

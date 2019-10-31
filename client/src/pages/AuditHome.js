@@ -27,7 +27,6 @@ function AuditHome(props) {
   return (
     <Layout>
       <h2>
-        {/* <span>{"/" + audit.name}</span> */}
         <span>Inicio</span>
       </h2>
       <hr />

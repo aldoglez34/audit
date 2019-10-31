@@ -1,0 +1,29 @@
+#navbarStyle {
+  background-color: #23272a !important;
+}
+
+#navbarLogo {
+  font-family: Saira Stencil One;
+  color: #7289da;
+  font-size: 40px;
+  padding: 0;
+  text-decoration: none;
+}
+
+.navbarItemStyle {
+  color: gray;
+  margin-top: 4px;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+
+.navbarLinkStyle {
+  padding-bottom: 0px;
+  color: #99aab5 !important;
+  &:hover {
+    color: gainsboro !important;
+  }
+  &.active {
+    color: #f4dc64 !important;
+  }
+}

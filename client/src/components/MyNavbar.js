@@ -22,15 +22,11 @@ function MyNavbar() {
   return (
     <>
       {/* VERTICAL navbar */}
-      <Nav id="navStyle" className="d-none d-lg-flex flex-column p-3 h-100">
-        <Nav.Item className="text-center">
-          <a id="navLogo" href="/audits">
-            APAG
-          </a>
-        </Nav.Item>
-        {/* home menu */}
+      <Nav className="d-none d-lg-flex flex-column h-100" id="verticalNavStyle">
+        <Nav.Item id="verticalNavLogo">APAG</Nav.Item>
+        {/* HOME menu */}
         {navbar.homeMenu.show ? (
-          <section>
+          <>
             <Nav.Item className="mt-2 mb-1" style={{ color: "gray" }}>
               <small>MENÚ</small>
             </Nav.Item>
@@ -50,16 +46,25 @@ function MyNavbar() {
               <i className="fas fa-user-friends" style={{ width: "32px" }} />
               Clientes
             </Nav.Link>
-          </section>
+            {/* if there's no audit opened, the exit button is gonna end user session */}
+            <Button
+              className="shadow-sm mt-auto"
+              variant="danger"
+              block
+              onClick={logout}
+            >
+              Salir
+            </Button>
+          </>
         ) : null}
-        {/* audit menu */}
+        {/* AUDIT menu */}
         {navbar.auditMenu.show && audit.isOpen ? (
-          <section>
-            <Nav.Item className="mt-2 mb-1" style={{ color: "gray" }}>
+          <>
+            <Nav.Item className="my-2 pl-3" style={{ color: "gray" }}>
               <small>MENÚ</small>
             </Nav.Item>
             <Nav.Link
-              className="navLink pb-1 pl-0"
+              className="navLinkStyle"
               href={"/audit/home/" + audit.auditId}
               active={navbar.auditMenu.active === "Inicio" ? true : false}
             >
@@ -67,18 +72,18 @@ function MyNavbar() {
               Inicio
             </Nav.Link>
             <Nav.Link
-              className="navLink pb-1 pl-0"
+              className="navLinkStyle"
               href={"/audit/details/" + audit.auditId}
               active={navbar.auditMenu.active === "Detalles" ? true : false}
             >
               <i className="fas fa-info-circle" style={{ width: "32px" }} />
               Detalles
             </Nav.Link>
-            <Nav.Item className="mt-2 mb-1" style={{ color: "gray" }}>
+            <Nav.Item className="my-2 pl-3" style={{ color: "gray" }}>
               <small>FASES</small>
             </Nav.Item>
             <Nav.Link
-              className="navLink pb-1 pl-0"
+              className="navLinkStyle"
               href={"/audit/planning/" + audit.auditId}
               active={navbar.auditMenu.active === "Planeación" ? true : false}
             >
@@ -86,7 +91,7 @@ function MyNavbar() {
               Planeación
             </Nav.Link>
             <Nav.Link
-              className="navLink pb-1 pl-0"
+              className="navLinkStyle"
               href={"/audit/execution/" + audit.auditId}
               active={navbar.auditMenu.active === "Ejecución" ? true : false}
             >
@@ -94,7 +99,7 @@ function MyNavbar() {
               Ejecución
             </Nav.Link>
             <Nav.Link
-              className="navLink pb-1 pl-0"
+              className="navLinkStyle"
               href={"/audit/reporting/" + audit.auditId}
               active={navbar.auditMenu.active === "Informes" ? true : false}
             >
@@ -102,18 +107,18 @@ function MyNavbar() {
               Informes
             </Nav.Link>
             <Nav.Link
-              className="navLink pb-1 pl-0"
+              className="navLinkStyle"
               href={"/audit/followup/" + audit.auditId}
               active={navbar.auditMenu.active === "Seguimiento" ? true : false}
             >
               <i className="fas fa-flag" style={{ width: "32px" }} />
               Seguimiento
             </Nav.Link>
-            <Nav.Item className="mt-2 mb-1" style={{ color: "gray" }}>
+            <Nav.Item className="my-2 pl-3" style={{ color: "gray" }}>
               <small>CONSULTAR</small>
             </Nav.Item>
             <Nav.Link
-              className="navLink pb-1 pl-0"
+              className="navLinkStyle"
               href={"/audit/nómina/" + audit.auditId}
               active={navbar.auditMenu.active === "Nómina" ? true : false}
             >
@@ -121,29 +126,35 @@ function MyNavbar() {
               Nómina
             </Nav.Link>
             <Nav.Link
-              className="navLink pb-1 pl-0"
+              className="navLinkStyle"
               href={"/audit/balanza/" + audit.auditId}
               active={navbar.auditMenu.active === "Balanza" ? true : false}
             >
               <i className="far fa-file-alt" style={{ width: "32px" }} />
               Balanza
             </Nav.Link>
-          </section>
+            {/* if there's an audit opened, the exit button is sending the user to the audits page */}
+            <div className="mt-auto bg-warning">
+              <Nav.Item className="pl-3" style={{ color: "#7289da" }}>
+                {audit.name}
+              </Nav.Item>
+              <Nav.Item className="pl-3" style={{ color: "#7289da" }}>
+                {user.name + " " + user.firstSurname}
+              </Nav.Item>
+              <Nav.Item className="pl-3" style={{ color: "#7289da" }}>
+                {user.role}
+              </Nav.Item>
+              <Button
+                className="shadow-sm"
+                variant="danger"
+                block
+                href="/audits"
+              >
+                Salir
+              </Button>
+            </div>
+          </>
         ) : null}
-        {/* bottom section */}
-        <section className="mt-auto">
-          <Nav.Item className="pb-0" style={{ color: "gainsboro" }}>
-            <i className="fas fa-user" style={{ width: "28px" }} />
-            {user.name + " " + user.firstSurname}
-          </Nav.Item>
-          <Nav.Item className="mb-2" style={{ color: "gainsboro" }}>
-            <i className="fas fa-shield-alt" style={{ width: "28px" }} />
-            {user.role}
-          </Nav.Item>
-          <Button className="shadow-sm" variant="danger" block onClick={logout}>
-            Salir
-          </Button>
-        </section>
       </Nav>
       {/* ================================================================= */}
       {/* HORIZONTAL navbar */}
@@ -154,12 +165,9 @@ function MyNavbar() {
         className="d-flex d-lg-none"
         expand="lg"
       >
-        <Navbar.Brand href="/audits" id="navbarLogo">
-          APAG
-        </Navbar.Brand>
+        <Navbar.Brand id="navbarLogo">APAG</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          {/* HORIZONTAL home menu */}
           {navbar.homeMenu.show ? (
             <section>
               <Nav className="mr-auto">
@@ -184,13 +192,29 @@ function MyNavbar() {
                   <i className="fas fa-user-friends mr-2" />
                   Clientes
                 </Nav.Link>
+                {/* if there's an audit opened, the exit button is sending the user to the audits page */}
+                <Button
+                  className="shadow-sm mt-2"
+                  variant="danger"
+                  onClick={logout}
+                >
+                  Salir
+                </Button>
               </Nav>
             </section>
           ) : null}
-          {/* HORIZONTAL audit menu */}
           {navbar.auditMenu.show && audit.isOpen ? (
             <section>
               <Nav className="mr-auto">
+                <Nav.Item style={{ color: "#7289da" }}>
+                  <small>{user.name + " " + user.firstSurname}</small>
+                </Nav.Item>
+                <Nav.Item style={{ color: "#7289da" }}>
+                  <small>{user.role}</small>
+                </Nav.Item>
+                <Nav.Item style={{ color: "#7289da" }}>
+                  <small>{user.email}</small>
+                </Nav.Item>
                 <Navbar.Text style={{ color: "gray" }}>
                   <small>MENÚ</small>
                 </Navbar.Text>
@@ -270,6 +294,14 @@ function MyNavbar() {
                   <i className="far fa-file-alt mr-2" />
                   Balanza
                 </Nav.Link>
+                {/* if there's an audit opened, the exit button is sending the user to the audits page */}
+                <Button
+                  className="shadow-sm mt-2"
+                  variant="danger"
+                  href="/audits"
+                >
+                  Salir
+                </Button>
               </Nav>
             </section>
           ) : null}

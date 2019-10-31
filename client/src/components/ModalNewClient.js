@@ -161,6 +161,7 @@ function ModalNewClient() {
                       variant="secondary"
                       onClick={handleClose}
                     >
+                      <i className="fas fa-ban mr-2" />
                       Cancelar
                     </Button>
                     <Button
@@ -168,7 +169,8 @@ function ModalNewClient() {
                       type="submit"
                       disabled={isSubmitting}
                     >
-                      Crear
+                      <i className="fas fa-save mr-2 " />
+                      Guardar
                     </Button>
                   </Form.Group>
                 </Form>

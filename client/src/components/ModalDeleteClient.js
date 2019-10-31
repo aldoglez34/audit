@@ -18,7 +18,12 @@ function ModalDeleteClient(props) {
 
   return user.role === "Admin" ? (
     <>
-      <Button variant="danger" size="sm" onClick={handleShow}>
+      <Button
+        variant="danger"
+        size="sm"
+        className="shadow-sm"
+        onClick={handleShow}
+      >
         <i className="fas fa-trash-alt mr-2" />
         Borrar
       </Button>
@@ -44,9 +49,13 @@ function ModalDeleteClient(props) {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
+            <i className="fas fa-ban mr-2" />
             Cancelar
           </Button>
-          <Button variant="danger">Borrar</Button>
+          <Button variant="danger">
+            <i className="fas fa-trash-alt mr-2" />
+            Borrar
+          </Button>
         </Modal.Footer>
       </Modal>
     </>
@@ -57,7 +66,12 @@ function ModalDeleteClient(props) {
       overlay={<Tooltip>Sólo un administrador puede borrar Clientes</Tooltip>}
     >
       <span className="ml-auto">
-        <Button variant="danger" size="sm" style={{ pointerEvents: "none" }} disabled>
+        <Button
+          variant="danger"
+          size="sm"
+          style={{ pointerEvents: "none" }}
+          disabled
+        >
           <i className="fas fa-trash-alt mr-2" />
           Borrar
         </Button>

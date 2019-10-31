@@ -28,8 +28,8 @@ function AuditHome(props) {
   return (
     <Layout>
       <h2>
-        <span>{audit.name + "/"}</span>
-        <span className="text-muted">Inicio</span>
+        {/* <span>{"/" + audit.name}</span> */}
+        <span>Inicio</span>
       </h2>
       <hr />
       <CardColumns>

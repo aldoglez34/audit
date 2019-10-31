@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { setHomeActive } from "../redux-actions/navbarActions";
 import Layout from "./Layout";
 import {
-  Button,
   Row,
   Col,
   Spinner,
@@ -15,11 +14,17 @@ import API from "../utils/API";
 import ModalNewClient from "../components/ModalNewClient";
 import ModalEditClient from "../components/ModalEditClient";
 import ModalDeleteClient from "../components/ModalDeleteClient";
+import MyPagination from "../components/MyPagination";
 
 class Clients extends Component {
   state = {
     isLoadingClients: true,
-    clients: []
+    clients: [],
+    pageCount: 0,
+    activePage: 1,
+    productsPerPage: 6,
+    offset: null,
+    limit: null
   };
 
   componentDidMount() {
@@ -28,11 +33,37 @@ class Clients extends Component {
     // fetch clients
     API.fetchClients()
       .then(res => {
-        this.setState({ clients: res.data }, () =>
-          this.setState({ isLoadingClients: false })
+        let productsPerPage = this.state.productsPerPage;
+        this.setState(
+          {
+            clients: res.data,
+            pageCount: Math.ceil(res.data.length / productsPerPage)
+          },
+          () => {
+            this.setOffsetAndLimit();
+            this.setState({ isLoadingClients: false });
+          }
         );
       })
       .catch(err => console.log(err));
+  }
+
+  handleChangePage = page => {
+    this.setState({ activePage: page }, () => this.setOffsetAndLimit());
+  };
+
+  setOffsetAndLimit() {
+    let offset;
+    let limit;
+    if (this.state.activePage === 1) {
+      offset = 0;
+      limit = offset + this.state.productsPerPage;
+      this.setState({ offset, limit });
+    } else {
+      offset = (this.state.activePage - 1) * this.state.productsPerPage;
+      limit = offset + this.state.productsPerPage;
+      this.setState({ offset, limit });
+    }
   }
 
   render() {
@@ -48,46 +79,43 @@ class Clients extends Component {
           </Col>
         </Row>
         <hr />
-        {/* content */}
-        <Row className="mb-3">
-          <Col className="d-flex justify-content-end">
-            <Form inline>
-              <FormControl
-                type="text"
-                placeholder="Buscar Cliente"
-                className="mr-sm-2"
-              />
-              <Button className="purplebttn">
-                <i className="fas fa-search" />
-              </Button>
+        <Row>
+          <Col>
+            <Form className="shadow-sm">
+              <FormControl type="text" placeholder="Buscar Cliente" />
             </Form>
           </Col>
         </Row>
-        <Row>
+        <Row className="mt-2">
           <Col>
             {!this.state.isLoadingClients ? (
               this.state.clients.length ? (
                 <ListGroup className="border-0 shadow-sm">
-                  {this.state.clients.map(client => {
-                    return (
-                      <ListGroup.Item
-                        key={client.clientId}
-                        className="auditItem py-3"
-                      >
-                        <h4 className="mr-2 mb-0" style={{ color: "#2c2f33" }}>
-                          {client.abbreviation}
-                        </h4>
-                        <p className="mb-0" style={{ color: "#2c2f33" }}>
-                          {client.name}
-                        </p>
-                        <p className="mb-1 text-secondary">
-                          {client.createdAt}
-                        </p>
-                        <ModalEditClient client={client} />
-                        <ModalDeleteClient client={client} />
-                      </ListGroup.Item>
-                    );
-                  })}
+                  {this.state.clients
+                    .slice(this.state.offset, this.state.limit)
+                    .map(client => {
+                      return (
+                        <ListGroup.Item
+                          key={client.clientId}
+                          className="auditItem py-3"
+                        >
+                          <h4
+                            className="mr-2 mb-0"
+                            style={{ color: "#2c2f33" }}
+                          >
+                            {client.abbreviation}
+                          </h4>
+                          <p className="mb-0" style={{ color: "#2c2f33" }}>
+                            {client.name}
+                          </p>
+                          <p className="mb-1 text-secondary">
+                            {client.createdAt}
+                          </p>
+                          <ModalEditClient client={client} />
+                          <ModalDeleteClient client={client} />
+                        </ListGroup.Item>
+                      );
+                    })}
                 </ListGroup>
               ) : (
                 <div className="text-center text-muted mt-4">
@@ -102,15 +130,18 @@ class Clients extends Component {
           </Col>
         </Row>
         <Row>
-          <Col className="d-flex align-items-center mt-2">
-            <span>{this.state.clients.length} Clientes</span>
+          <Col md={3} className="d-flex align-items-center mt-2">
+            <em>{this.state.clients.length} Clientes</em>
           </Col>
-          <Col className="d-flex align-items-center justify-content-end mt-2">
-            {/* <MyPagination
+          <Col
+            md={9}
+            className="d-flex align-items-center justify-content-end mt-2"
+          >
+            <MyPagination
               pageCount={this.state.pageCount}
               activePage={this.state.activePage}
               handleChangePage={this.handleChangePage}
-            /> */}
+            />
           </Col>
         </Row>
       </Layout>

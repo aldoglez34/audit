@@ -7,7 +7,8 @@ const userReducers = (state = { isLogged: false }, action) => {
         role: action.data.role,
         name: action.data.name,
         firstSurname: action.data.firstSurname,
-        secondSurname: action.data.secondSurname
+        secondSurname: action.data.secondSurname,
+        email: action.data.email
       };
     case "user/logout":
       return {

@@ -31,7 +31,12 @@ function ModalEditClient(props) {
 
   return user.role === "Admin" ? (
     <>
-      <Button className="purplebttn mr-2" size="sm" onClick={handleShow}>
+      <Button
+        variant="info"
+        className="mr-2 shadow-sm"
+        size="sm"
+        onClick={handleShow}
+      >
         <i className="fas fa-pencil-alt mr-2" />
         Editar
       </Button>
@@ -167,14 +172,16 @@ function ModalEditClient(props) {
                       variant="secondary"
                       onClick={handleClose}
                     >
+                      <i className="fas fa-ban mr-2" />
                       Cancelar
                     </Button>
                     <Button
-                      className="purplebttn"
+                      variant="info"
                       type="submit"
                       disabled={isSubmitting}
                     >
-                      Guardar cambios
+                      <i className="fas fa-save mr-2 " />
+                      Guardar
                     </Button>
                   </Form.Group>
                 </Form>
@@ -192,7 +199,7 @@ function ModalEditClient(props) {
     >
       <span>
         <Button
-          className="purplebttn mr-2"
+          className="mr-2"
           size="sm"
           style={{ pointerEvents: "none" }}
           disabled

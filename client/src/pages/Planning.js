@@ -36,19 +36,25 @@ function Planning() {
           <li>
             <ul>
               <li>
-                <a href="/audits/planning/cci/" style={{ color: "#516fd6" }}>
+                <a
+                  href={"/audit/planning/cci/" + audit.auditId}
+                  style={{ color: "#516fd6" }}
+                >
                   Cuestionario de Control Interno
                 </a>
                 <Badge
                   className="ml-1"
                   style={{ fontFamily: "Arial" }}
-                  variant="warning"
+                  variant="success"
                 >
                   Completado
                 </Badge>
               </li>
               <li>
-                <a href="/audits/planning/cefs/" style={{ color: "#516fd6" }}>
+                <a
+                  href={"/audit/planning/cefs/" + audit.auditId}
+                  style={{ color: "#516fd6" }}
+                >
                   Cédula de Estados Financieros del Sistema
                 </a>
                 <Badge

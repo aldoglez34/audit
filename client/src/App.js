@@ -17,10 +17,10 @@ import Planning from "./pages/Planning";
 import Execution from "./pages/Execution";
 import Reporting from "./pages/Reporting";
 import Followup from "./pages/Followup";
-// import Balanza from "./pages/consult/Balanza";
-// import Nomina from "./pages/consult/Nómina";
-// import CCI from "./pages/planning/CCI";
-// import CEFS from "./pages/planning/CEFS";
+import Nomina from "./pages/consult/Nómina";
+import Balanza from "./pages/consult/Balanza";
+import CCI from "./pages/planning/CCI";
+import CEFS from "./pages/planning/CEFS";
 
 function App() {
   const dispatch = useDispatch();
@@ -65,6 +65,16 @@ function App() {
           />
           <Route
             exact
+            path="/audit/planning/cci/:auditId"
+            render={props => <CCI routeProps={props} />}
+          />
+          <Route
+            exact
+            path="/audit/planning/cefs/:auditId"
+            render={props => <CEFS routeProps={props} />}
+          />
+          <Route
+            exact
             path="/audit/execution/:auditId"
             render={props => <Execution routeProps={props} />}
           />
@@ -77,6 +87,16 @@ function App() {
             exact
             path="/audit/followup/:auditId"
             render={props => <Followup routeProps={props} />}
+          />
+          <Route
+            exact
+            path="/audit/nómina/:auditId"
+            render={props => <Nomina routeProps={props} />}
+          />
+          <Route
+            exact
+            path="/audit/balanza/:auditId"
+            render={props => <Balanza routeProps={props} />}
           />
           <Redirect from="/" to="/audits" />
         </Switch>

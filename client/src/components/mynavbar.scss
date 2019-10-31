@@ -1,4 +1,4 @@
-#navStyle {
+#verticalNavStyle {
   background-color: #23272a !important;
   width: 247px;
   height: 100%;
@@ -10,15 +10,13 @@
   padding-top: 20px;
 }
 
-#navLogo {
+#verticalNavLogo {
+  align-self: center;
   font-family: Saira Stencil One;
   color: #7289da;
   font-size: 50px;
   padding: 0;
   text-decoration: none;
-  &:hover {
-    color: #8d9edb !important;
-  }
 }
 
 #navbarStyle {
@@ -31,12 +29,9 @@
   font-size: 40px;
   padding: 0;
   text-decoration: none;
-  &:hover {
-    color: #8d9edb !important;
-  }
 }
 
-.navLink {
+.navLinkStyle {
   color: #99aab5 !important;
   &:hover {
     color: gainsboro !important;

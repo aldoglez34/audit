@@ -12,7 +12,7 @@ function SortAudits(props) {
     <Dropdown>
       <Dropdown.Toggle
         variant="transparent"
-        className="ml-4 p-0"
+        className="m-0 p-0"
         style={{ color: "#516b8a" }}
       >
         {props.title}

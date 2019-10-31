@@ -158,15 +158,13 @@ class Audits extends Component {
           <Col md={8}>
             <h2 className="mb-0">/Auditorías</h2>
           </Col>
-          <Col className="mt-1 mt-md-0 text-md-right" md={4}>
+          <Col md={4} className="mt-1 mt-md-0 text-md-right">
             <ModalNewAudit />
           </Col>
         </Row>
         <hr />
-        {/* content */}
-        <Row className="mb-3">
-          {/* filters */}
-          <Col className="d-flex align-items-center">
+        <Row>
+          <Col className="d-flex flex-row justify-content-end">
             <FilterByClient
               data={this.state.allAudits}
               activeClient={this.state.activeClient}
@@ -177,22 +175,16 @@ class Audits extends Component {
               handleSorting={this.handleSorting}
             />
           </Col>
-          {/* pagination */}
-          <Col className="d-flex align-items-center justify-content-end">
-            <Form inline>
-              <FormControl
-                type="text"
-                placeholder="Buscar Auditoría"
-                className="mr-sm-2"
-              />
-              <Button className="purplebttn">
-                <i className="fas fa-search" />
-              </Button>
+        </Row>
+        <Row className="mt-2">
+          <Col>
+            <Form className="shadow-sm">
+              <FormControl type="text" placeholder="Buscar Auditoría" />
             </Form>
           </Col>
         </Row>
         {/* audits row */}
-        <Row>
+        <Row className="mt-2">
           <Col>
             {!this.state.isLoadingAudits ? (
               this.state.filteredAudits.length ? (
@@ -218,7 +210,7 @@ class Audits extends Component {
                             {audit.updatedAt}
                           </p>
                           <Button
-                            className="purplebttn"
+                            className="purplebttn shadow-sm"
                             size="sm"
                             href={"/audit/home/" + audit.auditId}
                           >
@@ -242,10 +234,10 @@ class Audits extends Component {
           </Col>
         </Row>
         <Row>
-          <Col className="d-flex align-items-center mt-2">
-            <span>{this.state.allAudits.length} Auditorías</span>
+          <Col md={3} className="d-flex align-items-center mt-2">
+            <em>{this.state.allAudits.length} Auditorías</em>
           </Col>
-          <Col className="d-flex align-items-center justify-content-end mt-2">
+          <Col md={9} className="d-flex justify-content-end mt-2">
             <MyPagination
               pageCount={this.state.pageCount}
               activePage={this.state.activePage}

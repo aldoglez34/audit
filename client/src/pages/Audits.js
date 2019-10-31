@@ -156,7 +156,7 @@ class Audits extends Component {
         {/* title */}
         <Row>
           <Col md={8}>
-            <h2 className="mb-0">/Auditorías</h2>
+            <h2 className="mb-0">Auditorías</h2>
           </Col>
           <Col md={4} className="mt-1 mt-md-0 text-md-right">
             <ModalNewAudit />

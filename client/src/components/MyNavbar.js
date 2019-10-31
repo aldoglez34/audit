@@ -27,11 +27,11 @@ function MyNavbar() {
         {/* HOME menu */}
         {navbar.homeMenu.show ? (
           <>
-            <Nav.Item className="mt-2 mb-1" style={{ color: "gray" }}>
+            <Nav.Item className="my-2 pl-3" style={{ color: "gray" }}>
               <small>MENÚ</small>
             </Nav.Item>
             <Nav.Link
-              className="navLink pb-1 pl-0"
+              className="navLinkStyle"
               href="/audits"
               active={navbar.homeMenu.active === "Auditorías" ? true : false}
             >
@@ -39,7 +39,7 @@ function MyNavbar() {
               Auditorías
             </Nav.Link>
             <Nav.Link
-              className="navLink pb-1 pl-0"
+              className="navLinkStyle"
               href="/clients"
               active={navbar.homeMenu.active === "Clientes" ? true : false}
             >
@@ -176,7 +176,7 @@ function MyNavbar() {
                 </Navbar.Text>
                 <Nav.Link
                   href="/audits"
-                  className="navLink"
+                  className="navLinkStyle"
                   active={
                     navbar.homeMenu.active === "Auditorías" ? true : false
                   }
@@ -186,7 +186,7 @@ function MyNavbar() {
                 </Nav.Link>
                 <Nav.Link
                   href="/clients"
-                  className="navLink"
+                  className="navLinkStyle"
                   active={navbar.homeMenu.active === "Clientes" ? true : false}
                 >
                   <i className="fas fa-user-friends mr-2" />
@@ -205,7 +205,7 @@ function MyNavbar() {
           ) : null}
           {navbar.auditMenu.show && audit.isOpen ? (
             <section>
-              <Nav className="mr-auto">
+              <Nav className="mr-au to">
                 <Nav.Item style={{ color: "#7289da" }}>
                   <small>{user.name + " " + user.firstSurname}</small>
                 </Nav.Item>

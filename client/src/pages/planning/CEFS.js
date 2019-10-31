@@ -336,13 +336,10 @@ function CEFS() {
   return audit ? (
     <Layout>
       <h2>
-        <span>{audit.name + "/"}</span>
-        <span className="text-muted">
-          Planeación/Cédula de Estados Financieros del Sistema/Cédula de Estados Financieros del Sistema
-        </span>
+        <span>Cédula de Estados Financieros del Sistema</span>
       </h2>
       <hr />
-      ... Cédula de Estados Financieros del Sistema
+      ...
     </Layout>
   ) : null;
 }

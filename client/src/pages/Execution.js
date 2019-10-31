@@ -14,8 +14,7 @@ function Execution() {
   return audit ? (
     <Layout>
       <h2>
-        <span>{audit.name + "/"}</span>
-        <span className="text-muted">Ejecución</span>
+        <span>Ejecución</span>
       </h2>
       <hr />
       ...

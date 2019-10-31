@@ -51,8 +51,7 @@ function Balanza() {
   return audit ? (
     <Layout>
       <h2>
-        <span>{audit.name + "/"}</span>
-        <span className="text-muted">Balanza</span>
+        <span>Balanza</span>
       </h2>
       <hr />
       {audit.hasBalanza ? (

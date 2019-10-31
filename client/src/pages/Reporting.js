@@ -14,8 +14,7 @@ function Reporting() {
   return audit ? (
     <Layout>
       <h2>
-        <span>{audit.name + "/"}</span>
-        <span className="text-muted">Informes</span>
+        <span>Informes</span>
       </h2>
       <hr />
       ...

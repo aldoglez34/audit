@@ -18,8 +18,7 @@ function CCI() {
   return audit ? (
     <Layout>
       <h2>
-        <span>{audit.name + "/"}</span>
-        <span className="text-muted">CCI</span>
+        <span>Cuestionario de Control Interno</span>
       </h2>
       <hr />
       ... Cuestionario de Control Interno

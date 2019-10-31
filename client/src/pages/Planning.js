@@ -16,8 +16,7 @@ function Planning() {
   return audit ? (
     <Layout>
       <h2>
-        <span>{audit.name + "/"}</span>
-        <span className="text-muted">Planeación</span>
+        <span>Planeación</span>
       </h2>
       <hr />
       <section>

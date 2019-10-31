@@ -14,8 +14,7 @@ function Nómina() {
   return audit ? (
     <Layout>
       <h2>
-        <span>{audit.name + "/"}</span>
-        <span className="text-muted">Nómina</span>
+        <span>Nómina</span>
       </h2>
       <hr />
       {audit.hasNómina ? (

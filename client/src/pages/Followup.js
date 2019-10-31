@@ -14,8 +14,7 @@ function Followup() {
   return audit ? (
     <Layout>
       <h2>
-        <span>{audit.name + "/"}</span>
-        <span className="text-muted">Seguimiento</span>
+        <span>Seguimiento</span>
       </h2>
       <hr />
       ...

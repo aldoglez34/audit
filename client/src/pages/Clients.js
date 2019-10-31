@@ -72,7 +72,7 @@ class Clients extends Component {
         {/* title */}
         <Row>
           <Col md={8}>
-            <h2 className="mb-0">/Clientes</h2>
+            <h2 className="mb-0">Clientes</h2>
           </Col>
           <Col className="mt-1 mt-md-0 text-md-right" md={4}>
             <ModalNewClient />

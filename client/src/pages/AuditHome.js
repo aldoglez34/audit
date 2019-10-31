@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as auditActions from "../redux-actions/auditActions";
 import * as navbarActions from "../redux-actions/navbarActions";
 import API from "../utils/API";
@@ -8,7 +8,6 @@ import Layout from "./Layout";
 
 function AuditHome(props) {
   const dispatch = useDispatch();
-  const audit = useSelector(state => state.audit);
 
   useEffect(() => {
     // show audit menu and hide home menu and set active link

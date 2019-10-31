@@ -14,8 +14,7 @@ function Details() {
   return audit ? (
     <Layout>
       <h2>
-        <span>{"/" + audit.name}</span>
-        <span>/Detalles</span>
+        <span>Detalles</span>
       </h2>
       <hr />
       <h5>Descripción de la Auditoría</h5>

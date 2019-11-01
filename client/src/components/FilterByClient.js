@@ -1,7 +1,6 @@
 import React from "react";
 import { Dropdown } from "react-bootstrap";
 import PropTypes from "prop-types";
-import "./filterbyclient.scss";
 
 FilterByClient.propTypes = {
   data: PropTypes.array,
@@ -29,11 +28,7 @@ function FilterByClient(props) {
 
   return uniqueClients.length ? (
     <Dropdown>
-      <Dropdown.Toggle
-        variant="transparent"
-        className="mr-3 p-0"
-        style={{ color: "#516b8a" }}
-      >
+      <Dropdown.Toggle variant="dark" className="auditsFilter">
         {props.activeClient}
       </Dropdown.Toggle>
       <Dropdown.Menu>

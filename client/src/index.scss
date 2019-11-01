@@ -18,7 +18,7 @@ h5 {
   font-family: "Bitter", serif;
 }
 
-// layout margin
+// layout
 #containerMargin {
   margin-left: 247px;
   padding: 0px;
@@ -28,23 +28,6 @@ h5 {
   #containerMargin {
     margin-left: 0px !important;
   }
-}
-
-.purplebttn {
-  border: 0;
-  background-color: #516fd6;
-  color: ghostwhite;
-  &:hover {
-    background-color: #385bce !important;
-  }
-  &:active {
-    background-color: #264bc4 !important;
-  }
-  &:disabled {
-    background-color: #99aab5 !important;
-  }
-  outline: none;
-  border: 0px !important;
 }
 
 // removes blue glow on some elements
@@ -67,36 +50,19 @@ select {
   border: 1px solid #ccc !important;
 }
 
-// buttons on clients page
-.editIcon {
-  font-size: 23px;
-  color: #516fd6;
+.purplebttn {
+  border: 0;
+  background-color: #516fd6;
+  color: ghostwhite;
   &:hover {
-    color: #2d51c7;
+    background-color: #385bce !important;
   }
-}
-
-.deleteIcon {
-  font-size: 23px;
-  color: #dc3545;
-  &:hover {
-    color: #ce1628;
+  &:active {
+    background-color: #264bc4 !important;
   }
-}
-
-// planning page
-.dateInput {
-  cursor: pointer !important;
-  padding: 5px;
-  border-radius: 5px;
-  //   background-color: red;
-}
-
-// audits and clients
-.auditItem {
-  background-color: white;
-  border: 1px solid rgb(224, 223, 223) !important;
-  // &:hover {
-  //   background-color: #d2dbfc;
-  // }
+  &:disabled {
+    background-color: #99aab5 !important;
+  }
+  outline: none;
+  border: 0px !important;
 }

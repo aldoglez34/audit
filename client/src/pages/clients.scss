@@ -1,0 +1,26 @@
+.editIcon {
+  font-size: 23px;
+  color: #516fd6;
+  &:hover {
+    color: #2d51c7;
+  }
+}
+
+.deleteIcon {
+  font-size: 23px;
+  color: #dc3545;
+  &:hover {
+    color: #ce1628;
+  }
+}
+
+.dropdownitem {
+  &.active {
+    background-color: #2c2f33 !important;
+    color: ghostwhite !important;
+  }
+  &:focus {
+    background-color: #2c2f33 !important;
+    color: ghostwhite !important;
+  }
+}

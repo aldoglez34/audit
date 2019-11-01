@@ -15,6 +15,7 @@ import ModalNewClient from "../components/ModalNewClient";
 import ModalEditClient from "../components/ModalEditClient";
 import ModalDeleteClient from "../components/ModalDeleteClient";
 import MyPagination from "../components/MyPagination";
+import "./clients.scss";
 
 class Clients extends Component {
   state = {
@@ -79,7 +80,7 @@ class Clients extends Component {
           </Col>
         </Row>
         <hr />
-        <Row>
+        <Row className="mb-3">
           <Col>
             <Form className="shadow-sm">
               <FormControl type="text" placeholder="Buscar Cliente" />

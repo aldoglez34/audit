@@ -21,6 +21,7 @@ import ModalNewAudit from "../components/ModalNewAudit";
 import FilterByClient from "../components/FilterByClient";
 import SortAudits from "../components/SortAudits";
 import MyPagination from "../components/MyPagination";
+import "./audits.scss";
 
 class Audits extends Component {
   state = {
@@ -163,27 +164,28 @@ class Audits extends Component {
           </Col>
         </Row>
         <hr />
-        <Row>
-          <Col className="d-flex flex-row justify-content-end">
+        {/* search bar and filters */}
+        <Row className="d-flex mb-3">
+          <Col lg={8} className="flex-fill">
+            <Form className="shadow-sm">
+              <FormControl type="text" placeholder="Buscar Auditoría" />
+            </Form>
+          </Col>
+          <Col lg={2} className="flex-fill">
             <FilterByClient
               data={this.state.allAudits}
               activeClient={this.state.activeClient}
               handleFilterByClient={this.handleFilterByClient}
             />
+          </Col>
+          <Col lg={2} className="flex-fill">
             <SortAudits
               title={this.state.sortingTitle}
               handleSorting={this.handleSorting}
             />
           </Col>
         </Row>
-        <Row className="mt-2">
-          <Col>
-            <Form className="shadow-sm">
-              <FormControl type="text" placeholder="Buscar Auditoría" />
-            </Form>
-          </Col>
-        </Row>
-        {/* audits row */}
+        {/* audits */}
         <Row className="mt-2">
           <Col>
             {!this.state.isLoadingAudits ? (

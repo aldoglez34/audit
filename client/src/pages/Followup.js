@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as navbarActions from "../redux-actions/navbarActions";
+import * as auditActions from "../redux-actions/auditActions";
 import Layout from "./Layout";
 
 function Followup() {
@@ -9,6 +10,7 @@ function Followup() {
 
   useEffect(() => {
     dispatch(navbarActions.setAuditActive("Seguimiento"));
+    dispatch(auditActions.setBackBttn(null));
   }, []);
 
   return audit ? (

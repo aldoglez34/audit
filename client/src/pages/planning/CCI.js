@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as navbarActions from "../../redux-actions/navbarActions";
+import * as auditActions from "../../redux-actions/auditActions";
 import Layout from "../Layout";
 
 const pdfMake = require("pdfmake/build/pdfmake.js");
@@ -13,6 +14,7 @@ function CCI() {
 
   useEffect(() => {
     dispatch(navbarActions.setAuditActive("Planeación"));
+    dispatch(auditActions.setBackBttn("/audit/planning/" + audit.auditId));
   }, []);
 
   return audit ? (

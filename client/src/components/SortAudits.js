@@ -10,9 +10,7 @@ SortAudits.propTypes = {
 function SortAudits(props) {
   return (
     <Dropdown>
-      <Dropdown.Toggle variant="dark" className="auditsFilter">
-        {props.title}
-      </Dropdown.Toggle>
+      <Dropdown.Toggle className="auditsFilter">{props.title}</Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item
           className="dropdownitem"

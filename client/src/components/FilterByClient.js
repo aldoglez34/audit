@@ -28,7 +28,7 @@ function FilterByClient(props) {
 
   return uniqueClients.length ? (
     <Dropdown>
-      <Dropdown.Toggle variant="dark" className="auditsFilter">
+      <Dropdown.Toggle className="auditsFilter">
         {props.activeClient}
       </Dropdown.Toggle>
       <Dropdown.Menu>

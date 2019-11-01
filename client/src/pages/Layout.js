@@ -2,6 +2,7 @@ import React from "react";
 import AllNavs from "../components/AllNavs";
 import { Container, Row, Col } from "react-bootstrap";
 import TopHelperNav from "../components/TopHelperNav";
+import PropTypes from "prop-types";
 
 const Layout = props => (
   <div className="d-lg-flex flex-row h-100">
@@ -24,5 +25,9 @@ const Layout = props => (
     </Container>
   </div>
 );
+
+Layout.propTypes = {
+  children: PropTypes.array.isRequired
+};
 
 export default Layout;

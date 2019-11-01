@@ -10,3 +10,10 @@ export const closeAudit = () => {
     type: "audit/close"
   };
 };
+
+export const setBackBttn = data => {
+  return {
+    type: "audit/setBackBttn",
+    data
+  };
+};

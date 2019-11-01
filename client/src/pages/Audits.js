@@ -12,7 +12,6 @@ import {
   Row,
   Spinner,
   ListGroup,
-  Form,
   FormControl
 } from "react-bootstrap";
 import Layout from "./Layout";
@@ -165,24 +164,22 @@ class Audits extends Component {
         </Row>
         <hr />
         {/* search bar and filters */}
-        <Row className="d-flex mb-3">
-          <Col lg={8} className="flex-fill">
-            <Form className="shadow-sm">
-              <FormControl type="text" placeholder="Buscar Auditoría" />
-            </Form>
-          </Col>
-          <Col lg={2} className="flex-fill">
+        <Row className="mb-3">
+          <Col md="auto">
             <FilterByClient
               data={this.state.allAudits}
               activeClient={this.state.activeClient}
               handleFilterByClient={this.handleFilterByClient}
             />
           </Col>
-          <Col lg={2} className="flex-fill">
+          <Col md="auto" className="mt-2 mt-md-0">
             <SortAudits
               title={this.state.sortingTitle}
               handleSorting={this.handleSorting}
             />
+          </Col>
+          <Col className="mt-2 mt-md-0">
+            <FormControl type="text" placeholder="Buscar Auditoría" />
           </Col>
         </Row>
         {/* audits */}

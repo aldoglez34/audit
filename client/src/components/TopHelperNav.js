@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav, Col, Button } from "react-bootstrap";
 import "./tophelpernav.scss";
 
 function TopHelperNav() {
@@ -10,15 +10,22 @@ function TopHelperNav() {
   return (
     <div className="d-none d-md-block">
       <Navbar id="topHelperStyle">
-        <Nav className="mr-auto">
+        <Col className="d-flex justify-content-start">
+          {audit.backBttn ? (
+            <Button variant="transparent" href={audit.backBttn} className="p-0">
+              <i className="fas fa-chevron-left backArrow" />
+            </Button>
+          ) : null}
+        </Col>
+        <Col className="d-flex justify-content-center">
           {audit.isOpen ? (
-            <Nav.Item className="topHelperAuditOpened mr-auto">
+            <Nav.Item className="topHelperAuditOpened">
               <i className="fas fa-project-diagram mr-2" />
-              {audit.name}
+              <strong>{audit.name}</strong>
             </Nav.Item>
           ) : null}
-        </Nav>
-        <Nav>
+        </Col>
+        <Col className="d-flex flex-row justify-content-end">
           <Nav.Item className="topHelperItem">
             <i className="fas fa-user mr-2" />
             {user.name + " " + user.firstSurname}
@@ -27,7 +34,7 @@ function TopHelperNav() {
             <i className="fas fa-shield-alt mr-2" />
             {user.role}
           </Nav.Item>
-        </Nav>
+        </Col>
       </Navbar>
     </div>
   );

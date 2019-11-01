@@ -66,3 +66,11 @@ select {
   outline: none;
   border: 0px !important;
 }
+
+.backArrow {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 24px;
+  &:hover {
+    color: ghostwhite;
+  }
+}

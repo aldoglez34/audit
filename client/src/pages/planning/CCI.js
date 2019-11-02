@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as navbarActions from "../../redux-actions/navbarActions";
 import * as auditActions from "../../redux-actions/auditActions";
@@ -14,6 +14,12 @@ function CCI() {
   const dispatch = useDispatch();
   const audit = useSelector(state => state.audit);
 
+  const [questions] = useState([
+    { key: "q1", q: "Esta es la pregunta uno", a: "respuesta uno" },
+    { key: "q2", q: "Esta es la pregunta dos", a: "" },
+    { key: "q3", q: "Esta es la pregunta tres", a: "" }
+  ]);
+
   useEffect(() => {
     dispatch(navbarActions.setAuditActive("Planeación"));
     dispatch(auditActions.setBackBttn("/audit/planning/" + audit.auditId));
@@ -28,7 +34,8 @@ function CCI() {
       <Formik
         initialValues={{
           q1: "",
-          q2: ""
+          q2: "",
+          q3: ""
         }}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
@@ -38,36 +45,24 @@ function CCI() {
         {({ values, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
           <>
             <Form noValidate onSubmit={handleSubmit}>
-              <Form.Group>
-                <Form.Label>
-                  ¿La Entidad cuenta con un Código de Ética y un Código de
-                  Conducta, que delimite la actuación ética que deben observar
-                  los servidores públicos?<small className="ml-2">(150)</small>
-                </Form.Label>
-                <Form.Control
-                  maxLength="150"
-                  type="text"
-                  name="q1"
-                  value={values.q1}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>
-                  ¿La Entidad cuenta con Reglamento Interior y está publicado en
-                  Gaceta Oficial? Especificar qué publicación.
-                  <small className="ml-2">(150)</small>
-                </Form.Label>
-                <Form.Control
-                  maxLength="150"
-                  type="text"
-                  name="q2"
-                  value={values.q2}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </Form.Group>
+              {questions.map(q => {
+                return (
+                  <Form.Group key={q.key}>
+                    <Form.Label>
+                      {q.q}
+                      <small className="ml-2">(150)</small>
+                    </Form.Label>
+                    <Form.Control
+                      maxLength="150"
+                      type="text"
+                      name={q.key}
+                      value={values.q1}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  </Form.Group>
+                );
+              })}
               <Button
                 className="purplebttn"
                 disabled={isSubmitting}

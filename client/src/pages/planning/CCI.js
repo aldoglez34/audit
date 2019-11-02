@@ -15,15 +15,21 @@ function CCI() {
   const audit = useSelector(state => state.audit);
 
   const [questions] = useState([
-    { key: "q1", q: "Esta es la pregunta uno", a: "respuesta uno" },
-    { key: "q2", q: "Esta es la pregunta dos", a: "" },
-    { key: "q3", q: "Esta es la pregunta tres", a: "" }
+    { id: "q1", question: "Esta es la pregunta uno", answer: "respuesta uno" },
+    { id: "q2", question: "Esta es la pregunta dos", answer: "dos" },
+    { id: "q3", question: "Esta es la pregunta tres", answer: "three" }
   ]);
 
   useEffect(() => {
     dispatch(navbarActions.setAuditActive("Planeación"));
     dispatch(auditActions.setBackBttn("/audit/planning/" + audit.auditId));
   }, []);
+
+  const initVals = () => {
+    let values = {};
+    questions.map(q => (values[q.id] = q.answer));
+    return values;
+  };
 
   return audit ? (
     <Layout>
@@ -32,11 +38,7 @@ function CCI() {
       </h2>
       <hr />
       <Formik
-        initialValues={{
-          q1: "",
-          q2: "",
-          q3: ""
-        }}
+        initialValues={initVals()}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
           console.log(values);
@@ -47,16 +49,16 @@ function CCI() {
             <Form noValidate onSubmit={handleSubmit}>
               {questions.map(q => {
                 return (
-                  <Form.Group key={q.key}>
+                  <Form.Group key={q.id}>
                     <Form.Label>
-                      {q.q}
+                      {q.question}
                       <small className="ml-2">(150)</small>
                     </Form.Label>
                     <Form.Control
                       maxLength="150"
                       type="text"
-                      name={q.key}
-                      value={values.q1}
+                      name={q.id}
+                      value={values[q.id]}
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />

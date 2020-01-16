@@ -1,22 +1,22 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as navbarActions from "../redux-actions/navbarActions";
-import * as auditActions from "../redux-actions/auditActions";
-import Layout from "./Layout";
+import * as navbarActions from "../../redux/actions/navbarActions";
+import * as auditActions from "../../redux/actions/auditActions";
+import Layout from "../Layout";
 
-function Followup() {
+function Reporting() {
   const dispatch = useDispatch();
   const audit = useSelector(state => state.audit);
 
   useEffect(() => {
-    dispatch(navbarActions.setAuditActive("Seguimiento"));
+    dispatch(navbarActions.setAuditActive("Informes"));
     dispatch(auditActions.setBackBttn(null));
   }, []);
 
   return audit ? (
     <Layout>
       <h2>
-        <span>Seguimiento</span>
+        <span>Informes</span>
       </h2>
       <hr />
       ...
@@ -24,4 +24,4 @@ function Followup() {
   ) : null;
 }
 
-export default Followup;
+export default Reporting;

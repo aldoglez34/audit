@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setHomeActive } from "../redux-actions/navbarActions";
-import Layout from "./Layout";
+import { setHomeActive } from "../../redux/actions/navbarActions";
+import Layout from "../Layout";
 import {
   Row,
   Col,
@@ -10,11 +10,11 @@ import {
   Form,
   FormControl
 } from "react-bootstrap";
-import API from "../utils/API";
-import ModalNewClient from "../components/ModalNewClient";
-import ModalEditClient from "../components/ModalEditClient";
-import ModalDeleteClient from "../components/ModalDeleteClient";
-import MyPagination from "../components/MyPagination";
+import API from "../../utils/API";
+import ModalNewClient from "./components/ModalNewClient";
+import ModalEditClient from "./components/ModalEditClient";
+import ModalDeleteClient from "./components/ModalDeleteClient";
+import MyPagination from "../../components/MyPagination";
 import "./clients.scss";
 
 class Clients extends Component {
@@ -104,6 +104,10 @@ class Clients extends Component {
                             className="mr-2 mb-0"
                             style={{ color: "#2c2f33" }}
                           >
+                            <i
+                              className="fas fa-user-friends mr-2"
+                              style={{ fontSize: "17px" }}
+                            />
                             {client.abbreviation}
                           </h4>
                           <p className="mb-0" style={{ color: "#2c2f33" }}>
@@ -154,7 +158,4 @@ const mapDispatchToProps = {
   setHomeActive
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Clients);
+export default connect(null, mapDispatchToProps)(Clients);

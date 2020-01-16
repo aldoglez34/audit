@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import * as userActions from "./redux-actions/userActions";
+import * as userActions from "./redux/actions/userActions";
 import fire from "./firebase/Fire";
 import {
   BrowserRouter as Router,
@@ -8,19 +8,19 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
-import Login from "./pages/Login";
-import AuditHome from "./pages/AuditHome";
-import Audits from "./pages/Audits";
-import Clients from "./pages/Clients";
-import Details from "./pages/Details";
-import Planning from "./pages/Planning";
-import Execution from "./pages/Execution";
-import Reporting from "./pages/Reporting";
-import Followup from "./pages/Followup";
-import Nomina from "./pages/consult/Nómina";
-import Balanza from "./pages/consult/Balanza";
-import CCI from "./pages/planning/CCI";
-import CEFS from "./pages/planning/CEFS";
+import Login from "./pages/login/Login";
+import AuditHome from "./pages/auditHome/AuditHome";
+import Audits from "./pages/audits/Audits";
+import Clients from "./pages/clients/Clients";
+import Details from "./pages/details/Details";
+import Planning from "./pages/planning/Planning";
+import Execution from "./pages/execution/Execution";
+import Reporting from "./pages/reporting/Reporting";
+import Followup from "./pages//followUp/Followup";
+import Nomina from "./pages/consults/Nómina";
+import Balanza from "./pages/consults/Balanza";
+import CCI from "./pages/planning/surveys/CCI";
+import CEFS from "./pages/planning/surveys/CEFS";
 
 function App() {
   const dispatch = useDispatch();

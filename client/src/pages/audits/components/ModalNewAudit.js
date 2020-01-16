@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Form, Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Formik, ErrorMessage } from "formik";
-import API from "../utils/API";
+import API from "../../../utils/API";
 import * as yup from "yup";
 
 function ModalNewAudit() {

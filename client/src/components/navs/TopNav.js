@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navbar, Nav, Button } from "react-bootstrap";
-import * as auditActions from "../redux-actions/auditActions";
-import fire from "../firebase/Fire";
+import * as auditActions from "../../redux/actions/auditActions";
+import fire from "../../firebase/Fire";
 import "./topnav.scss";
 
 function LeftNav() {

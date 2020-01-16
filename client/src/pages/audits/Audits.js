@@ -4,8 +4,8 @@ import {
   showHomeMenu,
   hideAuditMenu,
   setHomeActive
-} from "../redux-actions/navbarActions";
-import { closeAudit } from "../redux-actions/auditActions";
+} from "../../redux/actions/navbarActions";
+import { closeAudit } from "../../redux/actions/auditActions";
 import {
   Button,
   Col,
@@ -14,12 +14,12 @@ import {
   ListGroup,
   FormControl
 } from "react-bootstrap";
-import Layout from "./Layout";
-import API from "../utils/API";
-import ModalNewAudit from "../components/ModalNewAudit";
-import FilterByClient from "../components/FilterByClient";
-import SortAudits from "../components/SortAudits";
-import MyPagination from "../components/MyPagination";
+import Layout from "../Layout";
+import API from "../../utils/API";
+import ModalNewAudit from "./components/ModalNewAudit";
+import FilterByClient from "./components/FilterByClient";
+import SortAudits from "./components/SortAudits";
+import MyPagination from "../../components/MyPagination";
 import "./audits.scss";
 
 class Audits extends Component {
@@ -200,6 +200,10 @@ class Audits extends Component {
                             className="mr-2 mb-0"
                             style={{ color: "#2c2f33" }}
                           >
+                            <i
+                              className="fas fa-project-diagram mr-2"
+                              style={{ fontSize: "17px" }}
+                            />
                             {audit.name}
                           </h4>
                           <p className="mb-0" style={{ color: "#2c2f33" }}>
@@ -256,7 +260,4 @@ const mapDispatchToProps = {
   closeAudit
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Audits);
+export default connect(null, mapDispatchToProps)(Audits);

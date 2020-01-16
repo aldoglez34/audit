@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import "./login.scss";
-import * as userActions from "../redux-actions/userActions";
+import * as userActions from "../../redux/actions/userActions";
 import { useDispatch } from "react-redux";
-import API from "../utils/API";
+import API from "../../utils/API";
 import { Formik } from "formik";
-import fire from "../firebase/Fire";
+import fire from "../../firebase/Fire";
 const firebase = require("firebase/app");
 
 function Login() {

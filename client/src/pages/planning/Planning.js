@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as navbarActions from "../redux-actions/navbarActions";
-import * as auditActions from "../redux-actions/auditActions";
+import * as navbarActions from "../../redux/actions/navbarActions";
+import * as auditActions from "../../redux/actions/auditActions";
 import { Table, Badge } from "react-bootstrap";
-import Layout from "./Layout";
-import WorkplanActivity from "../components/WorkplanActivity";
+import Layout from "../Layout";
+import WorkplanActivity from "./components/WorkplanActivity";
 import "./planning.scss";
 
 function Planning() {

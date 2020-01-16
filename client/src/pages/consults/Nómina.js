@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as navbarActions from "../../redux-actions/navbarActions";
-import * as auditActions from "../../redux-actions/auditActions";
+import * as navbarActions from "../../redux/actions/navbarActions";
+import * as auditActions from "../../redux/actions/auditActions";
 import Layout from "../Layout";
 
 function Nómina() {

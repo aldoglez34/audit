@@ -1,7 +1,8 @@
+
 const router = require("express").Router();
 const csv = require("csv");
 const fs = require("fs");
-const model = require("../models");
+const model = require("../../models");
 const csvParse = require("csv-parse")
 const through2 = require("through2")
 const Readable = require("stream").Readable;

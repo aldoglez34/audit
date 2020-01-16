@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Nav, Button } from "react-bootstrap";
-import * as auditActions from "../redux-actions/auditActions";
-import fire from "../firebase/Fire";
+import * as auditActions from "../../redux/actions/auditActions";
+import fire from "../../firebase/Fire";
 import "./leftnav.scss";
 
 function LeftNav() {
@@ -99,7 +99,7 @@ function LeftNav() {
             href={"/audit/reporting/" + audit.auditId}
             active={navbar.auditMenu.active === "Informes" ? true : false}
           >
-            <i className="fas fa-folder-open" style={{ width: "32px" }} />
+            <i className="fas fa-chart-bar" style={{ width: "32px" }} />
             Informes
           </Nav.Link>
           <Nav.Link
@@ -107,11 +107,11 @@ function LeftNav() {
             href={"/audit/followup/" + audit.auditId}
             active={navbar.auditMenu.active === "Seguimiento" ? true : false}
           >
-            <i className="fas fa-flag" style={{ width: "32px" }} />
+            <i className="fas fa-forward" style={{ width: "32px" }} />
             Seguimiento
           </Nav.Link>
           <Nav.Item className="navItemStyle">
-            <small>CONSULTAR</small>
+            <small>CONSULTA</small>
           </Nav.Item>
           <Nav.Link
             className="navLinkStyle"

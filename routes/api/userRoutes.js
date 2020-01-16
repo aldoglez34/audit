@@ -1,5 +1,6 @@
+
 const router = require("express").Router();
-const model = require("../models");
+const model = require("../../models");
 
 // get user info from a given uid
 // matches with /api/user/:uid

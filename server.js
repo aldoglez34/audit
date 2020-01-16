@@ -1,15 +1,16 @@
 const express = require("express");
 const app = express();
-// const cors = require("cors");
+const cors = require("cors");
 const morgan = require("morgan");
 const PORT = process.env.PORT || 3001;
 const models = require("./models");
 const path = require("path");
 const sequelize_fixtures = require("sequelize-fixtures");
+const routes = require("./routes");
 
 // middleware
 app.use(morgan("dev"));
-// app.use(cors());
+app.use(cors());
 
 // parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
@@ -21,16 +22,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // API routes
-const userRoutes = require("./routes/userRoutes");
-app.use("/api/user", userRoutes);
-const auditRoutes = require("./routes/auditRoutes");
-app.use("/api/audit", auditRoutes);
-const clientRoutes = require("./routes/clientRoutes");
-app.use("/api/client", clientRoutes);
-const uploadRoutes = require("./routes/uploadRoutes");
-app.use("/api/upload", uploadRoutes);
-const surveyRoutes = require("./routes/surveyRoutes");
-app.use("/api/survey", surveyRoutes);
+app.use(routes);
 
 // send every other request to the React app
 // define any API routes before this runs
@@ -44,9 +36,9 @@ app.get("*", (req, res) => {
 models.sequelize.sync({ force: false }).then(function() {
   // load fixtures files into the db
   // it's important that the process is finished in order
-  sequelize_fixtures.loadFile("fixtures/*.json", models).then(function() {
-    console.log("dev data loaded successfully");
-  });
+  // sequelize_fixtures.loadFile("fixtures/*.json", models).then(function() {
+  //   console.log("dev data loaded successfully");
+  // });
 
   // start server
   app.listen(PORT, () => {

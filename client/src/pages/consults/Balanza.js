@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as navbarActions from "../../redux-actions/navbarActions";
+import * as navbarActions from "../../redux/actions/navbarActions";
 import Layout from "../Layout";
-import * as auditActions from "../../redux-actions/auditActions";
+import * as auditActions from "../../redux/actions/auditActions";
 // import { Image, Container, Row, Col, Button, Form } from "react-bootstrap";
 // import ReactFileReader from 'react-file-reader';
 // import ProgressBar from "react-bootstrap/ProgressBar";

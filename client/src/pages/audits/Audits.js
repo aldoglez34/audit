@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  showHomeMenu,
-  hideAuditMenu,
-  setHomeActive
-} from "../../redux/actions/navbarActions";
-import { closeAudit } from "../../redux/actions/auditActions";
+import { deleteAuditInfo } from "../../redux/actions/auditActions";
 import {
   Button,
   Col,
@@ -37,12 +32,9 @@ class Audits extends Component {
   };
 
   componentDidMount() {
-    // show and hide menus
-    this.props.showHomeMenu();
-    this.props.setHomeActive("Auditorías");
-    this.props.hideAuditMenu();
-    this.props.closeAudit();
-    // fetch audits
+    // delete info from whatever audit is open
+    this.props.deleteAuditInfo();
+    // fetch audit
     API.fetchAudits()
       .then(res => {
         // allAudits is gonna be used to store all the audits
@@ -152,17 +144,17 @@ class Audits extends Component {
 
   render() {
     return (
-      <Layout>
+      <Layout homeMenu={"Auditorías"}>
         {/* title */}
         <Row>
           <Col md={8}>
-            <h2 className="mb-0">Auditorías</h2>
+            <h2>Auditorías</h2>
+            <hr className="myDivider" />
           </Col>
           <Col md={4} className="mt-1 mt-md-0 text-md-right">
             <ModalNewAudit />
           </Col>
         </Row>
-        <hr />
         {/* search bar and filters */}
         <Row className="mb-3">
           <Col md="auto">
@@ -254,10 +246,7 @@ class Audits extends Component {
 }
 
 const mapDispatchToProps = {
-  showHomeMenu,
-  hideAuditMenu,
-  setHomeActive,
-  closeAudit
+  deleteAuditInfo
 };
 
 export default connect(null, mapDispatchToProps)(Audits);

@@ -62,9 +62,20 @@ export default {
   },
 
   // =================================================================
+  // NÓMINA
+
+  uploadNómina: function(data) {
+    return axios.post("/api/nomina/upload" + data);
+  },
+
+  // =================================================================
   // BALANZAS
 
-  uploadBalanza: function(csvFile) {
-    return axios.post("/api/upload/balanza", csvFile);
+  uploadBalanza: function(data) {
+    return axios.post("/api/balanza/upload", data);
+  },
+
+  fetchBalanza: function(auditId) {
+    return axios.get("/api/balanza/" + auditId);
   }
 };

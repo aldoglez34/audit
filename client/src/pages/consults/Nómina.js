@@ -1,31 +1,31 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import * as navbarActions from "../../redux/actions/navbarActions";
-import * as auditActions from "../../redux/actions/auditActions";
+import React from "react";
 import Layout from "../Layout";
+import { useSelector } from "react-redux";
 
 function Nómina() {
-  const dispatch = useDispatch();
   const audit = useSelector(state => state.audit);
 
-  useEffect(() => {
-    dispatch(navbarActions.setAuditActive("Nómina"));
-    dispatch(auditActions.setBackBttn(null));
-  }, []);
-
-  return audit ? (
-    <Layout>
-      <h2>
-        <span>Nómina</span>
-      </h2>
-      <hr />
+  return (
+    <Layout auditMenu="Nómina" auditOpened="SOMETHING">
+      <h2>Nómina</h2>
+      <hr className="myDivider" />
       {audit.hasNómina ? (
-        <span>has nómina: true</span>
+        <span>Mostrando nómina</span>
       ) : (
-        <span>La Nómina de {audit.name} no está disponible</span>
+        <span>
+          La nómina no ha sido cargada aún,{" "}
+          <span
+            className="text-primary"
+            style={{ cursor: "pointer" }}
+            onClick={() => alert("test")}
+          >
+            haz click aquí
+          </span>{" "}
+          para cargarla
+        </span>
       )}
     </Layout>
-  ) : null;
+  );
 }
 
 export default Nómina;

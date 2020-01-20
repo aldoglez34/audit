@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import * as auditActions from "../../redux/actions/auditActions";
-import * as navbarActions from "../../redux/actions/navbarActions";
 import API from "../../utils/API";
 import { Card, CardColumns } from "react-bootstrap";
 import Layout from "../Layout";
@@ -10,26 +9,19 @@ function AuditHome(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // show audit menu and hide home menu and set active link
-    dispatch(navbarActions.hideHomeMenu());
-    dispatch(navbarActions.showAuditMenu());
-    dispatch(navbarActions.setAuditActive("Inicio"));
-    // fetch audit
-    let auditId = props.routeProps.match.params.auditId;
-    API.fetchOneAudit(auditId)
+    API.fetchOneAudit(props.routeProps.match.params.auditId)
       .then(res => {
-        // open audit
-        dispatch(auditActions.openAudit(res.data));
+        dispatch(auditActions.setAuditInfo(res.data));
       })
       .catch(err => console.log(err));
   }, []);
 
   return (
-    <Layout>
+    <Layout auditMenu="Inicio">
       <h2>
         <span>Inicio</span>
       </h2>
-      <hr />
+      <hr className="myDivider" />
       <CardColumns>
         <Card>
           <Card.Img

@@ -12,11 +12,7 @@ import Login from "./pages/login/Login";
 import AuditHome from "./pages/auditHome/AuditHome";
 import Audits from "./pages/audits/Audits";
 import Clients from "./pages/clients/Clients";
-import Details from "./pages/details/Details";
 import Planning from "./pages/planning/Planning";
-import Execution from "./pages/execution/Execution";
-import Reporting from "./pages/reporting/Reporting";
-import Followup from "./pages//followUp/Followup";
 import Nomina from "./pages/consults/Nómina";
 import Balanza from "./pages/consults/Balanza";
 import CCI from "./pages/planning/surveys/CCI";
@@ -24,13 +20,14 @@ import CEFS from "./pages/planning/surveys/CEFS";
 
 function App() {
   const dispatch = useDispatch();
+
   const user = useSelector(state => state.user);
 
   useEffect(() => {
-    // auth listener
-    fire.auth().onAuthStateChanged(user => {
-      if (!user) {
-        dispatch(userActions.logoutUser());
+    // firebase listener
+    fire.auth().onAuthStateChanged(u => {
+      if (!u) {
+        dispatch(userActions.deleteUserInfo());
       }
     });
   }, []);
@@ -38,13 +35,11 @@ function App() {
   return (
     <Router>
       {!user.isLogged ? (
-        // this happens if user is NOT logged
         <Switch>
           <Route exact path="/" component={Login} />
           <Redirect to="/" />
         </Switch>
       ) : (
-        // this happens if user IS logged
         <Switch>
           <Route exact path="/clients" component={Clients} />
           <Route exact path="/audits" component={Audits} />
@@ -52,11 +47,6 @@ function App() {
             exact
             path="/audit/home/:auditId"
             render={props => <AuditHome routeProps={props} />}
-          />
-          <Route
-            exact
-            path="/audit/details/:auditId"
-            render={props => <Details routeProps={props} />}
           />
           <Route
             exact
@@ -72,21 +62,6 @@ function App() {
             exact
             path="/audit/planning/cefs/:auditId"
             render={props => <CEFS routeProps={props} />}
-          />
-          <Route
-            exact
-            path="/audit/execution/:auditId"
-            render={props => <Execution routeProps={props} />}
-          />
-          <Route
-            exact
-            path="/audit/reporting/:auditId"
-            render={props => <Reporting routeProps={props} />}
-          />
-          <Route
-            exact
-            path="/audit/followup/:auditId"
-            render={props => <Followup routeProps={props} />}
           />
           <Route
             exact

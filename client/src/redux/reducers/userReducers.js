@@ -1,6 +1,6 @@
-const userReducers = (state = { isLogged: false }, action) => {
+const userReducers = (state = {}, action) => {
   switch (action.type) {
-    case "user/login":
+    case "user/setUserInfo":
       return {
         isLogged: true,
         firebase_uid: action.data.firebase_uid,
@@ -10,10 +10,8 @@ const userReducers = (state = { isLogged: false }, action) => {
         secondSurname: action.data.secondSurname,
         email: action.data.email
       };
-    case "user/logout":
-      return {
-        isLogged: false
-      };
+    case "user/deleteUserInfo":
+      return {};
     default:
       return state;
   }

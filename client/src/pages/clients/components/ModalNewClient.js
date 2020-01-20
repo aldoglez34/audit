@@ -31,12 +31,8 @@ function ModalNewClient() {
         Nuevo Cliente
       </Button>
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header className="bg-light">
-          <Modal.Title>
-            <h4 className="m-0 p-0">Nuevo Cliente</h4>
-          </Modal.Title>
-        </Modal.Header>
         <Modal.Body className="bg-light">
+          <h3>Nuevo Cliente</h3>
           <Formik
             initialValues={{
               name: "",

@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import * as navbarActions from "../../../redux/actions/navbarActions";
-import * as auditActions from "../../../redux/actions/auditActions";
+import React from "react";
+import { useSelector } from "react-redux";
+// import * as auditActions from "../../../redux/actions/auditActions";
 import Layout from "../../Layout";
 
 const pdfMake = require("pdfmake/build/pdfmake.js");
@@ -9,13 +8,14 @@ const pdfFonts = require("pdfmake/build/vfs_fonts.js");
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function CEFS() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const audit = useSelector(state => state.audit);
 
-  useEffect(() => {
-    dispatch(navbarActions.setAuditActive("Planeación"));
-    dispatch(auditActions.setBackBttn("/audit/planning/" + audit.auditId));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(navbarActions.setAuditActive("Planeación"));
+  //   dispatch(auditActions.setBackBttn("/audit/planning/" + audit.auditId));
+  // }, []);
+
   // state = {
   //   loggedUser: null,
   //   selectedAudit: null,
@@ -335,15 +335,18 @@ function CEFS() {
   //     );
   // };
 
-  return audit ? (
-    <Layout>
+  return (
+    <Layout
+      auditMenu="Planeación"
+      backButton={"/audit/planning/" + audit.auditId}
+    >
       <h2>
         <span>Cédula de Estados Financieros del Sistema</span>
       </h2>
       <hr />
       ...
     </Layout>
-  ) : null;
+  );
 }
 
 export default CEFS;

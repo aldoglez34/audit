@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { setHomeActive } from "../../redux/actions/navbarActions";
 import Layout from "../Layout";
 import {
   Row,
@@ -29,9 +27,6 @@ class Clients extends Component {
   };
 
   componentDidMount() {
-    // show and hide menus
-    this.props.setHomeActive("Clientes");
-    // fetch clients
     API.fetchClients()
       .then(res => {
         let productsPerPage = this.state.productsPerPage;
@@ -69,17 +64,17 @@ class Clients extends Component {
 
   render() {
     return (
-      <Layout>
+      <Layout homeMenu="Clientes">
         {/* title */}
         <Row>
           <Col md={8}>
-            <h2 className="mb-0">Clientes</h2>
+            <h2>Clientes</h2>
+            <hr className="myDivider" />
           </Col>
           <Col className="mt-1 mt-md-0 text-md-right" md={4}>
             <ModalNewClient />
           </Col>
         </Row>
-        <hr />
         <Row className="mb-3">
           <Col>
             <Form className="shadow-sm">
@@ -154,8 +149,4 @@ class Clients extends Component {
   }
 }
 
-const mapDispatchToProps = {
-  setHomeActive
-};
-
-export default connect(null, mapDispatchToProps)(Clients);
+export default Clients;

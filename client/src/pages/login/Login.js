@@ -20,20 +20,20 @@ function Login() {
       initialValues={{ email: "", password: "" }}
       onSubmit={(values, { setSubmitting }) => {
         setSubmitting(true);
+        // first auth the user in firebase (session persistence)
         fire
           .auth()
           .setPersistence(firebase.auth.Auth.Persistence.SESSION)
-          .then(function() {
+          .then(() => {
             return fire
               .auth()
               .signInWithEmailAndPassword(values.email, values.password)
               .then(res => {
-                let uid = res.user.uid;
-                // fetch user info from the db
-                API.fetchUserInfo(uid)
+                // if anything goes wrong from here, logout the user in firebase
+                API.fetchUserInfo(res.user.uid)
                   .then(res => {
                     alert("¡Bienvenido!");
-                    dispatch(userActions.loginUser(res.data));
+                    dispatch(userActions.setUserInfo(res.data));
                   })
                   .catch(error => {
                     alert("Error de la BD -> " + error);

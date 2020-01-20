@@ -1,8 +1,7 @@
-
 const router = require("express").Router();
 const model = require("../../models");
 
-// get user info from a given uid
+// fetchUserInfo()
 // matches with /api/user/:uid
 router.get("/:uid", function(req, res) {
   model.User.findOne({

@@ -21,14 +21,18 @@ h5 {
 
 // layout
 #containerMargin {
-  margin-left: 247px;
+  margin-left: 200px;
   padding: 0px;
 }
 
-@media only screen and (max-width: 991px) {
-  #containerMargin {
-    margin-left: 0px !important;
-  }
+// hr
+.myDivider {
+  margin-top: 0;
+  border: none;
+  height: 0.2rem;
+  width: 4rem;
+  background-color: #516fd6;
+  margin-left: 0;
 }
 
 // removes blue glow on some elements

@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import * as navbarActions from "../../../redux/actions/navbarActions";
-import * as auditActions from "../../../redux/actions/auditActions";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import Layout from "../../Layout";
 import { Form, Button } from "react-bootstrap";
 import { Formik } from "formik";
@@ -11,7 +9,7 @@ const pdfFonts = require("pdfmake/build/vfs_fonts.js");
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function CCI() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const audit = useSelector(state => state.audit);
 
   const [questions] = useState([
@@ -20,10 +18,10 @@ function CCI() {
     { id: "q3", question: "Esta es la pregunta tres", answer: "three" }
   ]);
 
-  useEffect(() => {
-    dispatch(navbarActions.setAuditActive("Planeación"));
-    dispatch(auditActions.setBackBttn("/audit/planning/" + audit.auditId));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(navbarActions.setAuditActive("Planeación"));
+  //   dispatch(auditActions.setBackBttn("/audit/planning/" + audit.auditId));
+  // }, []);
 
   const initVals = () => {
     let values = {};
@@ -31,8 +29,11 @@ function CCI() {
     return values;
   };
 
-  return audit ? (
-    <Layout>
+  return (
+    <Layout
+      auditMenu="Planeación"
+      backButton={"/audit/planning/" + audit.auditId}
+    >
       <h2>
         <span>Cuestionario de Control Interno</span>
       </h2>
@@ -77,7 +78,7 @@ function CCI() {
         )}
       </Formik>
     </Layout>
-  ) : null;
+  );
 }
 
 export default CCI;

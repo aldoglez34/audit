@@ -1,12 +1,12 @@
-export const loginUser = data => {
+export const setUserInfo = data => {
   return {
-    type: "user/login",
+    type: "user/setUserInfo",
     data
   };
 };
 
-export const logoutUser = () => {
+export const deleteUserInfo = () => {
   return {
-    type: "user/logout"
+    type: "user/deleteUserInfo"
   };
 };

@@ -1,19 +1,18 @@
-export const openAudit = data => {
+export const setAuditInfo = data => {
   return {
-    type: "audit/open",
+    type: "audit/setAuditInfo",
     data
   };
 };
 
-export const closeAudit = () => {
+export const deleteAuditInfo = () => {
   return {
-    type: "audit/close"
+    type: "audit/deleteAuditInfo"
   };
 };
 
-export const setBackBttn = data => {
+export const addBalanza = () => {
   return {
-    type: "audit/setBackBttn",
-    data
+    type: "audit/addBalanza"
   };
 };

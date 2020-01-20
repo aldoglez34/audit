@@ -1,19 +1,25 @@
 import React from "react";
-import AllNavs from "../components/navs/AllNavs";
+import LeftNav from "../components/navs/LeftNav";
 import { Container, Row, Col } from "react-bootstrap";
 import TopHelperNav from "../components/navs/TopHelperNav";
 import PropTypes from "prop-types";
 
 Layout.propTypes = {
-  children: PropTypes.array.isRequired
+  children: PropTypes.array.isRequired,
+  homeMenu: PropTypes.string,
+  auditMenu: PropTypes.string,
+  auditOpened: PropTypes.string
 };
 
 function Layout(props) {
   return (
     <div className="d-lg-flex flex-row h-100">
-      <AllNavs  />
+      <LeftNav homeMenu={props.homeMenu} auditMenu={props.auditMenu} />
       <Container id="containerMargin" fluid>
-        <TopHelperNav />
+        <TopHelperNav
+          auditOpened={props.auditOpened}
+          backButton={props.backButton}
+        />
         <Container
           style={{
             paddingTop: "6px",

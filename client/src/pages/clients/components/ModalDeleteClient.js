@@ -28,12 +28,8 @@ function ModalDeleteClient(props) {
         Borrar
       </Button>
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header className="bg-light">
-          <Modal.Title>
-            <h4 className="m-0 p-0">Borrar Cliente</h4>
-          </Modal.Title>
-        </Modal.Header>
         <Modal.Body className="bg-light">
+          <h3>Borrar Cliente</h3>
           <p>
             ¿Estás seguro que deseas borrar el cliente{" "}
             <strong>{props.client.name}</strong>?
@@ -46,17 +42,17 @@ function ModalDeleteClient(props) {
             asignadas a este Cliente
           </p>
           <p>Esta acción no podrá deshacerse</p>
+          <div className="d-flex flex-row justify-content-end">
+            <Button variant="secondary" className="mr-2" onClick={handleClose}>
+              <i className="fas fa-ban mr-2" />
+              Cancelar
+            </Button>
+            <Button variant="danger">
+              <i className="fas fa-trash-alt mr-2" />
+              Borrar
+            </Button>
+          </div>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            <i className="fas fa-ban mr-2" />
-            Cancelar
-          </Button>
-          <Button variant="danger">
-            <i className="fas fa-trash-alt mr-2" />
-            Borrar
-          </Button>
-        </Modal.Footer>
       </Modal>
     </>
   ) : (

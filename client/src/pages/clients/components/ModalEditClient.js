@@ -41,12 +41,8 @@ function ModalEditClient(props) {
         Editar
       </Button>
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header className="bg-light">
-          <Modal.Title>
-            <h4 className="m-0 p-0">Editar Cliente</h4>
-          </Modal.Title>
-        </Modal.Header>
         <Modal.Body className="bg-light">
+          <h3>Editar Cliente</h3>
           <Formik
             initialValues={{
               clientId: props.client.clientId,

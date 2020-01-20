@@ -1,27 +1,23 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import * as navbarActions from "../../redux/actions/navbarActions";
-import * as auditActions from "../../redux/actions/auditActions";
+import React from "react";
 import { Table, Badge } from "react-bootstrap";
 import Layout from "../Layout";
 import WorkplanActivity from "./components/WorkplanActivity";
 import "./planning.scss";
+import { useSelector } from "react-redux";
 
 function Planning() {
-  const dispatch = useDispatch();
   const audit = useSelector(state => state.audit);
 
-  useEffect(() => {
-    dispatch(navbarActions.setAuditActive("Planeación"));
-    dispatch(auditActions.setBackBttn(null));
-  }, []);
-
-  return audit ? (
-    <Layout>
+  return (
+    <Layout auditMenu="Planeación">
       <h2>
-        <span>Planeación</span>
+        Planeación
+        <i
+          className="fas fa-question-circle ml-1"
+          style={{ fontSize: "24px", color: "gray" }}
+        />
       </h2>
-      <hr />
+      <hr className="myDivider" />
       <section>
         <h5>Descripción</h5>
         <p>
@@ -99,7 +95,7 @@ function Planning() {
         </Table>
       </section>
     </Layout>
-  ) : null;
+  );
 }
 
 export default Planning;

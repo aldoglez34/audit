@@ -7,14 +7,15 @@ const models = require("./models");
 const path = require("path");
 const sequelize_fixtures = require("sequelize-fixtures");
 const routes = require("./routes");
+const bodyParser = require("body-parser");
 
 // middleware
 app.use(morgan("dev"));
 app.use(cors());
 
 // parse request body as JSON
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(bodyParser.json({ limit: "10mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {

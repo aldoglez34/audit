@@ -40,12 +40,8 @@ function ModalNewAudit() {
         Nueva Auditoría
       </Button>
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header className="bg-light">
-          <Modal.Title>
-            <h4 className="m-0 p-0">Nueva Auditoría</h4>
-          </Modal.Title>
-        </Modal.Header>
         <Modal.Body className="bg-light">
+          <h3>Nueva Auditoría</h3>
           <Formik
             initialValues={{
               clientAbr: "",

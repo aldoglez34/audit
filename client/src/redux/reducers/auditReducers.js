@@ -1,28 +1,19 @@
-const auditReducers = (state = { isOpen: false }, action) => {
+const auditReducers = (state = {}, action) => {
   switch (action.type) {
-    case "audit/open":
+    case "audit/setAuditInfo":
       return {
         isOpen: true,
-        backBttn: null,
         auditId: action.data.auditId,
         name: action.data.name,
-        clientName: action.data.clientName,
-        clientAbbreviation: action.data.clientAbbreviation,
-        year: action.data.year,
-        description: action.data.description,
-        hasBalanza: action.data.hasBalanza,
         hasNómina: action.data.hasNómina,
-        createdAt: action.data.createdAt,
-        updatedAt: action.data.updatedAt
+        hasBalanza: action.data.hasBalanza
       };
-    case "audit/close":
-      return {
-        isOpen: false
-      };
-    case "audit/setBackBttn":
+    case "audit/deleteAuditInfo":
+      return {};
+    case "audit/addBalanza":
       return {
         ...state,
-        backBttn: action.data
+        hasBalanza: true
       };
     default:
       return state;

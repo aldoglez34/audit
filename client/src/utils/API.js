@@ -15,6 +15,10 @@ export default {
     return axios.get("/api/audit/all");
   },
 
+  fetchUniqueClients: function() {
+    return axios.get("/api/audit/uniqueClients");
+  },
+
   fetchOneAudit: function(auditId) {
     return axios.get("/api/audit/" + auditId);
   },
@@ -59,13 +63,6 @@ export default {
 
   saveAnswersToCEFS: function(answers) {
     return axios.put("/api/survey/cefs", answers);
-  },
-
-  // =================================================================
-  // NÓMINA
-
-  uploadNómina: function(data) {
-    return axios.post("/api/nomina/upload" + data);
   },
 
   // =================================================================

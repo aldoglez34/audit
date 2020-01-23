@@ -12,29 +12,38 @@ import {
 import Layout from "../Layout";
 import API from "../../utils/API";
 import ModalNewAudit from "./components/ModalNewAudit";
-import FilterByClient from "./components/FilterByClient";
-import SortAudits from "./components/SortAudits";
+import FilterByClientDropdown from "./components/FilterByClientDropdown";
+import SortAuditsDropdown from "./components/SortAuditsDropdown";
 import MyPagination from "../../components/MyPagination";
-import "./audits.scss";
+import "./components/dropdowns.scss";
 
 class Audits extends Component {
   state = {
+    //
+    audits: [],
+    //
+    uniqueClients: [],
+    //
     isLoadingAudits: true,
     allAudits: [],
     filteredAudits: [],
+    //
     activeClient: "Todos los Clientes",
+    //
     pageCount: 0,
     activePage: 1,
     productsPerPage: 8,
+    //
     offset: null,
     limit: null,
+    //
     sortingTitle: "Orden alfabético A-Z"
   };
 
   componentDidMount() {
     // delete info from whatever audit is open
     this.props.deleteAuditInfo();
-    // fetch audit
+    // fetch audits
     API.fetchAudits()
       .then(res => {
         // allAudits is gonna be used to store all the audits
@@ -52,6 +61,10 @@ class Audits extends Component {
           }
         );
       })
+      .catch(err => console.log(err));
+    // fetch unique clients (for client filters)
+    API.fetchUniqueClients()
+      .then(res => this.setState({ uniqueClients: res.data }))
       .catch(err => console.log(err));
   }
 
@@ -156,23 +169,24 @@ class Audits extends Component {
           </Col>
         </Row>
         {/* search bar and filters */}
-        <Row className="mb-3">
-          <Col md="auto">
-            <FilterByClient
+        <Row className="mb-3 px-3">
+          <div className="d-flex flex-row align-items-center">
+            <FilterByClientDropdown
               data={this.state.allAudits}
               activeClient={this.state.activeClient}
               handleFilterByClient={this.handleFilterByClient}
             />
-          </Col>
-          <Col md="auto" className="mt-2 mt-md-0">
-            <SortAudits
+          </div>
+          <div className="d-flex flex-row align-items-center ml-4">
+            <SortAuditsDropdown
               title={this.state.sortingTitle}
               handleSorting={this.handleSorting}
             />
-          </Col>
-          <Col className="mt-2 mt-md-0">
+          </div>
+          <div className="d-flex flex-row align-items-center w-25 ml-auto">
+            <i className="fas fa-search mr-1" style={{ fontSize: "16px" }} />
             <FormControl type="text" placeholder="Buscar Auditoría" />
-          </Col>
+          </div>
         </Row>
         {/* audits */}
         <Row className="mt-2">
@@ -228,6 +242,7 @@ class Audits extends Component {
             )}
           </Col>
         </Row>
+        {/* footer */}
         <Row>
           <Col md={3} className="d-flex align-items-center mt-2">
             <em>{this.state.allAudits.length} Auditorías</em>

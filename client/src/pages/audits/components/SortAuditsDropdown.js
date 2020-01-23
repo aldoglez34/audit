@@ -2,15 +2,18 @@ import React from "react";
 import { Dropdown } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-SortAudits.propTypes = {
+SortAuditsDropdown.propTypes = {
   title: PropTypes.string.isRequired,
   handleSorting: PropTypes.func.isRequired
 };
 
-function SortAudits(props) {
+function SortAuditsDropdown(props) {
   return (
     <Dropdown>
-      <Dropdown.Toggle className="auditsFilter">{props.title}</Dropdown.Toggle>
+      <Dropdown.Toggle className="auditsDropdown">
+        <i className="fas fa-arrows-alt-v mr-1" />
+        {props.title}
+      </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item
           className="dropdownitem"
@@ -52,4 +55,4 @@ function SortAudits(props) {
   );
 }
 
-export default SortAudits;
+export default SortAuditsDropdown;

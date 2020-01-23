@@ -2,7 +2,7 @@ import React from "react";
 import { Dropdown } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-FilterByClient.propTypes = {
+FilterByClientDropdown.propTypes = {
   data: PropTypes.array,
   activeClient: PropTypes.string,
   handleFilterByClient: PropTypes.func
@@ -23,12 +23,13 @@ function deleteDuplicates(data) {
   return unique;
 }
 
-function FilterByClient(props) {
+function FilterByClientDropdown(props) {
   const uniqueClients = deleteDuplicates(props.data);
 
   return uniqueClients.length ? (
     <Dropdown>
-      <Dropdown.Toggle className="auditsFilter">
+      <Dropdown.Toggle className="auditsDropdown rounded-0">
+        <i className="fas fa-filter mr-1" />
         {props.activeClient}
       </Dropdown.Toggle>
       <Dropdown.Menu>
@@ -57,4 +58,4 @@ function FilterByClient(props) {
   ) : null;
 }
 
-export default FilterByClient;
+export default FilterByClientDropdown;

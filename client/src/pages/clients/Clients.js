@@ -13,7 +13,6 @@ import ModalNewClient from "./components/ModalNewClient";
 import ModalEditClient from "./components/ModalEditClient";
 import ModalDeleteClient from "./components/ModalDeleteClient";
 import MyPagination from "../../components/MyPagination";
-import "./clients.scss";
 
 class Clients extends Component {
   state = {
@@ -93,7 +92,7 @@ class Clients extends Component {
                       return (
                         <ListGroup.Item
                           key={client.clientId}
-                          className="auditItem py-3"
+                          className="bg-white py-3"
                         >
                           <h4
                             className="mr-2 mb-0"

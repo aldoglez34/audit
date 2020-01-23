@@ -19,26 +19,32 @@ import "./components/dropdowns.scss";
 
 class Audits extends Component {
   state = {
-    //
     audits: [],
-    //
     uniqueClients: [],
     //
-    isLoadingAudits: true,
-    allAudits: [],
-    filteredAudits: [],
-    //
-    activeClient: "Todos los Clientes",
-    //
-    pageCount: 0,
-    activePage: 1,
     productsPerPage: 8,
+    pageCount: "",
+    activePage: 1,
     //
     offset: null,
     limit: null,
     //
-    sortingTitle: "Orden alfabético A-Z"
+    activeFilter: "Todos los Clientes",
+    activeSort: "Orden alfabético A-Z"
   };
+
+  setOffsetAndLimit() {
+    let offset;
+    let limit;
+    if (this.state.activePage === 1) {
+      offset = 0;
+      limit = offset + this.state.productsPerPage;
+    } else {
+      offset = (this.state.activePage - 1) * this.state.productsPerPage;
+      limit = offset + this.state.productsPerPage;
+    }
+    this.setState({ offset, limit });
+  }
 
   componentDidMount() {
     // delete info from whatever audit is open
@@ -46,19 +52,12 @@ class Audits extends Component {
     // fetch audits
     API.fetchAudits()
       .then(res => {
-        // allAudits is gonna be used to store all the audits
-        // filteredAudits shown is gonna be used for filter purposes
-        let productsPerPage = this.state.productsPerPage;
         this.setState(
           {
-            allAudits: res.data,
-            filteredAudits: res.data,
-            pageCount: Math.ceil(res.data.length / productsPerPage)
+            audits: res.data,
+            pageCount: Math.ceil(res.data.length / this.state.productsPerPage)
           },
-          () => {
-            this.setOffsetAndLimit();
-            this.setState({ isLoadingAudits: false });
-          }
+          () => this.setOffsetAndLimit()
         );
       })
       .catch(err => console.log(err));
@@ -68,12 +67,22 @@ class Audits extends Component {
       .catch(err => console.log(err));
   }
 
-  handleFilterByClient = client => {
+  handleFilterByClient = filter => {
+    this.setState({ activeFilter: filter });
+    let filteredAudits = this.state.audits.filter(a => a.name === filter);
+    this.setState(
+      {
+        audits: filteredAudits,
+        pageCount: Math.ceil(filteredAudits.length / this.state.productsPerPage)
+      },
+      () => this.setOffsetAndLimit()
+    );
+
     // first, save allAudits and productsPerPage in consts so i can use them
     const allAudits = this.state.allAudits;
     const productsPerPage = this.state.productsPerPage;
     // if the filter is "Todos los Clientes"
-    if (client === "Todos los Clientes") {
+    if (filter === "Todos los Clientes") {
       // assign allAudits to filteredAudits and calculate the pageCount using the allAudits length
       this.setState({
         activeClient: client,
@@ -83,12 +92,12 @@ class Audits extends Component {
     } else {
       // if not, filter allAudits and save them in a "temp" array
       let temp = this.state.allAudits.filter(a => {
-        return a.Client.abbreviation === client;
+        return a.filter.abbreviation === filter;
       });
       // assign temp array to filteredAudits (which is the array that is shown in the DOM)
       // then calculate pageCount using the temp array
       this.setState({
-        activeClient: "Sólo " + client,
+        activeClient: "Sólo " + filter,
         filteredAudits: temp,
         pageCount: Math.ceil(temp.length / productsPerPage)
       });
@@ -98,20 +107,6 @@ class Audits extends Component {
   handleChangePage = page => {
     this.setState({ activePage: page }, () => this.setOffsetAndLimit());
   };
-
-  setOffsetAndLimit() {
-    let offset;
-    let limit;
-    if (this.state.activePage === 1) {
-      offset = 0;
-      limit = offset + this.state.productsPerPage;
-      this.setState({ offset, limit });
-    } else {
-      offset = (this.state.activePage - 1) * this.state.productsPerPage;
-      limit = offset + this.state.productsPerPage;
-      this.setState({ offset, limit });
-    }
-  }
 
   handleSorting = sort => {
     // take the value of filteredAudits from the state
@@ -172,14 +167,14 @@ class Audits extends Component {
         <Row className="mb-3 px-3">
           <div className="d-flex flex-row align-items-center">
             <FilterByClientDropdown
-              data={this.state.allAudits}
-              activeClient={this.state.activeClient}
+              audits={this.state.audits}
+              activeFilter={this.state.active}
               handleFilterByClient={this.handleFilterByClient}
             />
           </div>
           <div className="d-flex flex-row align-items-center ml-4">
             <SortAuditsDropdown
-              title={this.state.sortingTitle}
+              activeSort={this.state.sortingTitle}
               handleSorting={this.handleSorting}
             />
           </div>

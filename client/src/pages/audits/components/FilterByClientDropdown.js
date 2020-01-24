@@ -3,13 +3,12 @@ import { Dropdown } from "react-bootstrap";
 import PropTypes from "prop-types";
 
 FilterByClientDropdown.propTypes = {
-  audits: PropTypes.array.isRequired,
-  activeFilter: PropTypes.string.isRequired,
-  handleFilterByClient: PropTypes.func
+  uniqueClients: PropTypes.array.isRequired,
+  activeFilter: PropTypes.string.isRequired
 };
 
 function FilterByClientDropdown(props) {
-  return audits.length ? (
+  return props.uniqueClients.length ? (
     <Dropdown>
       <Dropdown.Toggle className="auditsDropdown rounded-0">
         <i className="fas fa-filter mr-1" />
@@ -18,21 +17,21 @@ function FilterByClientDropdown(props) {
       <Dropdown.Menu>
         <Dropdown.Item
           className="dropdownitem"
-          onClick={() => props.handleFilterByClient("Todos los Clientes")}
+          href="/audits"
           active={props.activeFilter === "Todos los Clientes" ? true : false}
         >
           Todos los Clientes
         </Dropdown.Item>
         <Dropdown.Divider />
-        {audits.map(a => {
+        {props.uniqueClients.map(c => {
           return (
             <Dropdown.Item
               className="dropdownitem"
-              onClick={() => props.handleFilterByClient(c)}
+              href={"/audits/" + c}
               key={c}
-              active={a === props.activeFilter ? true : false}
+              active={c === props.activeFilter ? true : false}
             >
-              {"Sólo " + a}
+              {c}
             </Dropdown.Item>
           );
         })}

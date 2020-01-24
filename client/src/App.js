@@ -42,7 +42,16 @@ function App() {
       ) : (
         <Switch>
           <Route exact path="/clients" component={Clients} />
-          <Route exact path="/audits" component={Audits} />
+          <Route
+            exact
+            path="/audits"
+            render={props => <Audits routeProps={props} />}
+          />
+          <Route
+            exact
+            path="/audits/:client"
+            render={props => <Audits routeProps={props} />}
+          />
           <Route
             exact
             path="/audit/home/:auditId"

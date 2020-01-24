@@ -20,6 +20,7 @@ function SortAuditsDropdown(props) {
           onClick={() => props.handleSorting("Orden alfabético A-Z")}
           active={props.activeSort === "Orden alfabético A-Z" ? true : false}
         >
+          <i className="fas fa-sort-alpha-down mr-2" />
           Orden alfabético A-Z
         </Dropdown.Item>
         <Dropdown.Item
@@ -27,6 +28,7 @@ function SortAuditsDropdown(props) {
           onClick={() => props.handleSorting("Orden alfabético Z-A")}
           active={props.activeSort === "Orden alfabético Z-A" ? true : false}
         >
+          <i className="fas fa-sort-alpha-down-alt mr-2" />
           Orden alfabético Z-A
         </Dropdown.Item>
         <Dropdown.Item
@@ -34,6 +36,7 @@ function SortAuditsDropdown(props) {
           onClick={() => props.handleSorting("Orden por año A-Z")}
           active={props.activeSort === "Orden por año A-Z" ? true : false}
         >
+          <i className="fas fa-sort-numeric-down mr-2" />
           Orden por año A-Z
         </Dropdown.Item>
         <Dropdown.Item
@@ -41,6 +44,7 @@ function SortAuditsDropdown(props) {
           onClick={() => props.handleSorting("Orden por año Z-A")}
           active={props.activeSort === "Orden por año Z-A" ? true : false}
         >
+          <i className="fas fa-sort-numeric-down-alt mr-2" />
           Orden por año Z-A
         </Dropdown.Item>
         <Dropdown.Item

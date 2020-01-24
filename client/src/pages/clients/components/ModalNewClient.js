@@ -5,7 +5,7 @@ import { Formik, ErrorMessage } from "formik";
 import API from "../../../utils/API";
 import * as yup from "yup";
 
-function ModalNewClient() {
+const ModalNewClient = React.memo(function ModalNewClient() {
   // modal state
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -179,7 +179,7 @@ function ModalNewClient() {
   ) : (
     <OverlayTrigger
       delay={{ show: 250, hide: 400 }}
-      placement="left"
+      placement="bottom"
       overlay={
         <Tooltip>Sólo un administrador puede crear nuevos Clientes</Tooltip>
       }
@@ -196,6 +196,6 @@ function ModalNewClient() {
       </span>
     </OverlayTrigger>
   );
-}
+});
 
 export default ModalNewClient;

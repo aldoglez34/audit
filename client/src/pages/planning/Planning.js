@@ -5,7 +5,7 @@ import WorkplanActivity from "./components/WorkplanActivity";
 import "./planning.scss";
 import { useSelector } from "react-redux";
 
-function Planning() {
+const Planning = React.memo(function Planning() {
   const audit = useSelector(state => state.audit);
 
   return (
@@ -74,28 +74,28 @@ function Planning() {
             <WorkplanActivity
               id={1}
               text="Definir con el cliente los objetivos y requerimientos de
-                      nuestros servicios con la finalidad de definir el
-                      resultado de nuestro trabajo (alcances, tiempos, informes,
-                      etc.)"
+                        nuestros servicios con la finalidad de definir el
+                        resultado de nuestro trabajo (alcances, tiempos, informes,
+                        etc.)"
             />
             <WorkplanActivity
               id={2}
               text="Obtener una descripción general de la Entidad mediante
-              entrevistas con los principales funcionarios que tengan bajo su
-              responsabilidad el desarrollo de las actividades y programas."
+                entrevistas con los principales funcionarios que tengan bajo su
+                responsabilidad el desarrollo de las actividades y programas."
             />
             <WorkplanActivity
               id={3}
               text="Solicitar y estudiar los informes de auditoría correspondientes
-              al año de anterior y utilizar la información en ellos para
-              efectos de esta fase, como resultado de las entrevistas tenidas
-              con los funcionarios establecer el riesgo inherente."
+                al año de anterior y utilizar la información en ellos para
+                efectos de esta fase, como resultado de las entrevistas tenidas
+                con los funcionarios establecer el riesgo inherente."
             />
           </tbody>
         </Table>
       </section>
     </Layout>
   );
-}
+});
 
 export default Planning;

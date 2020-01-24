@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Form, Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import {
+  Form,
+  Modal,
+  Button,
+  OverlayTrigger,
+  Tooltip,
+  Col,
+  Spinner
+} from "react-bootstrap";
 import { Formik, ErrorMessage } from "formik";
 import API from "../../../utils/API";
 import * as yup from "yup";
 
-function ModalNewAudit() {
-  // modal state
+const ModalNewAudit = React.memo(function ModalNewAudit() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // clients state
   const [clients, setClients] = useState([]);
 
-  // user
   const user = useSelector(state => state.user);
 
   useEffect(() => {
@@ -23,7 +28,8 @@ function ModalNewAudit() {
       .catch(err => console.log(err));
   }, []);
 
-  const newAuditSchema = yup.object({
+  const yupSchema = yup.object({
+    clientId: yup.number().required("Requerido"),
     clientAbr: yup.string().required("Requerido"),
     year: yup
       .string()
@@ -39,36 +45,41 @@ function ModalNewAudit() {
         <i className="fas fa-plus mr-2" />
         Nueva Auditoría
       </Button>
+
       <Modal show={show} onHide={handleClose}>
         <Modal.Body className="bg-light">
           <h3>Nueva Auditoría</h3>
           <Formik
             initialValues={{
-              clientAbr: "",
+              clientAbr: "Elige...",
               year: "",
               description: ""
             }}
-            validationSchema={newAuditSchema}
+            validationSchema={yupSchema}
             onSubmit={(values, { setSubmitting }) => {
               setSubmitting(true);
-              const sel = document.getElementById("clientAbreviation");
-              values.clientId = sel.getAttribute("clientId");
-              API.saveNewAudit(values)
-                .then(res => {
-                  if (res.data.errors) {
-                    alert(res.data.errors[0].message);
-                    setSubmitting(false);
-                  } else {
-                    alert("Auditoría creada con éxito");
-                    handleClose();
-                    window.location.reload();
-                  }
-                })
-                .catch(err => alert(err));
+              console.log(values);
+              alert("test");
+              // const sel = document.getElementById("clientAbreviation");
+              // values.clientId = sel.getAttribute("clientId");
+              // API.saveNewAudit(values)
+              //   .then(res => {
+              //     if (res.data.errors) {
+              //       alert(res.data.errors[0].message);
+              //       setSubmitting(false);
+              //     } else {
+              //       alert("Auditoría creada con éxito");
+              //       handleClose();
+              //       window.location.reload();
+              //     }
+              //   })
+              //   .catch(err => alert(err));
             }}
           >
             {({
               values,
+              errors,
+              touched,
               handleChange,
               handleBlur,
               handleSubmit,
@@ -76,99 +87,108 @@ function ModalNewAudit() {
             }) => (
               <>
                 <Form noValidate onSubmit={handleSubmit}>
-                  <Form.Group>
-                    <Form.Label>
-                      Cliente
-                      <strong className="ml-1 text-danger">*</strong>
-                    </Form.Label>
-                    <Form.Control
-                      name="clientAbr"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      as="select"
-                      defaultValue={"default"}
-                    >
-                      <option value="default" hidden disabled></option>
-                      {clients.length
-                        ? clients.map(c => {
-                            return (
-                              <option
-                                id="clientAbreviation"
-                                clientid={c.clientId}
-                                key={c.clientId}
-                              >
-                                {c.abbreviation}
-                              </option>
-                            );
-                          })
-                        : null}
-                    </Form.Control>
-                    <ErrorMessage
-                      className="text-danger"
-                      name="clientAbr"
-                      component="div"
-                    />
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Label>
-                      Año
-                      <small className="text-muted ml-1">(4)</small>
-                      <strong className="ml-1 text-danger">*</strong>
-                    </Form.Label>
-                    <Form.Control
-                      maxLength="4"
-                      type="text"
-                      name="year"
-                      value={values.year}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    <ErrorMessage
-                      className="text-danger"
-                      name="year"
-                      component="div"
-                    />
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Label>
-                      Descripción
-                      <small className="text-muted ml-1">(250)</small>
-                      <strong className="ml-1 text-danger">*</strong>
-                    </Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      rows="3"
-                      maxLength="250"
-                      type="text"
-                      name="description"
-                      value={values.description}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    <ErrorMessage
-                      className="text-danger"
-                      name="description"
-                      component="div"
-                    />
-                  </Form.Group>
-                  <Form.Group className="text-right">
-                    <Button
-                      className="mr-2"
-                      variant="secondary"
-                      onClick={handleClose}
-                    >
-                      <i className="fas fa-ban mr-2" />
-                      Cancelar
-                    </Button>
-                    <Button
-                      className="purplebttn"
-                      type="submit"
-                      disabled={isSubmitting}
-                    >
-                      <i className="fas fa-save mr-2 " />
-                      Guardar
-                    </Button>
-                  </Form.Group>
+                  {clients.length ? (
+                    <>
+                      <Form.Row>
+                        <Form.Group as={Col}>
+                          <Form.Label>
+                            Cliente
+                            <strong className="ml-1 text-danger">*</strong>
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            type="text"
+                            name="clientAbr"
+                            value={values.clientAbr}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            isValid={touched.clientAbr && !errors.clientAbr}
+                            isInvalid={touched.clientAbr && !!errors.clientAbr}
+                          >
+                            <option disabled>Elige...</option>
+                            {clients.map(c => {
+                              return (
+                                <option value={c.clientId} key={c.clientId}>
+                                  {c.name}
+                                </option>
+                              );
+                            })}
+                          </Form.Control>
+                          <ErrorMessage
+                            className="text-danger"
+                            name="clientAbr"
+                            component="div"
+                          />
+                        </Form.Group>
+                      </Form.Row>
+                      <Form.Row>
+                        <Form.Group as={Col}>
+                          <Form.Label>
+                            Año
+                            <strong className="ml-1 text-danger">*</strong>
+                          </Form.Label>
+                          <Form.Control
+                            maxLength="4"
+                            type="text"
+                            placeholder="Ingresa el año"
+                            name="year"
+                            value={values.year}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            isValid={touched.year && !errors.year}
+                            isInvalid={touched.year && !!errors.year}
+                          />
+                          <ErrorMessage
+                            className="text-danger"
+                            name="year"
+                            component="div"
+                          />
+                        </Form.Group>
+                      </Form.Row>
+                      <Form.Row>
+                        <Form.Group as={Col}>
+                          <Form.Label>
+                            Descripción
+                            <strong className="ml-1 text-danger">*</strong>
+                          </Form.Label>
+                          <Form.Control
+                            maxLength="250"
+                            as="textarea"
+                            rows="3"
+                            type="text"
+                            placeholder="Ingresa la descripción"
+                            name="description"
+                            value={values.description}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            isValid={touched.description && !errors.description}
+                            isInvalid={
+                              touched.description && !!errors.description
+                            }
+                          />
+                          <ErrorMessage
+                            className="text-danger"
+                            name="description"
+                            component="div"
+                          />
+                        </Form.Group>
+                      </Form.Row>
+                      <Form.Group className="text-right">
+                        <Button
+                          className="purplebttn"
+                          type="submit"
+                          disabled={isSubmitting}
+                        >
+                          <i className="fas fa-save mr-2 " />
+                          Guardar
+                        </Button>
+                      </Form.Group>
+                    </>
+                  ) : (
+                    <div className="text-center mt-4 pt-4">
+                      <Spinner animation="border" />
+                    </div>
+                  )}
                 </Form>
               </>
             )}
@@ -179,7 +199,7 @@ function ModalNewAudit() {
   ) : (
     <OverlayTrigger
       delay={{ show: 250, hide: 400 }}
-      placement="left"
+      placement="bottom"
       overlay={
         <Tooltip>Sólo un administrador puede crear nuevas Auditorías</Tooltip>
       }
@@ -196,6 +216,6 @@ function ModalNewAudit() {
       </span>
     </OverlayTrigger>
   );
-}
+});
 
 export default ModalNewAudit;

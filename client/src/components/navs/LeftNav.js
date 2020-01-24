@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Nav, Button } from "react-bootstrap";
 import "./leftnav.scss";
 
-function LeftNav(props) {
+const LeftNav = React.memo(function LeftNav(props) {
   const audit = useSelector(state => state.audit);
 
   return (
@@ -112,5 +112,6 @@ function LeftNav(props) {
       ) : null}
     </Nav>
   );
-}
+});
+
 export default LeftNav;

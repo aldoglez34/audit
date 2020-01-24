@@ -4,14 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import TopHelperNav from "../components/navs/TopHelperNav";
 import PropTypes from "prop-types";
 
-Layout.propTypes = {
-  children: PropTypes.array.isRequired,
-  homeMenu: PropTypes.string,
-  auditMenu: PropTypes.string,
-  auditOpened: PropTypes.string
-};
-
-function Layout(props) {
+const Layout = React.memo(function Layout(props) {
   return (
     <div className="d-lg-flex flex-row h-100">
       <LeftNav homeMenu={props.homeMenu} auditMenu={props.auditMenu} />
@@ -36,6 +29,13 @@ function Layout(props) {
       </Container>
     </div>
   );
-}
+});
+
+Layout.propTypes = {
+  children: PropTypes.array.isRequired,
+  homeMenu: PropTypes.string,
+  auditMenu: PropTypes.string,
+  auditOpened: PropTypes.string
+};
 
 export default Layout;

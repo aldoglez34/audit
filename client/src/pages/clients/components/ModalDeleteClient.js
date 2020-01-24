@@ -3,11 +3,7 @@ import { useSelector } from "react-redux";
 import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-ModalDeleteClient.propTypes = {
-  client: PropTypes.object.isRequired
-};
-
-function ModalDeleteClient(props) {
+const ModalDeleteClient = React.memo(function ModalDeleteClient(props) {
   // modal state
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -58,7 +54,7 @@ function ModalDeleteClient(props) {
   ) : (
     <OverlayTrigger
       delay={{ show: 250, hide: 400 }}
-      placement="left"
+      placement="bottom"
       overlay={<Tooltip>Sólo un administrador puede borrar Clientes</Tooltip>}
     >
       <span className="ml-auto">
@@ -74,6 +70,10 @@ function ModalDeleteClient(props) {
       </span>
     </OverlayTrigger>
   );
-}
+});
+
+ModalDeleteClient.propTypes = {
+  client: PropTypes.object.isRequired
+};
 
 export default ModalDeleteClient;

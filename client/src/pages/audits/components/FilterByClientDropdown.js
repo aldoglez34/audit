@@ -2,27 +2,28 @@ import React from "react";
 import { Dropdown } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-FilterByClientDropdown.propTypes = {
-  uniqueClients: PropTypes.array.isRequired,
-  activeFilter: PropTypes.string.isRequired
-};
-
-function FilterByClientDropdown(props) {
+const FilterByClientDropdown = React.memo(function FilterByClientDropdown(
+  props
+) {
   return props.uniqueClients.length ? (
     <Dropdown>
-      <Dropdown.Toggle className="auditsDropdown rounded-0">
+      <Dropdown.Toggle
+        className="auditsDropdown rounded-0"
+        style={{ fontSize: "16px" }}
+      >
         <i className="fas fa-filter mr-1" />
-        {props.activeFilter}
+        <span>Filtros</span>
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item
           className="dropdownitem"
           href="/audits"
-          active={props.activeFilter === "Todos los Clientes" ? true : false}
+          active={props.activeFilter === "Sin filtros" ? true : false}
         >
-          Todos los Clientes
+          Sin filtros
         </Dropdown.Item>
         <Dropdown.Divider />
+        <strong className="dropdown-item-text text-secondary">Clientes</strong>
         {props.uniqueClients.map(c => {
           return (
             <Dropdown.Item
@@ -31,6 +32,7 @@ function FilterByClientDropdown(props) {
               key={c}
               active={c === props.activeFilter ? true : false}
             >
+              <i className="fas fa-user-friends mr-2" />
               {c}
             </Dropdown.Item>
           );
@@ -38,6 +40,11 @@ function FilterByClientDropdown(props) {
       </Dropdown.Menu>
     </Dropdown>
   ) : null;
-}
+});
+
+FilterByClientDropdown.propTypes = {
+  uniqueClients: PropTypes.array.isRequired,
+  activeFilter: PropTypes.string.isRequired
+};
 
 export default FilterByClientDropdown;

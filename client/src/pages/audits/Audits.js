@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { deleteAuditInfo } from "../../redux/actions/auditActions";
 import {
@@ -17,7 +17,7 @@ import SortAuditsDropdown from "./components/SortAuditsDropdown";
 import MyPagination from "../../components/MyPagination";
 import "./components/dropdowns.scss";
 
-class Audits extends Component {
+class Audits extends PureComponent {
   state = {
     audits: "",
     uniqueClients: [],
@@ -29,8 +29,8 @@ class Audits extends Component {
     offset: "",
     limit: "",
     //
-    activeFilter: "Todos los Clientes",
-    activeSort: "Orden alfabético A-Z"
+    activeFilter: "Sin filtros",
+    activeSort: "Alfabeto ascendente"
   };
 
   setOffsetAndLimit() {
@@ -98,19 +98,19 @@ class Audits extends Component {
     this.setState({ activeSort: sort });
     let temp = this.state.audits;
     switch (sort) {
-      case "Orden alfabético A-Z":
+      case "Alfabeto ascendente":
         temp.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         this.setState({ audits: temp });
         break;
-      case "Orden alfabético Z-A":
+      case "Alfabeto descendente":
         temp.sort((a, b) => (a.name < b.name ? 1 : b.name < a.name ? -1 : 0));
         this.setState({ audits: temp });
         break;
-      case "Orden por año A-Z":
+      case "Año ascendente":
         temp.sort((a, b) => (a.year > b.year ? 1 : b.year > a.year ? -1 : 0));
         this.setState({ audits: temp });
         break;
-      case "Orden por año Z-A":
+      case "Año descendente":
         temp.sort((a, b) => (a.year < b.year ? 1 : b.year < a.year ? -1 : 0));
         this.setState({ audits: temp });
         break;

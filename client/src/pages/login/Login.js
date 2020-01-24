@@ -8,7 +8,7 @@ import { Formik } from "formik";
 import fire from "../../firebase/Fire";
 const firebase = require("firebase/app");
 
-function Login() {
+const Login = React.memo(function Login() {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -96,6 +96,6 @@ function Login() {
       )}
     </Formik>
   );
-}
+});
 
 export default Login;

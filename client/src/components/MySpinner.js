@@ -13,11 +13,13 @@ const styles = {
   }
 };
 
-const MySpinner = () => (
-  <Container style={styles.container}>
-    <h1>Cargando...</h1>
-    <Spinner animation="border" style={styles.spinner} />
-  </Container>
-);
+const MySpinner = React.memo(function MySpinner() {
+  return (
+    <Container style={styles.container}>
+      <h1>Cargando...</h1>
+      <Spinner animation="border" style={styles.spinner} />
+    </Container>
+  );
+});
 
 export default MySpinner;

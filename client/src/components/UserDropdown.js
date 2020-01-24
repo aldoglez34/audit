@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import fire from "../firebase/Fire";
 import * as userActions from "../redux/actions/userActions";
 
-function UserDropdown() {
+const UserDropdown = React.memo(function UserDropdown() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
 
@@ -33,6 +33,6 @@ function UserDropdown() {
       </Dropdown.Menu>
     </Dropdown>
   );
-}
+});
 
 export default UserDropdown;

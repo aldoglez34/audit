@@ -5,7 +5,7 @@ import API from "../../utils/API";
 import { Card, CardColumns } from "react-bootstrap";
 import Layout from "../Layout";
 
-function AuditHome(props) {
+const AuditHome = React.memo(function AuditHome(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -96,6 +96,6 @@ function AuditHome(props) {
       </CardColumns>
     </Layout>
   );
-}
+});
 
 export default AuditHome;

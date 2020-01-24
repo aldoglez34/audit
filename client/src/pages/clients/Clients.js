@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import Layout from "../Layout";
 import { Row, Col, Spinner, ListGroup, FormControl } from "react-bootstrap";
 import API from "../../utils/API";
@@ -8,7 +8,7 @@ import ModalDeleteClient from "./components/ModalDeleteClient";
 import MyPagination from "../../components/MyPagination";
 import SortClientsDropdown from "./components/SortClientsDropdown";
 
-class Clients extends Component {
+class Clients extends PureComponent {
   state = {
     clients: "",
     //
@@ -19,7 +19,7 @@ class Clients extends Component {
     offset: "",
     limit: "",
     //
-    activeSort: "Orden alfabético A-Z"
+    activeSort: "Alfabeto ascendente"
   };
 
   componentDidMount() {
@@ -57,7 +57,7 @@ class Clients extends Component {
     this.setState({ activeSort: sort });
     let temp = this.state.clients;
     switch (sort) {
-      case "Orden alfabético A-Z":
+      case "Alfabeto ascendente":
         temp.sort((a, b) =>
           a.abbreviation > b.abbreviation
             ? 1
@@ -67,7 +67,7 @@ class Clients extends Component {
         );
         this.setState({ clients: temp });
         break;
-      case "Orden alfabético Z-A":
+      case "Alfabeto descendente":
         temp.sort((a, b) =>
           a.abbreviation < b.abbreviation
             ? 1

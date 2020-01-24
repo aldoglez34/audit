@@ -2,36 +2,41 @@ import React from "react";
 import { Dropdown } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-SortClientsDropdown.propTypes = {
-  activeSort: PropTypes.string.isRequired,
-  handleSorting: PropTypes.func.isRequired
-};
-
-function SortClientsDropdown(props) {
+const SortClientsDropdown = React.memo(function SortClientsDropdown(props) {
   return (
     <Dropdown>
-      <Dropdown.Toggle className="auditsDropdown">
-        <i className="fas fa-arrows-alt-v mr-1" />
-        {props.activeSort}
+      <Dropdown.Toggle
+        className="auditsDropdown rounded-0"
+        style={{ fontSize: "16px" }}
+      >
+        <i className="fas fa-sort-amount-down mr-1" />
+        <span>Orden</span>
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item
           className="dropdownitem"
-          onClick={() => props.handleSorting("Orden alfabético A-Z")}
-          active={props.activeSort === "Orden alfabético A-Z" ? true : false}
+          onClick={() => props.handleSorting("Alfabeto ascendente")}
+          active={props.activeSort === "Alfabeto ascendente" ? true : false}
         >
-          Orden alfabético A-Z
+          <i className="fas fa-sort-alpha-down mr-2" />
+          Alfabeto ascendente
         </Dropdown.Item>
         <Dropdown.Item
           className="dropdownitem"
-          onClick={() => props.handleSorting("Orden alfabético Z-A")}
-          active={props.activeSort === "Orden alfabético Z-A" ? true : false}
+          onClick={() => props.handleSorting("Alfabeto descendente")}
+          active={props.activeSort === "Alfabeto descendente" ? true : false}
         >
-          Orden alfabético Z-A
+          <i className="fas fa-sort-alpha-up mr-2" />
+          Alfabeto descendente
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
-}
+});
+
+SortClientsDropdown.propTypes = {
+  activeSort: PropTypes.string.isRequired,
+  handleSorting: PropTypes.func.isRequired
+};
 
 export default SortClientsDropdown;

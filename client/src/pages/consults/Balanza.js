@@ -5,7 +5,7 @@ import API from "../../utils/API";
 import { Table, Spinner } from "react-bootstrap";
 import LoadBalanza from "./modals/LoadBalanza";
 
-function Balanza() {
+const Balanza = React.memo(function Balanza() {
   const audit = useSelector(state => state.audit);
 
   const [balanza, setBalanza] = useState();
@@ -22,9 +22,7 @@ function Balanza() {
       <h2>Balanza</h2>
       <hr className="myDivider" />
       {!audit.hasBalanza ? (
-        <span>
-          La balanza no ha sido cargada aún, <LoadBalanza /> para cargarla
-        </span>
+        <LoadBalanza />
       ) : (
         <div>
           {balanza ? (
@@ -71,6 +69,6 @@ function Balanza() {
       )}
     </Layout>
   );
-}
+});
 
 export default Balanza;

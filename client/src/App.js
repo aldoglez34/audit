@@ -13,7 +13,6 @@ import AuditHome from "./pages/auditHome/AuditHome";
 import Audits from "./pages/audits/Audits";
 import Clients from "./pages/clients/Clients";
 import Planning from "./pages/planning/Planning";
-import Nomina from "./pages/consults/Nómina";
 import Balanza from "./pages/consults/Balanza";
 import CCI from "./pages/planning/surveys/CCI";
 import CEFS from "./pages/planning/surveys/CEFS";
@@ -71,11 +70,6 @@ function App() {
             exact
             path="/audit/planning/cefs/:auditId"
             render={props => <CEFS routeProps={props} />}
-          />
-          <Route
-            exact
-            path="/audit/nómina/:auditId"
-            render={props => <Nomina routeProps={props} />}
           />
           <Route
             exact

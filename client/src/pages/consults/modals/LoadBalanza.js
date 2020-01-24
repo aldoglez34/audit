@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as auditActions from "../../../redux/actions/auditActions";
 import API from "../../../utils/API";
 
-function LoadBalanza() {
+const LoadBalanza = React.memo(function LoadBalanza() {
   const dispatch = useDispatch();
 
   const [show, setShow] = useState(false);
@@ -12,6 +12,7 @@ function LoadBalanza() {
   const handleShow = () => setShow(true);
 
   const audit = useSelector(state => state.audit);
+  const user = useSelector(state => state.user);
 
   const [file, setFile] = useState();
 
@@ -37,15 +38,19 @@ function LoadBalanza() {
       .catch(err => console.log(err));
   };
 
-  return (
+  return user.role === "Admin" ? (
     <>
-      <span
-        className="text-primary"
-        style={{ cursor: "pointer" }}
-        onClick={handleShow}
-      >
-        haz click aquí
-      </span>
+      <p>
+        La balanza no ha sido cargada aún,{" "}
+        <span
+          className="text-primary"
+          style={{ cursor: "pointer" }}
+          onClick={handleShow}
+        >
+          haz click aquí
+        </span>{" "}
+        para cargarla.
+      </p>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Body>
@@ -68,7 +73,9 @@ function LoadBalanza() {
         </Modal.Body>
       </Modal>
     </>
+  ) : (
+    <p>La balanza no ha sido cargada aún.</p>
   );
-}
+});
 
 export default LoadBalanza;

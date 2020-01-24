@@ -6,11 +6,7 @@ import API from "../../../utils/API";
 import * as yup from "yup";
 import PropTypes from "prop-types";
 
-ModalEditClient.propTypes = {
-  client: PropTypes.object.isRequired
-};
-
-function ModalEditClient(props) {
+const ModalEditClient = React.memo(function ModalEditClient(props) {
   // modal state
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -190,7 +186,7 @@ function ModalEditClient(props) {
   ) : (
     <OverlayTrigger
       delay={{ show: 250, hide: 400 }}
-      placement="left"
+      placement="bottom"
       overlay={<Tooltip>Sólo un administrador puede editar Clientes</Tooltip>}
     >
       <span>
@@ -206,6 +202,10 @@ function ModalEditClient(props) {
       </span>
     </OverlayTrigger>
   );
-}
+});
+
+ModalEditClient.propTypes = {
+  client: PropTypes.object.isRequired
+};
 
 export default ModalEditClient;

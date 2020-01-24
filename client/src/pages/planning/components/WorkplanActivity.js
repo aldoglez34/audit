@@ -6,7 +6,7 @@ import es from "date-fns/locale/es";
 registerLocale("es", es);
 setDefaultLocale("es");
 
-function WorkplanActivity(props) {
+const WorkplanActivity = React.memo(function WorkplanActivity(props) {
   const [startDate, setStartDate] = useState(props.startDate);
   const [endDate, setEndDate] = useState(props.endDate);
 
@@ -43,6 +43,6 @@ function WorkplanActivity(props) {
       </td>
     </tr>
   );
-}
+});
 
 export default WorkplanActivity;

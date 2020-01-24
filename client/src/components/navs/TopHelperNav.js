@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Navbar, Nav, Col, Button } from "react-bootstrap";
 import UserDropdown from "../UserDropdown";
 
-function TopHelperNav(props) {
+const TopHelperNav = React.memo(function TopHelperNav(props) {
   const user = useSelector(state => state.user);
   const audit = useSelector(state => state.audit);
 
@@ -41,6 +41,6 @@ function TopHelperNav(props) {
       </Navbar>
     </div>
   );
-}
+});
 
 export default TopHelperNav;

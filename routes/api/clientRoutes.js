@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const model = require("../../models");
 
-// fetchClients
+// fetchClients()
 // matches with /api/client/all
 router.get("/all", function(req, res) {
   model.Client.findAll({
@@ -15,7 +15,7 @@ router.get("/all", function(req, res) {
     });
 });
 
-// saveNewClient
+// saveNewClient()
 // matches with /api/client/new
 router.post("/new", function(req, res) {
   model.Client.create({
@@ -32,7 +32,7 @@ router.post("/new", function(req, res) {
     });
 });
 
-// editClient
+// editClient()
 // matches with /api/client/edit
 router.put("/edit", function(req, res) {
   model.Client.update(
@@ -54,7 +54,7 @@ router.put("/edit", function(req, res) {
     });
 });
 
-// fetchOneClient
+// fetchOneClient()
 // matches with /api/client/:id
 router.get("/:clientId", function(req, res) {
   model.Client.findOne({

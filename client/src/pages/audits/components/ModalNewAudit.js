@@ -29,8 +29,10 @@ const ModalNewAudit = React.memo(function ModalNewAudit() {
   }, []);
 
   const yupSchema = yup.object({
-    clientId: yup.number().required("Requerido"),
-    clientAbr: yup.string().required("Requerido"),
+    clientIdAndAbbr: yup
+      .mixed()
+      .notOneOf(["Elige..."], "Requerido")
+      .required("Requerido"),
     year: yup
       .string()
       .matches(/^[0-9]*$/, "Formato de año incorrecto")
@@ -51,29 +53,25 @@ const ModalNewAudit = React.memo(function ModalNewAudit() {
           <h3>Nueva Auditoría</h3>
           <Formik
             initialValues={{
-              clientAbr: "Elige...",
+              clientIdAndAbbr: "Elige...",
               year: "",
               description: ""
             }}
             validationSchema={yupSchema}
             onSubmit={(values, { setSubmitting }) => {
               setSubmitting(true);
-              console.log(values);
-              alert("test");
-              // const sel = document.getElementById("clientAbreviation");
-              // values.clientId = sel.getAttribute("clientId");
-              // API.saveNewAudit(values)
-              //   .then(res => {
-              //     if (res.data.errors) {
-              //       alert(res.data.errors[0].message);
-              //       setSubmitting(false);
-              //     } else {
-              //       alert("Auditoría creada con éxito");
-              //       handleClose();
-              //       window.location.reload();
-              //     }
-              //   })
-              //   .catch(err => alert(err));
+              API.saveNewAudit(values)
+                .then(res => {
+                  if (res.data.errors) {
+                    alert(res.data.errors[0].message);
+                    setSubmitting(false);
+                  } else {
+                    alert("Auditoría creada con éxito");
+                    handleClose();
+                    window.location.reload();
+                  }
+                })
+                .catch(err => alert(err));
             }}
           >
             {({
@@ -98,17 +96,25 @@ const ModalNewAudit = React.memo(function ModalNewAudit() {
                           <Form.Control
                             as="select"
                             type="text"
-                            name="clientAbr"
-                            value={values.clientAbr}
+                            name="clientIdAndAbbr"
+                            value={values.clientIdAndAbbr}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            isValid={touched.clientAbr && !errors.clientAbr}
-                            isInvalid={touched.clientAbr && !!errors.clientAbr}
+                            isValid={
+                              touched.clientIdAndAbbr && !errors.clientIdAndAbbr
+                            }
+                            isInvalid={
+                              touched.clientIdAndAbbr &&
+                              !!errors.clientIdAndAbbr
+                            }
                           >
                             <option disabled>Elige...</option>
                             {clients.map(c => {
                               return (
-                                <option value={c.clientId} key={c.clientId}>
+                                <option
+                                  value={c.clientId + "#" + c.abbreviation}
+                                  key={c.clientId}
+                                >
                                   {c.name}
                                 </option>
                               );

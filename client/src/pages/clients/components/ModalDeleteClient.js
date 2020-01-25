@@ -32,18 +32,12 @@ const ModalDeleteClient = React.memo(function ModalDeleteClient(props) {
           </p>
           <p>
             Si lo borras serán también borradas todas las{" "}
-            <strong>
-              <u>Auditorías</u>
-            </strong>{" "}
-            asignadas a este Cliente
+            <strong>Auditorías</strong> asignadas a este{" "}
+            <strong>Cliente</strong>.
           </p>
-          <p>Esta acción no podrá deshacerse</p>
+          <p>Esta acción no podrá deshacerse.</p>
           <div className="d-flex flex-row justify-content-end">
-            <Button variant="secondary" className="mr-2" onClick={handleClose}>
-              <i className="fas fa-ban mr-2" />
-              Cancelar
-            </Button>
-            <Button variant="danger">
+            <Button disabled variant="danger">
               <i className="fas fa-trash-alt mr-2" />
               Borrar
             </Button>

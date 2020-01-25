@@ -36,6 +36,7 @@ const ModalEditClient = React.memo(function ModalEditClient(props) {
         <i className="fas fa-pencil-alt mr-2" />
         Editar
       </Button>
+
       <Modal show={show} onHide={handleClose}>
         <Modal.Body className="bg-light">
           <h3>Editar Cliente</h3>
@@ -68,6 +69,8 @@ const ModalEditClient = React.memo(function ModalEditClient(props) {
           >
             {({
               values,
+              errors,
+              touched,
               handleChange,
               handleBlur,
               handleSubmit,
@@ -78,16 +81,18 @@ const ModalEditClient = React.memo(function ModalEditClient(props) {
                   <Form.Group>
                     <Form.Label>
                       Nombre
-                      <small className="text-muted ml-1">(100)</small>
                       <strong className="ml-1 text-danger">*</strong>
                     </Form.Label>
                     <Form.Control
                       maxLength="100"
                       type="text"
+                      placeholder="Ingresa el nombre"
                       name="name"
                       value={values.name}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      isValid={touched.name && !errors.name}
+                      isInvalid={touched.name && !!errors.name}
                     />
                     <ErrorMessage
                       className="text-danger"
@@ -98,17 +103,18 @@ const ModalEditClient = React.memo(function ModalEditClient(props) {
                   <Form.Group>
                     <Form.Label>
                       Abreviatura
-                      <small className="text-muted ml-1">(15)</small>
                       <strong className="ml-1 text-danger">*</strong>
                     </Form.Label>
                     <Form.Control
                       maxLength="15"
                       type="text"
+                      placeholder="Ingresa la abreviatura"
                       name="abbreviation"
                       value={values.abbreviation}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      style={{ textTransform: "uppercase" }}
+                      isValid={touched.abbreviation && !errors.abbreviation}
+                      isInvalid={touched.abbreviation && !!errors.abbreviation}
                     />
                     <ErrorMessage
                       className="text-danger"
@@ -125,11 +131,13 @@ const ModalEditClient = React.memo(function ModalEditClient(props) {
                     <Form.Control
                       maxLength="12"
                       type="text"
+                      placeholder="Ingresa el RFC"
                       name="rfc"
                       value={values.rfc}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      style={{ textTransform: "uppercase" }}
+                      isValid={touched.rfc && !errors.rfc}
+                      isInvalid={touched.rfc && !!errors.rfc}
                     />
                     <ErrorMessage
                       className="text-danger"
@@ -143,14 +151,17 @@ const ModalEditClient = React.memo(function ModalEditClient(props) {
                       <small className="text-muted ml-1">(150)</small>
                     </Form.Label>
                     <Form.Control
+                      maxLength="250"
                       as="textarea"
                       rows="3"
-                      maxLength="150"
                       type="text"
+                      placeholder="Ingresa la dirección"
                       name="address"
                       value={values.address}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      isValid={touched.address && !errors.address}
+                      isInvalid={touched.address && !!errors.address}
                     />
                     <ErrorMessage
                       className="text-danger"
@@ -159,14 +170,6 @@ const ModalEditClient = React.memo(function ModalEditClient(props) {
                     />
                   </Form.Group>
                   <Form.Group className="text-right">
-                    <Button
-                      className="mr-2"
-                      variant="secondary"
-                      onClick={handleClose}
-                    >
-                      <i className="fas fa-ban mr-2" />
-                      Cancelar
-                    </Button>
                     <Button
                       variant="info"
                       type="submit"

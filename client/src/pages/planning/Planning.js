@@ -1,75 +1,44 @@
 import React from "react";
-import { Table, Badge } from "react-bootstrap";
+import { ListGroup } from "react-bootstrap";
 import Layout from "../Layout";
 import WorkplanActivity from "./components/WorkplanActivity";
 import "./planning.scss";
 import { useSelector } from "react-redux";
+import HelpTooltip from "./components/HelpTooltip";
 
 const Planning = React.memo(function Planning() {
   const audit = useSelector(state => state.audit);
 
   return (
     <Layout auditMenu="Planeación">
-      <h2>
-        Planeación
-        <i
-          className="fas fa-question-circle ml-1"
-          style={{ fontSize: "24px", color: "gray" }}
-        />
-      </h2>
-      <hr className="myDivider" />
-      <section>
-        <h5>Descripción</h5>
-        <p>
-          Etapa de la auditoría que contiene la guía de trabajo y los papeles de
-          trabajo en que se documenta la fase de planeación de la auditoría.
-          Esta fase consta de actividades de indagación sobre el cliente y de
-          análisis del alcance general, que culminan en la preparación la
-          auditoria plasmada en el memorándum.
-        </p>
-      </section>
-      <section>
-        <h5>Cuestionarios</h5>
-        <ul className="list-unstyled">
-          <li>
-            <ul>
-              <li>
-                <a
-                  href={"/audit/planning/cci/" + audit.auditId}
-                  style={{ color: "#516fd6" }}
-                >
-                  Cuestionario de Control Interno
-                </a>
-                <Badge
-                  className="ml-1"
-                  style={{ fontFamily: "Arial" }}
-                  variant="success"
-                >
-                  Completado
-                </Badge>
-              </li>
-              <li>
-                <a
-                  href={"/audit/planning/cefs/" + audit.auditId}
-                  style={{ color: "#516fd6" }}
-                >
-                  Cédula de Estados Financieros del Sistema
-                </a>
-                <Badge
-                  className="ml-1"
-                  style={{ fontFamily: "Arial" }}
-                  variant="success"
-                >
-                  Completado
-                </Badge>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </section>
+      {/* title */}
+      <div className="d-flex flex-row">
+        <div>
+          <h2>Planeación</h2>
+          <hr className="myDivider" />
+        </div>
+        <div className="ml-auto d-flex align-items-center">
+          <HelpTooltip
+            title="Etapa de Planeación"
+            text="Etapa de la auditoría que contiene la guía de trabajo y los papeles
+            de trabajo en que se documenta la fase de planeación de la
+            auditoría. Esta fase consta de actividades de indagación sobre el
+            cliente y de análisis del alcance general, que culminan en la
+            preparación la auditoria plasmada en el memorándum."
+          />
+        </div>
+      </div>
+      {/* content */}
       <section>
         <h5>Guía de trabajo</h5>
-        <Table borderless size="sm" hover responsive>
+        <ListGroup>
+          <ListGroup.Item>Cras justo odio</ListGroup.Item>
+          <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
+          <ListGroup.Item>Morbi leo risus</ListGroup.Item>
+          <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
+          <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+        </ListGroup>
+        {/* <Table borderless size="sm" hover responsive>
           <tbody>
             <WorkplanActivity
               id={1}
@@ -92,7 +61,26 @@ const Planning = React.memo(function Planning() {
                 con los funcionarios establecer el riesgo inherente."
             />
           </tbody>
-        </Table>
+        </Table> */}
+      </section>
+      <section>
+        <h5>Cuestionarios</h5>
+        <ul className="list-unstyled">
+          <li>
+            <ul>
+              <li>
+                <a href={"/audit/planning/cci/" + audit.auditId}>
+                  Cuestionario de Control Interno
+                </a>
+              </li>
+              <li>
+                <a href={"/audit/planning/cefs/" + audit.auditId}>
+                  Cédula de Estados Financieros del Sistema
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </section>
     </Layout>
   );

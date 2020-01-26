@@ -1,0 +1,20 @@
+[
+  {
+    "model": "Workplan",
+    "data": {
+      "text": "Definir con el cliente los objetivos y requerimientos de nuestros servicios con la finalidad de definir el resultado de nuestro trabajo (alcances, tiempos, informes, etc.)"
+    }
+  },
+  {
+    "model": "Workplan",
+    "data": {
+      "text": "Obtener una descripción general de la Entidad mediante entrevistas con los principales funcionarios que tengan bajo su responsabilidad el desarrollo de las actividades y programas."
+    }
+  },
+  {
+    "model": "Workplan",
+    "data": {
+      "text": "Solicitar y estudiar los informes de auditoría correspondientes al año de anterior y utilizar la información en ellos para efectos de esta fase, como resultado de las entrevistas tenidas con los funcionarios establecer el riesgo inherente."
+    }
+  }
+]

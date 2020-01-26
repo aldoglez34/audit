@@ -1,13 +1,20 @@
-import React from "react";
-import { ListGroup } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
 import Layout from "../Layout";
-import WorkplanActivity from "./components/WorkplanActivity";
 import "./planning.scss";
-import { useSelector } from "react-redux";
 import HelpTooltip from "./components/HelpTooltip";
+import Workplan from "./components/Workplan";
+import Surveys from "./components/Surveys";
+import API from "../../utils/API";
+import { Tabs, Tab, Spinner } from "react-bootstrap";
 
 const Planning = React.memo(function Planning() {
-  const audit = useSelector(state => state.audit);
+  const [workplan, setWorkplan] = useState([]);
+
+  useEffect(() => {
+    API.fetchWorkplan()
+      .then(res => setWorkplan(res.data))
+      .catch(err => console.log(err));
+  }, []);
 
   return (
     <Layout auditMenu="Planeación">
@@ -28,60 +35,22 @@ const Planning = React.memo(function Planning() {
           />
         </div>
       </div>
-      {/* content */}
-      <section>
-        <h5>Guía de trabajo</h5>
-        <ListGroup>
-          <ListGroup.Item>Cras justo odio</ListGroup.Item>
-          <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-          <ListGroup.Item>Morbi leo risus</ListGroup.Item>
-          <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
-          <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
-        </ListGroup>
-        {/* <Table borderless size="sm" hover responsive>
-          <tbody>
-            <WorkplanActivity
-              id={1}
-              text="Definir con el cliente los objetivos y requerimientos de
-                        nuestros servicios con la finalidad de definir el
-                        resultado de nuestro trabajo (alcances, tiempos, informes,
-                        etc.)"
-            />
-            <WorkplanActivity
-              id={2}
-              text="Obtener una descripción general de la Entidad mediante
-                entrevistas con los principales funcionarios que tengan bajo su
-                responsabilidad el desarrollo de las actividades y programas."
-            />
-            <WorkplanActivity
-              id={3}
-              text="Solicitar y estudiar los informes de auditoría correspondientes
-                al año de anterior y utilizar la información en ellos para
-                efectos de esta fase, como resultado de las entrevistas tenidas
-                con los funcionarios establecer el riesgo inherente."
-            />
-          </tbody>
-        </Table> */}
-      </section>
-      <section>
-        <h5>Cuestionarios</h5>
-        <ul className="list-unstyled">
-          <li>
-            <ul>
-              <li>
-                <a href={"/audit/planning/cci/" + audit.auditId}>
-                  Cuestionario de Control Interno
-                </a>
-              </li>
-              <li>
-                <a href={"/audit/planning/cefs/" + audit.auditId}>
-                  Cédula de Estados Financieros del Sistema
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </section>
+      {/* tabs */}
+      {workplan.length ? (
+        <Tabs defaultActiveKey="Guía de trabajo" id="uncontrolled-tab-example">
+          <Tab eventKey="Guía de trabajo" title="Guía de trabajo">
+            <Workplan workplan={workplan} />
+          </Tab>
+          <Tab eventKey="Cuestionarios" title="Cuestionarios">
+            <br />
+            <Surveys />
+          </Tab>
+        </Tabs>
+      ) : (
+        <div className="text-center mt-4 pt-4">
+          <Spinner animation="border" />
+        </div>
+      )}
     </Layout>
   );
 });

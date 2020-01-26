@@ -74,5 +74,12 @@ export default {
 
   fetchBalanza: function(auditId) {
     return axios.get("/api/balanza/" + auditId);
+  },
+
+  // =================================================================
+  // WORKPLAN
+
+  fetchWorkplan: function() {
+    return axios.get("/api/workplan/all");
   }
 };

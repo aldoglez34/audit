@@ -15,24 +15,12 @@
     "model": "User",
     "data": {
       "firebase_uid": "Cj9OROU6keXOqDe8DNzIy9ayHTU2",
-      "role": "Admin",
+      "role": "Auditor",
       "name": "Rosa Elena",
       "firstSurname": "Solano",
       "secondSurname": "González",
       "email": "rosa.solano@freyssiniermex.com",
       "phone": "2288351170"
-    }
-  },
-  {
-    "model": "User",
-    "data": {
-      "firebase_uid": "PypuEFyL06ZUTPjAmiEQ4hDAHe12",
-      "role": "Auditor",
-      "name": "Invitado",
-      "firstSurname": "Invitado",
-      "secondSurname": "Invitado",
-      "email": "test@test.com",
-      "phone": "2281112031"
     }
   }
 ]

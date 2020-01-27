@@ -9,16 +9,22 @@ registerLocale("es", es);
 setDefaultLocale("es");
 
 const Workplan = React.memo(function Workplan(props) {
+  const handleChange = workplanId => {
+    let checkbox = document.getElementById(workplanId).checked;
+    console.log(checkbox);
+  };
+
   return (
     <Table>
       <tbody>
         {props.workplan.map(w => {
           return (
-            <tr>
+            <tr key={w.workplanId}>
               <td className="border-0">
                 <div className="custom-control custom-switch">
                   <input
                     type="checkbox"
+                    onChange={() => handleChange(w.workplanId)}
                     className="custom-control-input checkboxStyle"
                     id={w.workplanId}
                     defaultChecked={false}

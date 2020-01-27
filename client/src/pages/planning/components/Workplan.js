@@ -10,8 +10,8 @@ setDefaultLocale("es");
 
 const Workplan = React.memo(function Workplan(props) {
   const handleChange = workplanId => {
-    let checkbox = document.getElementById(workplanId).checked;
-    console.log(checkbox);
+    let checked = document.getElementById(workplanId).checked;
+    console.log(checked);
   };
 
   return (

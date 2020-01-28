@@ -43,18 +43,19 @@ router.post("/add", function(req, res) {
 // matches with /api/workplan/delete/:data
 router.delete("/delete/:data", function(req, res) {
   let auditId = req.params.data.substr(0, req.params.data.indexOf("-"));
-  console.log(auditId);
-  let workplanId = req.params.data;
-  console.log(workplanId);
-  // model.WorkplanAnswer.destroy({
-  //   where: { auditId: auditId, workplanId: workplanId }
-  // })
-  //   .then(function(data) {
-  //     res.json(data);
-  //   })
-  //   .catch(function(err) {
-  //     res.send(err);
-  //   });
+  let workplanId = req.params.data.substr(req.params.data.indexOf("-") + 1);
+  model.WorkplanAnswer.destroy({
+    where: {
+      auditId: auditId,
+      workplanId: workplanId
+    }
+  })
+    .then(function(data) {
+      res.json(data);
+    })
+    .catch(function(err) {
+      res.send(err);
+    });
 });
 
 module.exports = router;

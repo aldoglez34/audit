@@ -39,7 +39,7 @@ module.exports = function(sequelize, DataTypes) {
 
   Audit.associate = function(models) {
     Audit.belongsTo(models.Client, { foreignKey: "clientId" });
-    Audit.hasMany(models.WorkplanAnswer);
+    Audit.hasMany(models.WorkplanAnswer, { foreignKey: "auditId" });
   };
 
   return Audit;

@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   Workplan.associate = function(models) {
-    Workplan.hasMany(models.WorkplanAnswer);
+    Workplan.hasMany(models.WorkplanAnswer, { foreignKey: "workplanId" });
   };
 
   return Workplan;

@@ -21,7 +21,6 @@ const Planning = React.memo(function Planning() {
 
   return (
     <Layout auditMenu="Planeación">
-      {console.log(workplan)}
       {/* title */}
       <div className="d-flex flex-row">
         <div>

@@ -46,7 +46,7 @@ const Workplan = React.memo(function Workplan(props) {
                     onChange={() => handleChange(w.workplanId)}
                     className="custom-control-input checkboxStyle"
                     id={w.workplanId}
-                    defaultChecked={false}
+                    defaultChecked={w.WorkplanAnswers.length ? true : false}
                   />
                   <label
                     className="custom-control-label"

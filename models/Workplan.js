@@ -11,5 +11,9 @@ module.exports = function(sequelize, DataTypes) {
     }
   });
 
+  Workplan.associate = function(models) {
+    Workplan.hasMany(models.WorkplanAnswer);
+  };
+
   return Workplan;
 };

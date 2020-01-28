@@ -6,18 +6,22 @@ import Workplan from "./components/Workplan";
 import Surveys from "./components/Surveys";
 import API from "../../utils/API";
 import { Tabs, Tab, Spinner } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 const Planning = React.memo(function Planning() {
+  const audit = useSelector(state => state.audit);
+
   const [workplan, setWorkplan] = useState([]);
 
   useEffect(() => {
-    API.fetchWorkplan()
+    API.fetchWorkplan(audit.auditId)
       .then(res => setWorkplan(res.data))
       .catch(err => console.log(err));
   }, []);
 
   return (
     <Layout auditMenu="Planeación">
+      {console.log(workplan)}
       {/* title */}
       <div className="d-flex flex-row">
         <div>

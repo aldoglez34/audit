@@ -79,7 +79,15 @@ export default {
   // =================================================================
   // WORKPLAN
 
-  fetchWorkplan: function() {
-    return axios.get("/api/workplan/all");
+  fetchWorkplan: function(auditId) {
+    return axios.get("/api/workplan/" + auditId);
+  },
+
+  addWorkplanAnswer: function(data) {
+    return axios.post("/api/workplan/add", data);
+  },
+
+  deleteWorkplanAnswer: function(data) {
+    return axios.delete("/api/workplan/delete", data);
   }
 };

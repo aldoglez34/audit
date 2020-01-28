@@ -1,21 +1,40 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { registerLocale, setDefaultLocale } from "react-datepicker";
-import es from "date-fns/locale/es";
 import PropTypes from "prop-types";
-registerLocale("es", es);
-setDefaultLocale("es");
+import API from "../../../utils/API";
+import { useSelector } from "react-redux";
 
 const Workplan = React.memo(function Workplan(props) {
+  const audit = useSelector(state => state.audit);
+
   const handleChange = workplanId => {
-    let checked = document.getElementById(workplanId).checked;
-    console.log(checked);
+    let isChecked = document.getElementById(workplanId).checked;
+    if (isChecked) {
+      API.addWorkplanAnswer({ auditId: audit.auditId, workplanId })
+        .then(res => {
+          if (res.data.errors) {
+            alert(res.data.errors[0].message);
+          } else {
+            // console.log(res.data);
+          }
+        })
+        .catch(err => console.log(err));
+    } else {
+      API.deleteWorkplanAnswer({ auditId: audit.auditId, workplanId })
+        .then(res => {
+          if (res.data.errors) {
+            alert(res.data.errors[0].message);
+          } else {
+            // console.log(res.data);
+          }
+        })
+        .catch(err => console.log(err));
+    }
   };
 
   return (
     <Table>
+      {console.log(props.workplan)}
       <tbody>
         {props.workplan.map(w => {
           return (
@@ -37,22 +56,6 @@ const Workplan = React.memo(function Workplan(props) {
                   </label>
                 </div>
               </td>
-              {/* <td>
-                <DatePicker
-                  className="dateInput"
-                  placeholderText="Inicio"
-                  // selected={startDate}
-                  // onChange={setStartDate}
-                />
-              </td>
-              <td>
-                <DatePicker
-                  className="dateInput"
-                  placeholderText="Final"
-                  // selected={endDate}
-                  // onChange={setEndDate}
-                />
-              </td> */}
             </tr>
           );
         })}

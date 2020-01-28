@@ -12,10 +12,14 @@ const Planning = React.memo(function Planning() {
   const audit = useSelector(state => state.audit);
 
   const [workplan, setWorkplan] = useState([]);
+  const [surveyTitles, setSurveyTitles] = useState([]);
 
   useEffect(() => {
     API.fetchWorkplan(audit.auditId)
       .then(res => setWorkplan(res.data))
+      .catch(err => console.log(err));
+    API.fetchSurveyTitles()
+      .then(res => setSurveyTitles(res.data))
       .catch(err => console.log(err));
   }, []);
 
@@ -39,14 +43,14 @@ const Planning = React.memo(function Planning() {
         </div>
       </div>
       {/* tabs */}
-      {workplan.length ? (
+      {workplan.length && surveyTitles.length ? (
         <Tabs defaultActiveKey="Guía de trabajo" id="uncontrolled-tab-example">
           <Tab eventKey="Guía de trabajo" title="Guía de trabajo">
             <Workplan workplan={workplan} />
           </Tab>
           <Tab eventKey="Cuestionarios" title="Cuestionarios">
             <br />
-            <Surveys />
+            <Surveys surveyTitles={surveyTitles} />
           </Tab>
         </Tabs>
       ) : (

@@ -1,9 +1,13 @@
 const router = require("express").Router();
 const model = require("../../models");
+const Sequelize = require("sequelize");
+
+// ===============================================
+// WORKPLAN
 
 // fetchWorkplan()
-// matches with /api/workplan/:auditId
-router.get("/:auditId", function(req, res) {
+// matches with /api/planning/workplan/:auditId
+router.get("/workplan/:auditId", function(req, res) {
   model.Workplan.findAll({
     attributes: ["workplanId", "text"],
     include: [
@@ -24,8 +28,8 @@ router.get("/:auditId", function(req, res) {
 });
 
 // addWorkplanAnswer()
-// matches with /api/workplan/add
-router.post("/add", function(req, res) {
+// matches with /api/planning/workplan/add
+router.post("/workplan/add", function(req, res) {
   model.WorkplanAnswer.create({
     auditId: req.body.auditId,
     workplanId: req.body.workplanId,
@@ -40,8 +44,8 @@ router.post("/add", function(req, res) {
 });
 
 // deleteWorkplanAnswer()
-// matches with /api/workplan/delete/:data
-router.delete("/delete/:data", function(req, res) {
+// matches with /api/planning/workplan/delete/:data
+router.delete("/workplan/delete/:data", function(req, res) {
   let auditId = req.params.data.substr(0, req.params.data.indexOf("-"));
   let workplanId = req.params.data.substr(req.params.data.indexOf("-") + 1);
   model.WorkplanAnswer.destroy({
@@ -49,6 +53,24 @@ router.delete("/delete/:data", function(req, res) {
       auditId: auditId,
       workplanId: workplanId
     }
+  })
+    .then(function(data) {
+      res.json(data);
+    })
+    .catch(function(err) {
+      res.send(err);
+    });
+});
+
+// ===============================================
+// SURVEYS
+
+// fetchSurveyTitles()
+// matches with /api/planning/survey/titles
+router.get("/survey/titles", function(req, res) {
+  model.Survey.findAll({
+    attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("title")), "title"]],
+    order: [["title", "ASC"]]
   })
     .then(function(data) {
       res.json(data);

@@ -1,27 +1,25 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
 
-const Surveys = React.memo(function Surveys() {
+const Surveys = React.memo(function Surveys(props) {
   const audit = useSelector(state => state.audit);
 
   return (
-    <ul className="list-unstyled">
-      <li>
-        <ul>
-          <li>
-            <a href={"/audit/planning/cci/" + audit.auditId}>
-              Cuestionario de Control Interno
-            </a>
+    <ul>
+      {props.surveyTitles.map(st => {
+        return (
+          <li key={st.title}>
+            <a href={"/audit/planning/survey/" + audit.auditId}>{st.title}</a>
           </li>
-          <li>
-            <a href={"/audit/planning/cefs/" + audit.auditId}>
-              Cédula de Estados Financieros del Sistema
-            </a>
-          </li>
-        </ul>
-      </li>
+        );
+      })}
     </ul>
   );
 });
+
+Surveys.propTypes = {
+  surveyTitles: PropTypes.array.isRequired
+};
 
 export default Surveys;

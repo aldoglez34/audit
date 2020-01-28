@@ -8,8 +8,7 @@ const pdfMake = require("pdfmake/build/pdfmake.js");
 const pdfFonts = require("pdfmake/build/vfs_fonts.js");
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-function CCI() {
-  // const dispatch = useDispatch();
+const CCI = React.memo(function CCI() {
   const audit = useSelector(state => state.audit);
 
   const [questions] = useState([
@@ -17,11 +16,6 @@ function CCI() {
     { id: "q2", question: "Esta es la pregunta dos", answer: "dos" },
     { id: "q3", question: "Esta es la pregunta tres", answer: "three" }
   ]);
-
-  // useEffect(() => {
-  //   dispatch(navbarActions.setAuditActive("Planeación"));
-  //   dispatch(auditActions.setBackBttn("/audit/planning/" + audit.auditId));
-  // }, []);
 
   const initVals = () => {
     let values = {};
@@ -34,10 +28,10 @@ function CCI() {
       auditMenu="Planeación"
       backButton={"/audit/planning/" + audit.auditId}
     >
-      <h2>
-        <span>Cuestionario de Control Interno</span>
-      </h2>
-      <hr />
+      {/* title */}
+      <h2>Cuestionario de Control Interno</h2>
+      <hr className="myDivider" />
+      {/* content */}
       <Formik
         initialValues={initVals()}
         onSubmit={(values, { setSubmitting }) => {
@@ -66,19 +60,22 @@ function CCI() {
                   </Form.Group>
                 );
               })}
-              <Button
-                className="purplebttn"
-                disabled={isSubmitting}
-                type="submit"
-              >
-                Enviar respuestas
-              </Button>
+              <Form.Row className="px-1 justify-content-end">
+                <Button
+                  className="purplebttn"
+                  disabled={isSubmitting}
+                  type="submit"
+                >
+                  <i className="fas fa-save mr-2 " />
+                  Guardar
+                </Button>
+              </Form.Row>
             </Form>
           </>
         )}
       </Formik>
     </Layout>
   );
-}
+});
 
 export default CCI;

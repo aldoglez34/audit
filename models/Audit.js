@@ -40,6 +40,7 @@ module.exports = function(sequelize, DataTypes) {
   Audit.associate = function(models) {
     Audit.belongsTo(models.Client, { foreignKey: "clientId" });
     Audit.hasMany(models.WorkplanAnswer, { foreignKey: "auditId" });
+    Audit.hasMany(models.SurveyAnswer, { foreignKey: "auditId" });
   };
 
   return Audit;

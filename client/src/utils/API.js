@@ -47,22 +47,26 @@ export default {
   },
 
   // =================================================================
-  // SURVEYS
+  // PLANNING
 
-  getAnswersFromCCI: function(auditId) {
-    return axios.get("/api/survey/cci/" + auditId);
+  // workplan
+
+  fetchWorkplan: function(auditId) {
+    return axios.get("/api/planning/workplan/" + auditId);
   },
 
-  saveAnswersToCCI: function(answers) {
-    return axios.put("/api/survey/cci", answers);
+  addWorkplanAnswer: function(data) {
+    return axios.post("/api/planning/workplan/add", data);
   },
 
-  getAnswersFromCEFS: function(auditId) {
-    return axios.get("/api/survey/cefs/" + auditId);
+  deleteWorkplanAnswer: function(data) {
+    return axios.delete("/api/planning/workplan/delete/" + data);
   },
 
-  saveAnswersToCEFS: function(answers) {
-    return axios.put("/api/survey/cefs", answers);
+  // surveys
+
+  fetchSurveyTitles: function() {
+    return axios.get("/api/planning/survey/titles");
   },
 
   // =================================================================
@@ -74,21 +78,5 @@ export default {
 
   fetchBalanza: function(auditId) {
     return axios.get("/api/balanza/" + auditId);
-  },
-
-  // =================================================================
-  // WORKPLAN
-
-  fetchWorkplan: function(auditId) {
-    return axios.get("/api/workplan/" + auditId);
-  },
-
-  addWorkplanAnswer: function(data) {
-    return axios.post("/api/workplan/add", data);
-  },
-
-  deleteWorkplanAnswer: function(data) {
-    console.log(data);
-    return axios.delete("/api/workplan/delete/" + data);
   }
 };

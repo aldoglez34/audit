@@ -88,6 +88,7 @@ export default {
   },
 
   deleteWorkplanAnswer: function(data) {
-    return axios.delete("/api/workplan/delete", data);
+    console.log(data);
+    return axios.delete("/api/workplan/delete/" + data);
   }
 };

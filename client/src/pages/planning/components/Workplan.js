@@ -20,7 +20,7 @@ const Workplan = React.memo(function Workplan(props) {
         })
         .catch(err => console.log(err));
     } else {
-      API.deleteWorkplanAnswer({ auditId: audit.auditId, workplanId })
+      API.deleteWorkplanAnswer(audit.auditId + "-" + workplanId)
         .then(res => {
           if (res.data.errors) {
             alert(res.data.errors[0].message);
@@ -34,7 +34,6 @@ const Workplan = React.memo(function Workplan(props) {
 
   return (
     <Table>
-      {console.log(props.workplan)}
       <tbody>
         {props.workplan.map(w => {
           return (

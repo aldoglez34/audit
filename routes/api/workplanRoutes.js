@@ -40,20 +40,21 @@ router.post("/add", function(req, res) {
 });
 
 // deleteWorkplanAnswer()
-// matches with /api/workplan/delete
-router.delete("/delete", function(req, res) {
-  model.WorkplanAnswer.destroy({
-    where: {
-      auditId: req.body.auditId,
-      workplanId: req.body.workplanId
-    }
-  })
-    .then(function(data) {
-      res.json(data);
-    })
-    .catch(function(err) {
-      res.send(err);
-    });
+// matches with /api/workplan/delete/:data
+router.delete("/delete/:data", function(req, res) {
+  let auditId = req.params.data.substr(0, req.params.data.indexOf("-"));
+  console.log(auditId);
+  let workplanId = req.params.data;
+  console.log(workplanId);
+  // model.WorkplanAnswer.destroy({
+  //   where: { auditId: auditId, workplanId: workplanId }
+  // })
+  //   .then(function(data) {
+  //     res.json(data);
+  //   })
+  //   .catch(function(err) {
+  //     res.send(err);
+  //   });
 });
 
 module.exports = router;

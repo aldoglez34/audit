@@ -12,21 +12,13 @@ const Workplan = React.memo(function Workplan(props) {
     if (isChecked) {
       API.addWorkplanAnswer({ auditId: audit.auditId, workplanId })
         .then(res => {
-          if (res.data.errors) {
-            alert(res.data.errors[0].message);
-          } else {
-            // console.log(res.data);
-          }
+          if (res.data.errors) alert(res.data.errors[0].message);
         })
         .catch(err => console.log(err));
     } else {
       API.deleteWorkplanAnswer(audit.auditId + "-" + workplanId)
         .then(res => {
-          if (res.data.errors) {
-            alert(res.data.errors[0].message);
-          } else {
-            // console.log(res.data);
-          }
+          if (res.data.errors) alert(res.data.errors[0].message);
         })
         .catch(err => console.log(err));
     }

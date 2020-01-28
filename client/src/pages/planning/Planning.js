@@ -3,7 +3,7 @@ import Layout from "../Layout";
 import "./planning.scss";
 import HelpTooltip from "./components/HelpTooltip";
 import Workplan from "./components/Workplan";
-import Surveys from "./components/Surveys";
+import SurveyTitles from "./components/SurveyTitles";
 import API from "../../utils/API";
 import { Tabs, Tab, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
@@ -50,7 +50,7 @@ const Planning = React.memo(function Planning() {
           </Tab>
           <Tab eventKey="Cuestionarios" title="Cuestionarios">
             <br />
-            <Surveys surveyTitles={surveyTitles} />
+            <SurveyTitles />
           </Tab>
         </Tabs>
       ) : (

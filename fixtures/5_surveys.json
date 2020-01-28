@@ -12,5 +12,19 @@
       "title": "Cuestionario de Control Interno",
       "question": "Pregunta 2"
     }
+  },
+  {
+    "model": "Survey",
+    "data": {
+      "title": "Cuestionario de Auditoría",
+      "question": "Pregunta 1"
+    }
+  },
+  {
+    "model": "Survey",
+    "data": {
+      "title": "Cuestionario de Auditoría",
+      "question": "Pregunta 2"
+    }
   }
 ]

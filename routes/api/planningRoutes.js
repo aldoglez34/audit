@@ -80,4 +80,20 @@ router.get("/survey/titles", function(req, res) {
     });
 });
 
+// fetchSurvey()
+// matches with /api/planning/survey/:title
+router.get("/survey/titles", function(req, res) {
+  model.Survey.findAll({
+    where: {},
+    attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("title")), "title"]],
+    order: [["title", "ASC"]]
+  })
+    .then(function(data) {
+      res.json(data);
+    })
+    .catch(function(err) {
+      res.send(err);
+    });
+});
+
 module.exports = router;

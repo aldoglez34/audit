@@ -50,7 +50,7 @@ const Planning = React.memo(function Planning() {
           </Tab>
           <Tab eventKey="Cuestionarios" title="Cuestionarios">
             <br />
-            <SurveyTitles />
+            <SurveyTitles surveyTitles={surveyTitles} />
           </Tab>
         </Tabs>
       ) : (

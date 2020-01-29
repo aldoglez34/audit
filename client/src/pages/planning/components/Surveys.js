@@ -15,7 +15,7 @@ const Surveys = React.memo(function Surveys(props) {
   const [survey, setSurvey] = useState([]);
 
   useEffect(() => {
-    API.getSurvey(props.routeProps.match.params.surveyTitle)
+    API.fetchSurvey(props.routeProps.match.params.surveyTitle)
       .then(res => setSurvey(res.data))
       .catch(err => console.log(err));
   }, []);
@@ -39,20 +39,20 @@ const Surveys = React.memo(function Surveys(props) {
         {({ values, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
           <>
             <Form noValidate onSubmit={handleSubmit}>
-              {survey.map(s => {
-                return (
-                  <Form.Group key={q.id}>
-                    <Form.Label>{q.question}</Form.Label>
-                    <Form.Control
-                      maxLength="150"
-                      type="text"
-                      name={q.id}
-                      value={values[q.id]}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                  </Form.Group>
-                );
+              {survey.map(q => {
+                // return (
+                //   <Form.Group key={q.id}>
+                //     <Form.Label>{q.question}</Form.Label>
+                //     <Form.Control
+                //       maxLength="150"
+                //       type="text"
+                //       name={q.id}
+                //       value={values[q.id]}
+                //       onChange={handleChange}
+                //       onBlur={handleBlur}
+                //     />
+                //   </Form.Group>
+                // );
               })}
               <Form.Row className="px-1 justify-content-end">
                 <Button

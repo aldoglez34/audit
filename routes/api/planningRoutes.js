@@ -81,12 +81,20 @@ router.get("/survey/titles", function(req, res) {
 });
 
 // fetchSurvey()
-// matches with /api/planning/survey/:title
-router.get("/survey/titles", function(req, res) {
+// matches with /api/planning/survey/:auditId/:surveyTitle
+router.get("/survey/:auditId/:surveyTitle", function(req, res) {
   model.Survey.findAll({
-    where: {},
-    attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("title")), "title"]],
-    order: [["title", "ASC"]]
+    attributes: ["surveyId", "question"],
+    where: { title: req.params.surveyTitle },
+    order: [["surveyId", "ASC"]],
+    include: [
+      {
+        model: model.SurveyAnswer,
+        attributes: ["auditId", "surveyId", "answer"],
+        where: { auditId: req.params.auditId },
+        required: false // <- this will force a LEFT JOIN
+      }
+    ]
   })
     .then(function(data) {
       res.json(data);

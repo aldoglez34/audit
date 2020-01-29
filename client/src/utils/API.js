@@ -69,8 +69,9 @@ export default {
     return axios.get("/api/planning/survey/titles");
   },
 
-  fetchSurvey: function(surveyTitle) {
-    return axios.get("/api/planning/survey/" + surveyTitle);
+  fetchSurvey: function(data) {
+    let { auditId, surveyTitle } = data;
+    return axios.get("/api/planning/survey/" + auditId + "/" + surveyTitle);
   },
 
   // =================================================================

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Layout from "../../Layout";
 import { Spinner, Form, Button } from "react-bootstrap";
-import { Formik } from "formik";
+import { Formik, ErrorMessage } from "formik";
 import API from "../../../utils/API";
+import SurveyDropdown from "./SurveyDropdown";
 
 const pdfMake = require("pdfmake/build/pdfmake.js");
 const pdfFonts = require("pdfmake/build/vfs_fonts.js");
@@ -22,18 +23,36 @@ const Surveys = React.memo(function Surveys(props) {
       .catch(err => console.log(err));
   }, []);
 
+  const initValues = data => {
+    let values = {};
+    data.map(
+      q =>
+        (values[q.surveyId] = q.SurveyAnswers.length
+          ? q.SurveyAnswers[0].answer
+          : "")
+    );
+    return values;
+  };
+
   return (
     <Layout
       auditMenu="Planeación"
       backButton={"/audit/planning/" + audit.auditId}
     >
       {/* title */}
-      <h2>{props.routeProps.match.params.surveyTitle}</h2>
-      <hr className="myDivider" />
+      <div className="d-flex flex-row">
+        <div>
+          <h2>{props.routeProps.match.params.surveyTitle}</h2>
+          <hr className="myDivider" />
+        </div>
+        <div className="ml-auto d-flex align-items-center">
+          <SurveyDropdown />
+        </div>
+      </div>
       {/* content */}
       {survey.length ? (
         <Formik
-          // initialValues={initVals()}
+          initialValues={initValues(survey)}
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(true);
             console.log(values);
@@ -49,7 +68,6 @@ const Surveys = React.memo(function Surveys(props) {
             isSubmitting
           }) => (
             <>
-              {console.log(survey)}
               <Form noValidate onSubmit={handleSubmit}>
                 {survey.map(q => {
                   return (
@@ -60,22 +78,22 @@ const Surveys = React.memo(function Surveys(props) {
                         type="text"
                         placeholder="Ingresa la respuesta"
                         name={q.surveyId}
-                        // value={values[q.id]}
-                        value={
-                          q.SurveyAnswers.length
-                            ? q.SurveyAnswers[0].answer
-                            : ""
-                        }
+                        value={values[q.surveyId]}
+                        // value={
+                        //   q.SurveyAnswers.length
+                        //     ? q.SurveyAnswers[0].answer
+                        //     : ""
+                        // }
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        // isValid={touched.name && !errors.name}
-                        // isInvalid={touched.name && !!errors.name}
+                        isValid={touched[q.surveyId] && !errors[q.surveyId]}
+                        isInvalid={touched[q.surveyId] && !!errors[q.surveyId]}
                       />
-                      {/* <ErrorMessage
+                      <ErrorMessage
                         className="text-danger"
-                        name="name"
+                        name={q.surveyId}
                         component="div"
-                      /> */}
+                      />
                     </Form.Group>
                   );
                 })}

@@ -3,28 +3,28 @@
     "model": "Survey",
     "data": {
       "title": "Cuestionario de Control Interno",
-      "question": "¿Han habido cambios en las líneas de producción?"
+      "question": "1. ¿Han habido cambios en las líneas de producción?"
     }
   },
   {
     "model": "Survey",
     "data": {
       "title": "Cuestionario de Control Interno",
-      "question": "¿Serán necesarias nuevas inversiones en planta? En su caso, ¿de qué magnitud y en qué época , aproximadamente?"
+      "question": "2. ¿Serán necesarias nuevas inversiones en planta? En su caso, ¿de qué magnitud y en qué época , aproximadamente?"
     }
   },
   {
     "model": "Survey",
     "data": {
       "title": "Cuestionario de Evaluación Preeliminar",
-      "question": "¿Cuales han sido los fenómenos ecónomicos que más efectos han tenido sobre el giro a que pertenece su empresa?"
+      "question": "1. ¿Cuales han sido los fenómenos ecónomicos que más efectos han tenido sobre el giro a que pertenece su empresa?"
     }
   },
   {
     "model": "Survey",
     "data": {
       "title": "Cuestionario de Evaluación Preeliminar",
-      "question": "¿Han habido cambios importantes en el mercado o en la competencia?   "
+      "question": "2. ¿Han habido cambios importantes en el mercado o en la competencia?   "
     }
   }
 ]

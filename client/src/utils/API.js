@@ -69,9 +69,20 @@ export default {
     return axios.get("/api/planning/survey/titles");
   },
 
-  fetchSurvey: function(data) {
-    let { auditId, surveyTitle } = data;
+  fetchSurvey: function({ auditId, surveyTitle }) {
     return axios.get("/api/planning/survey/" + auditId + "/" + surveyTitle);
+  },
+
+  postNewAnswer: function(answer) {
+    return axios.post("/api/planning/survey/post", answer);
+  },
+
+  updateAnswer: function(answer) {
+    return axios.put("/api/planning/survey/update", answer);
+  },
+
+  deleteAnswer: function(answer) {
+    return axios.delete("/api/planning/survey/delete", answer);
   },
 
   // =================================================================

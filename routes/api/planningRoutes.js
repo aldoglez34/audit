@@ -104,4 +104,42 @@ router.get("/survey/:auditId/:surveyTitle", function(req, res) {
     });
 });
 
+// postNewAnswer()
+// matches with /api/planning/survey/post
+router.post("/survey/post", function(req, res) {
+  const [auditId, answer] = req.body;
+  console.log("@post - posting", auditId, answer);
+  // let saveAllAnswers = new Promise((resolve, reject) => {
+  //   answers.forEach((value, index, array) => {
+  //     // create answer
+  //     model.SurveyAnswer.create({
+  //       auditId: auditId,
+  //       surveyId: value.surveyId,
+  //       answer: value.answer
+  //     })
+  //       .then(() => {
+  //         // check if its finished
+  //         if (index === array.length - 1) resolve();
+  //       })
+  //       .catch(err => res.send(err));
+  //   });
+  // });
+  // // this is gonna be executed when I calll resolve
+  // saveAllAnswers.then(() => res.send(res)).catch(err => res.send(err));
+});
+
+// updateAnswer()
+// matches with /api/planning/survey/update
+router.put("/survey/update", function(req, res) {
+  const [auditId, answer] = req.body;
+  console.log("@post - updating", auditId, answer);
+});
+
+// deleteAnswer()
+// matches with /api/planning/survey/delete
+router.delete("/survey/update", function(req, res) {
+  const [auditId, answer] = req.body;
+  console.log("@post - deleting", auditId, answer);
+});
+
 module.exports = router;

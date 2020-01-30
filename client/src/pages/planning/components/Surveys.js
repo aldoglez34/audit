@@ -5,7 +5,7 @@ import { Spinner, Form, Button } from "react-bootstrap";
 import { Formik, ErrorMessage } from "formik";
 import API from "../../../utils/API";
 import SurveyDropdown from "./SurveyDropdown";
-// const assert = require("assert");
+import { diff } from "deep-object-diff";
 
 const Surveys = React.memo(function Surveys(props) {
   const audit = useSelector(state => state.audit);
@@ -21,7 +21,6 @@ const Surveys = React.memo(function Surveys(props) {
   }, []);
 
   const initValues = s => {
-    console.log(s);
     let values = {};
     s.map(
       q =>
@@ -30,6 +29,14 @@ const Surveys = React.memo(function Surveys(props) {
           : "")
     );
     return values;
+  };
+
+  const convertToArr = obj => {
+    let arr = [];
+    for (let [key, value] of Object.entries(obj)) {
+      arr.push({ surveyId: key, answer: value });
+    }
+    return arr;
   };
 
   return (
@@ -52,17 +59,79 @@ const Surveys = React.memo(function Surveys(props) {
         <Formik
           initialValues={initValues(survey)}
           onSubmit={(values, { setSubmitting }) => {
-            // setSubmitting(true);
-            // remember survey has the initialValues!
-            let initialValues = {};
-            survey.map(
-              q =>
-                (initialValues[q.surveyId] = q.SurveyAnswers.length
-                  ? q.SurveyAnswers[0].answer
-                  : "")
-            );
-            console.log("@onSubmit - initial values:", initialValues);
-            console.log("@onSubmit - new values:", values);
+            setSubmitting(false);
+            // remember "survey" still has the initialValues
+            let initialValues = initValues(survey);
+            // ONLY post/put answers that changed
+            // use "diff" to catch all the changes between initial values and final values
+            // the result will be an object with the properties that changed
+            // if nothing changed, the result will be an empty object
+            let changes = diff(initialValues, values);
+            // check if "changes" is empty
+            if (!Object.keys(changes).length) {
+              alert("No se registraron cambios en las respuestas");
+            } else {
+              let arr = convertToArr(changes);
+              // handle saving answers
+              let saveAllAnswers = new Promise((resolve, reject) => {
+                // iterate answers array
+                arr.forEach((value, index, array) => {
+                  // if the answer is empty, delete it from the db
+                  if (value.answer === "") {
+                    API.deleteAnswer([audit.auditId, value])
+                      .then(res => {
+                        console.log("@forEach, deleting answer", value, res);
+                        if (index === array.length - 1) resolve();
+                      })
+                      .catch(err => console.log(err));
+                  }
+                  // if the answer is not empty AND its initialValue is empty, post it
+                  else if (
+                    !value.answer === "" &&
+                    initialValues[value.surveyId] === ""
+                  ) {
+                    API.postNewAnswer([audit.auditId, value])
+                      .then(res => {
+                        console.log("@forEach, posting answer", value, res);
+                        if (index === array.length - 1) resolve();
+                      })
+                      .catch(err => console.log(err));
+                  }
+                  // if the answer is not empty AND its initialValue is not empty either, update it
+                  else if (
+                    !value.answer === "" &&
+                    !initialValues[value.surveyId] === ""
+                  ) {
+                    API.updateAnswer([audit.auditId, value])
+                      .then(res => {
+                        console.log("@forEach, updating answer", value, res);
+                        if (index === array.length - 1) resolve();
+                      })
+                      .catch(err => console.log(err));
+                  }
+                });
+              });
+
+              // this is gonna be executed when I calll resolve
+              saveAllAnswers
+                .then(() => alert("Respuestas guardadas con éxito"))
+                .catch(err => {
+                  console.log(err);
+                  alert("Ocurrió un error");
+                });
+
+              // API.saveNewAnswer([audit.auditId, arr])
+              //   .then(res => {
+              //     // check if errors
+              //     if (res.data.errors) {
+              //       alert(res.data.errors[0].message);
+              //       setSubmitting(false);
+              //     } else {
+              //       alert("Respuestas guardadads con éxito");
+              //     }
+              //   })
+              //   .catch(err => console.log(err));
+            }
           }}
         >
           {({
@@ -83,7 +152,7 @@ const Surveys = React.memo(function Surveys(props) {
                       <Form.Control
                         maxLength="250"
                         type="text"
-                        placeholder="Ingresa la respuesta"
+                        placeholder="Ingresa una respuesta"
                         name={q.surveyId}
                         value={values[q.surveyId]}
                         onChange={handleChange}

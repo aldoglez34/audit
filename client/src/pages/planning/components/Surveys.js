@@ -21,6 +21,7 @@ const Surveys = React.memo(function Surveys(props) {
   }, []);
 
   const initValues = s => {
+    console.log(s);
     let values = {};
     s.map(
       q =>
@@ -52,8 +53,7 @@ const Surveys = React.memo(function Surveys(props) {
           initialValues={initValues(survey)}
           onSubmit={(values, { setSubmitting }) => {
             // setSubmitting(true);
-            // remember that survey holds the initial values
-            console.log("@onSubmit - remember survey has the initialValues:");
+            // remember survey has the initialValues!
             let initialValues = {};
             survey.map(
               q =>
@@ -61,16 +61,8 @@ const Surveys = React.memo(function Surveys(props) {
                   ? q.SurveyAnswers[0].answer
                   : "")
             );
-            console.log(initialValues);
-            console.log("@onSubmit - values: ${values}");
-            console.log(values);
-            // comparison
-            // console.log(assert.deepStrictEqual(initialValues, values));
-            if (initialValues === values) {
-              console.log("@comparison - same");
-            } else {
-              console.log("@comparison - NOT the same");
-            }
+            console.log("@onSubmit - initial values:", initialValues);
+            console.log("@onSubmit - new values:", values);
           }}
         >
           {({

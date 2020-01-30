@@ -5,10 +5,7 @@ import { Spinner, Form, Button } from "react-bootstrap";
 import { Formik, ErrorMessage } from "formik";
 import API from "../../../utils/API";
 import SurveyDropdown from "./SurveyDropdown";
-
-const pdfMake = require("pdfmake/build/pdfmake.js");
-const pdfFonts = require("pdfmake/build/vfs_fonts.js");
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+// const assert = require("assert");
 
 const Surveys = React.memo(function Surveys(props) {
   const audit = useSelector(state => state.audit);
@@ -23,9 +20,9 @@ const Surveys = React.memo(function Surveys(props) {
       .catch(err => console.log(err));
   }, []);
 
-  const initValues = data => {
+  const initValues = s => {
     let values = {};
-    data.map(
+    s.map(
       q =>
         (values[q.surveyId] = q.SurveyAnswers.length
           ? q.SurveyAnswers[0].answer
@@ -54,8 +51,26 @@ const Surveys = React.memo(function Surveys(props) {
         <Formik
           initialValues={initValues(survey)}
           onSubmit={(values, { setSubmitting }) => {
-            setSubmitting(true);
+            // setSubmitting(true);
+            // remember that survey holds the initial values
+            console.log("@onSubmit - remember survey has the initialValues:");
+            let initialValues = {};
+            survey.map(
+              q =>
+                (initialValues[q.surveyId] = q.SurveyAnswers.length
+                  ? q.SurveyAnswers[0].answer
+                  : "")
+            );
+            console.log(initialValues);
+            console.log("@onSubmit - values: ${values}");
             console.log(values);
+            // comparison
+            // console.log(assert.deepStrictEqual(initialValues, values));
+            if (initialValues === values) {
+              console.log("@comparison - same");
+            } else {
+              console.log("@comparison - NOT the same");
+            }
           }}
         >
           {({
@@ -74,16 +89,11 @@ const Surveys = React.memo(function Surveys(props) {
                     <Form.Group key={q.surveyId}>
                       <Form.Label>{q.question}</Form.Label>
                       <Form.Control
-                        maxLength="150"
+                        maxLength="250"
                         type="text"
                         placeholder="Ingresa la respuesta"
                         name={q.surveyId}
                         value={values[q.surveyId]}
-                        // value={
-                        //   q.SurveyAnswers.length
-                        //     ? q.SurveyAnswers[0].answer
-                        //     : ""
-                        // }
                         onChange={handleChange}
                         onBlur={handleBlur}
                         isValid={touched[q.surveyId] && !errors[q.surveyId]}

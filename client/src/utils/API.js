@@ -82,7 +82,7 @@ export default {
   },
 
   deleteAnswer: function(answer) {
-    return axios.delete("/api/planning/survey/delete", answer);
+    return axios.delete("/api/planning/survey/delete/" + answer);
   },
 
   // =================================================================

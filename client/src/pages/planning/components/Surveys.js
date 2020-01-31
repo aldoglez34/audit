@@ -62,8 +62,6 @@ const Surveys = React.memo(function Surveys(props) {
             setSubmitting(false);
             // remember "survey" still has the initialValues
             let initialValues = initValues(survey);
-            console.log("@submit - values", values);
-            console.log("@submit - initialValues", initialValues);
             // ONLY post/put answers that changed
             // use "diff" to catch all the changes between initial values and final values
             // the result will be an object with the properties that changed
@@ -74,86 +72,53 @@ const Surveys = React.memo(function Surveys(props) {
               alert("No se registraron cambios en las respuestas");
             } else {
               let arr = convertToArr(changes);
-              console.log("@submit - changes", arr);
-              console.log("============");
               // handle saving answers
               let saveAllAnswers = new Promise((resolve, reject) => {
                 // iterate answers array
                 arr.forEach((value, index, array) => {
-                  console.log("now analizing", value);
-                  console.log(
-                    "its initial value is",
-                    initialValues[value.surveyId]
-                  );
-
-                  // if the answer is empty, delete it from the db}
-                  if (value.answer === "") {
-                    console.log(`${value.answer} is empty`);
-                    API.deleteAnswer([audit.auditId, value])
-                      .then(res => {
-                        console.log("@forEach, deleting answer", value, res);
-                        if (index === array.length - 1) resolve();
-                      })
-                      .catch(err => console.log(err));
-                  }
-
-                  // if the answer is not empty AND its initialValue is empty, post it
-                  if (
-                    !value.answer === "" &&
-                    initialValues[value.surveyId] === ""
-                  ) {
-                    console.log(
-                      `${value.answer} is not empty and ${
-                        initialValues[value.surveyId]
-                      } is empty`
-                    );
+                  //
+                  let iv = initialValues[value.surveyId];
+                  let v = value.answer;
+                  //
+                  // POST scenario
+                  // the inititalValue has to be "" and the value has to be differente than ""
+                  if (iv === "" && v !== "") {
                     API.postNewAnswer([audit.auditId, value])
                       .then(res => {
-                        console.log("@forEach, posting answer", value, res);
                         if (index === array.length - 1) resolve();
                       })
                       .catch(err => console.log(err));
                   }
-
-                  // if the answer is not empty AND its initialValue is not empty either, update it
-                  if (
-                    !value.answer === "" &&
-                    !initialValues[value.surveyId] === ""
-                  ) {
-                    console.log(
-                      `${value.answer} is not empty and ${
-                        initialValues[value.surveyId]
-                      } is not empty either`
-                    );
+                  // PUT scenario
+                  // both the initialValue and the value have to be different than ""
+                  if (iv !== "" && v !== "") {
                     API.updateAnswer([audit.auditId, value])
                       .then(res => {
-                        console.log("@forEach, updating answer", value, res);
+                        if (index === array.length - 1) resolve();
+                      })
+                      .catch(err => console.log(err));
+                  }
+                  // DELETE scenario
+                  // the inititalValue has to be different than "" and the value has to be ""
+                  if (iv !== "" && v === "") {
+                    API.deleteAnswer(audit.auditId + "-" + value.surveyId)
+                      .then(res => {
                         if (index === array.length - 1) resolve();
                       })
                       .catch(err => console.log(err));
                   }
                 });
               });
-
-              // this is gonna be executed when I calll resolve
+              // this is gonna be executed when "resolve" is called
               saveAllAnswers
-                .then(() => alert("Respuestas guardadas con éxito"))
+                .then(() => {
+                  alert("Respuestas guardadas con éxito");
+                  window.location.reload();
+                })
                 .catch(err => {
                   console.log(err);
                   alert("Ocurrió un error");
                 });
-
-              // API.saveNewAnswer([audit.auditId, arr])
-              //   .then(res => {
-              //     // check if errors
-              //     if (res.data.errors) {
-              //       alert(res.data.errors[0].message);
-              //       setSubmitting(false);
-              //     } else {
-              //       alert("Respuestas guardadads con éxito");
-              //     }
-              //   })
-              //   .catch(err => console.log(err));
             }
           }}
         >

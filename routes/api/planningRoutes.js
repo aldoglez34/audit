@@ -108,21 +108,53 @@ router.get("/survey/:auditId/:surveyTitle", function(req, res) {
 // matches with /api/planning/survey/post
 router.post("/survey/post", function(req, res) {
   const [auditId, answer] = req.body;
-  console.log("@post - posting", auditId, answer);
+  model.SurveyAnswer.create({
+    auditId: auditId,
+    surveyId: answer.surveyId,
+    answer: answer.answer
+  })
+    .then(function(data) {
+      res.json(data);
+    })
+    .catch(function(err) {
+      res.send(err);
+    });
 });
 
 // updateAnswer()
 // matches with /api/planning/survey/update
 router.put("/survey/update", function(req, res) {
   const [auditId, answer] = req.body;
-  console.log("@post - updating", auditId, answer);
+  model.SurveyAnswer.update(
+    { answer: answer.answer },
+    { where: { auditId: auditId, surveyId: answer.surveyId } }
+  )
+    .then(function(data) {
+      res.json(data);
+    })
+    .catch(function(err) {
+      res.send(err);
+    });
 });
 
 // deleteAnswer()
-// matches with /api/planning/survey/delete
-router.delete("/survey/update", function(req, res) {
-  const [auditId, answer] = req.body;
-  console.log("@post - deleting", auditId, answer);
+// matches with /api/planning/survey/delete/:data
+router.delete("/survey/delete/:data", function(req, res) {
+  let auditId = req.params.data.substr(0, req.params.data.indexOf("-"));
+  let surveyId = req.params.data.substr(req.params.data.indexOf("-") + 1);
+
+  model.SurveyAnswer.destroy({
+    where: {
+      auditId: auditId,
+      surveyId: surveyId
+    }
+  })
+    .then(function(data) {
+      res.json(data);
+    })
+    .catch(function(err) {
+      res.send(err);
+    });
 });
 
 module.exports = router;

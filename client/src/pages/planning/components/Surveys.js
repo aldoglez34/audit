@@ -62,6 +62,8 @@ const Surveys = React.memo(function Surveys(props) {
             setSubmitting(false);
             // remember "survey" still has the initialValues
             let initialValues = initValues(survey);
+            console.log("@submit - values", values);
+            console.log("@submit - initialValues", initialValues);
             // ONLY post/put answers that changed
             // use "diff" to catch all the changes between initial values and final values
             // the result will be an object with the properties that changed
@@ -72,12 +74,17 @@ const Surveys = React.memo(function Surveys(props) {
               alert("No se registraron cambios en las respuestas");
             } else {
               let arr = convertToArr(changes);
-              console.log("@submit", arr);
+              console.log("@submit - changes", arr);
+              console.log("============");
               // handle saving answers
               let saveAllAnswers = new Promise((resolve, reject) => {
                 // iterate answers array
                 arr.forEach((value, index, array) => {
-                  console.log("begins comparing");
+                  console.log("now analizing", value);
+                  console.log(
+                    "its initial value is",
+                    initialValues[value.surveyId]
+                  );
 
                   // if the answer is empty, delete it from the db}
                   if (value.answer === "") {

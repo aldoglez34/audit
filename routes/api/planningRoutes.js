@@ -109,23 +109,6 @@ router.get("/survey/:auditId/:surveyTitle", function(req, res) {
 router.post("/survey/post", function(req, res) {
   const [auditId, answer] = req.body;
   console.log("@post - posting", auditId, answer);
-  // let saveAllAnswers = new Promise((resolve, reject) => {
-  //   answers.forEach((value, index, array) => {
-  //     // create answer
-  //     model.SurveyAnswer.create({
-  //       auditId: auditId,
-  //       surveyId: value.surveyId,
-  //       answer: value.answer
-  //     })
-  //       .then(() => {
-  //         // check if its finished
-  //         if (index === array.length - 1) resolve();
-  //       })
-  //       .catch(err => res.send(err));
-  //   });
-  // });
-  // // this is gonna be executed when I calll resolve
-  // saveAllAnswers.then(() => res.send(res)).catch(err => res.send(err));
 });
 
 // updateAnswer()

@@ -72,12 +72,16 @@ const Surveys = React.memo(function Surveys(props) {
               alert("No se registraron cambios en las respuestas");
             } else {
               let arr = convertToArr(changes);
+              console.log("@submit", arr);
               // handle saving answers
               let saveAllAnswers = new Promise((resolve, reject) => {
                 // iterate answers array
                 arr.forEach((value, index, array) => {
-                  // if the answer is empty, delete it from the db
+                  console.log("begins comparing");
+
+                  // if the answer is empty, delete it from the db}
                   if (value.answer === "") {
+                    console.log(`${value.answer} is empty`);
                     API.deleteAnswer([audit.auditId, value])
                       .then(res => {
                         console.log("@forEach, deleting answer", value, res);
@@ -85,11 +89,17 @@ const Surveys = React.memo(function Surveys(props) {
                       })
                       .catch(err => console.log(err));
                   }
+
                   // if the answer is not empty AND its initialValue is empty, post it
-                  else if (
+                  if (
                     !value.answer === "" &&
                     initialValues[value.surveyId] === ""
                   ) {
+                    console.log(
+                      `${value.answer} is not empty and ${
+                        initialValues[value.surveyId]
+                      } is empty`
+                    );
                     API.postNewAnswer([audit.auditId, value])
                       .then(res => {
                         console.log("@forEach, posting answer", value, res);
@@ -97,11 +107,17 @@ const Surveys = React.memo(function Surveys(props) {
                       })
                       .catch(err => console.log(err));
                   }
+
                   // if the answer is not empty AND its initialValue is not empty either, update it
-                  else if (
+                  if (
                     !value.answer === "" &&
                     !initialValues[value.surveyId] === ""
                   ) {
+                    console.log(
+                      `${value.answer} is not empty and ${
+                        initialValues[value.surveyId]
+                      } is not empty either`
+                    );
                     API.updateAnswer([audit.auditId, value])
                       .then(res => {
                         console.log("@forEach, updating answer", value, res);

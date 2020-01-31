@@ -157,7 +157,7 @@ class Audits extends PureComponent {
               <div className="d-flex flex-row align-items-center w-25 ml-auto">
                 <i
                   className="fas fa-search mr-2"
-                  style={{ fontSize: "16px" }}
+                  // style={{ fontSize: "16px" }}
                 />
                 <FormControl type="text" placeholder="Buscar Auditoría" />
               </div>

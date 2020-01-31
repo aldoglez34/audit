@@ -9,7 +9,7 @@ const FilterByClientDropdown = React.memo(function FilterByClientDropdown(
     <Dropdown>
       <Dropdown.Toggle
         className="auditsDropdown rounded-0"
-        style={{ fontSize: "16px" }}
+        // style={{ fontSize: "16px" }}
       >
         <i className="fas fa-filter mr-1" />
         <span>Filtros</span>

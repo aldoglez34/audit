@@ -44,7 +44,7 @@ const Planning = React.memo(function Planning() {
       </div>
       {/* tabs */}
       {workplan.length && surveyTitles.length ? (
-        <Tabs defaultActiveKey="Guía de trabajo" id="uncontrolled-tab-example">
+        <Tabs defaultActiveKey="Guía de trabajo" className="customTabs">
           <Tab eventKey="Guía de trabajo" title="Guía de trabajo">
             <Workplan workplan={workplan} />
           </Tab>

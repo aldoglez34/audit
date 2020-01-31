@@ -1,5 +1,10 @@
-.dateInput {
-  cursor: pointer !important;
-  padding: 5px;
-  border-radius: 5px;
+.customTabs > a.active {
+  background-color: transparent !important;
+  border-bottom-color: whitesmoke !important;
+  font-weight: bolder;
+  // color: #264bc4 !important;
+}
+
+.customTabs > a {
+  color: gray;
 }

@@ -19,7 +19,7 @@ const ModalNewClient = React.memo(function ModalNewClient() {
       .string()
       .length(12, "Longitud incorrecta")
       .required("Requerido"),
-    address: yup.string()
+    address: yup.string().required("Requerido")
   });
 
   return user.role === "Admin" ? (

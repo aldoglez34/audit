@@ -6,7 +6,7 @@ const SortClientsDropdown = React.memo(function SortClientsDropdown(props) {
   return (
     <Dropdown>
       <Dropdown.Toggle
-        className="auditsDropdown rounded-0"
+        className="auditsDropdown border-0"
         // style={{ fontSize: "16px" }}
       >
         <i className="fas fa-sort-amount-down mr-1" />

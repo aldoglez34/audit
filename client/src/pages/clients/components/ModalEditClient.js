@@ -22,7 +22,7 @@ const ModalEditClient = React.memo(function ModalEditClient(props) {
       .string()
       .length(12, "Longitud incorrecta")
       .required("Requerido"),
-    address: yup.string()
+    address: yup.string().required("Requerido")
   });
 
   return user.role === "Admin" ? (

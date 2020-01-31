@@ -80,44 +80,6 @@ router.post("/new", function(req, res) {
   })
     .then(data => res.json(data))
     .catch(err => res.json(err));
-
-  // model.Audit.create({
-  //   name: req.body.clientName,
-  //   year: req.body.clientAcronym,
-  //   description: req.body.year
-  // })
-  //   .then(function(row) {
-  //     // this is the id from the recently created audit
-  //     const newAudit = row.dataValues.id;
-
-  //     // creating blank cci
-  //     model.Cci.create({
-  //       auditId: newAudit
-  //     })
-  //       .then(function(res) {
-  //         // res.json(res);
-  //       })
-  //       .catch(function(err) {
-  //         res.send(err);
-  //       });
-
-  //     // creating blank cefs
-  //     model.Cefs.create({
-  //       auditId: newAudit
-  //     })
-  //       .then(function(res) {
-  //         // res.json(res);
-  //       })
-  //       .catch(function(err) {
-  //         res.send(err);
-  //       });
-
-  //     // response to the frontend
-  //     res.json(res);
-  //   })
-  //   .catch(function(err) {
-  //     res.send(err);
-  //   });
 });
 
 module.exports = router;

@@ -86,18 +86,16 @@ class Clients extends PureComponent {
     return (
       <Layout homeMenu="Clientes">
         {/* title */}
-        <Row>
-          <Col md={8}>
-            <h2>Clientes</h2>
-            <hr className="myDivider" />
-          </Col>
-          <Col className="mt-1 mt-md-0 text-md-right" md={4}>
+        <div className="d-flex flex-row">
+          <h2>Clientes</h2>
+          <div className="ml-auto">
             <ModalNewClient />
-          </Col>
-        </Row>
+          </div>
+        </div>
+        <hr className="myDivider" />
         {this.state.clients ? (
           this.state.clients.length ? (
-            <>
+            <React.Fragment>
               {/* sorting and search bar */}
               <Row className="mb-3 px-3">
                 <div className="d-flex flex-row align-items-center">
@@ -157,7 +155,7 @@ class Clients extends PureComponent {
                   />
                 </Col>
               </Row>
-            </>
+            </React.Fragment>
           ) : (
             <div className="text-center text-muted mt-4">
               No hay Clientes para mostrar

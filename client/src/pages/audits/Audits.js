@@ -20,7 +20,7 @@ import "./components/dropdowns.scss";
 class Audits extends PureComponent {
   state = {
     audits: "",
-    uniqueClients: [],
+    uniqueClients: "",
     //
     productsPerPage: 8,
     pageCount: 0,
@@ -127,45 +127,41 @@ class Audits extends PureComponent {
 
   render() {
     return (
-      <Layout homeMenu={"Auditorías"}>
+      <Layout homeMenu="Auditorías">
         {/* title */}
-        <Row>
-          <Col md={8}>
-            <h2>Auditorías</h2>
-            <hr className="myDivider" />
-          </Col>
-          <Col md={4} className="mt-1 mt-md-0 text-md-right">
+        <div className="d-flex flex-row">
+          <h2>Auditorías</h2>
+          <div className="ml-auto">
             <ModalNewAudit />
-          </Col>
-        </Row>
+          </div>
+        </div>
+        <hr className="myDivider" />
+        {/* content */}
         {this.state.audits && this.state.uniqueClients ? (
-          <>
-            {/* search bar and filters */}
-            <Row className="mb-3 px-3">
-              <div className="d-flex flex-row align-items-center">
-                <FilterByClientDropdown
-                  uniqueClients={this.state.uniqueClients}
-                  activeFilter={this.state.activeFilter}
-                />
-              </div>
-              <div className="d-flex flex-row align-items-center ml-4">
-                <SortAuditsDropdown
-                  activeSort={this.state.activeSort}
-                  handleSorting={this.handleSorting}
-                />
-              </div>
-              <div className="d-flex flex-row align-items-center w-25 ml-auto">
-                <i
-                  className="fas fa-search mr-2"
-                  // style={{ fontSize: "16px" }}
-                />
-                <FormControl type="text" placeholder="Buscar Auditoría" />
-              </div>
-            </Row>
-            {/* audits */}
-            <Row className="mt-2">
-              <Col>
-                {this.state.audits.length && this.state.uniqueClients.length ? (
+          this.state.audits.length && this.state.uniqueClients.length ? (
+            <React.Fragment>
+              {/* search bar and filters */}
+              <Row className="mb-3 px-3">
+                <div className="d-flex flex-row align-items-center">
+                  <FilterByClientDropdown
+                    uniqueClients={this.state.uniqueClients}
+                    activeFilter={this.state.activeFilter}
+                  />
+                </div>
+                <div className="d-flex flex-row align-items-center ml-4">
+                  <SortAuditsDropdown
+                    activeSort={this.state.activeSort}
+                    handleSorting={this.handleSorting}
+                  />
+                </div>
+                <div className="d-flex flex-row align-items-center w-25 ml-auto">
+                  <i className="fas fa-search mr-2" />
+                  <FormControl type="text" placeholder="Buscar Auditoría" />
+                </div>
+              </Row>
+              {/* audits */}
+              <Row className="mt-2">
+                <Col>
                   <ListGroup className="border-0 shadow-sm">
                     {this.state.audits
                       .slice(this.state.offset, this.state.limit)
@@ -201,27 +197,27 @@ class Audits extends PureComponent {
                         );
                       })}
                   </ListGroup>
-                ) : (
-                  <div className="text-center text-muted mt-4">
-                    No hay Auditorías para mostrar
-                  </div>
-                )}
-              </Col>
-            </Row>
-            {/* footer */}
-            <Row>
-              <Col md={3} className="d-flex align-items-center mt-2">
-                <em>{this.state.audits.length} Auditorías</em>
-              </Col>
-              <Col md={9} className="d-flex justify-content-end mt-2">
-                <MyPagination
-                  pageCount={this.state.pageCount}
-                  activePage={this.state.activePage}
-                  handleChangePage={this.handleChangePage}
-                />
-              </Col>
-            </Row>
-          </>
+                </Col>
+              </Row>
+              {/* footer */}
+              <Row>
+                <Col md={3} className="d-flex align-items-center mt-2">
+                  <em>{this.state.audits.length} Auditorías</em>
+                </Col>
+                <Col md={9} className="d-flex justify-content-end mt-2">
+                  <MyPagination
+                    pageCount={this.state.pageCount}
+                    activePage={this.state.activePage}
+                    handleChangePage={this.handleChangePage}
+                  />
+                </Col>
+              </Row>
+            </React.Fragment>
+          ) : (
+            <div className="text-center text-muted mt-4">
+              No hay Auditorías para mostrar
+            </div>
+          )
         ) : (
           <div className="text-center mt-4 pt-4">
             <Spinner animation="border" />

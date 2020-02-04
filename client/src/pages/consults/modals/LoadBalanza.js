@@ -31,9 +31,13 @@ const LoadBalanza = React.memo(function LoadBalanza() {
     API.uploadBalanza({ auditId, file })
       .then(res => {
         // if no errors
-        handleClose();
-        dispatch(auditActions.addBalanza());
-        window.location.reload();
+        if (res.data.errors) {
+          alert(res.data.errors[0].message);
+        } else {
+          handleClose();
+          dispatch(auditActions.addBalanza());
+          window.location.reload();
+        }
       })
       .catch(err => console.log(err));
   };

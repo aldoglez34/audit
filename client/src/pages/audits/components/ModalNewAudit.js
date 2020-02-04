@@ -115,7 +115,7 @@ const ModalNewAudit = React.memo(function ModalNewAudit() {
                                   value={c.clientId + "#" + c.abbreviation}
                                   key={c.clientId}
                                 >
-                                  {c.name}
+                                  {c.abbreviation}
                                 </option>
                               );
                             })}

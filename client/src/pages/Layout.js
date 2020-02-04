@@ -15,16 +15,17 @@ const Layout = React.memo(function Layout(props) {
         />
         <Container
           style={{
-            paddingTop: "6px",
+            paddingTop: "24px",
             paddingLeft: "24px",
             paddingRight: "24px",
             paddingBottom: "24px"
           }}
           fluid
         >
-          <Row>
+          {props.children}
+          {/* <Row>
             <Col className="pt-2 pb-4">{props.children}</Col>
-          </Row>
+          </Row> */}
         </Container>
       </Container>
     </div>

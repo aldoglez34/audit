@@ -14,23 +14,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     },
-    rubro: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    clasifEdosFinancieros: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    cuentaMayor: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    subCuenta: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
     cuentaContable: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    cuentaDescripción: {
       type: DataTypes.STRING,
       allowNull: false
     },

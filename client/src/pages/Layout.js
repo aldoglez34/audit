@@ -1,6 +1,6 @@
 import React from "react";
 import LeftNav from "../components/navs/LeftNav";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import TopHelperNav from "../components/navs/TopHelperNav";
 import PropTypes from "prop-types";
 
@@ -23,9 +23,6 @@ const Layout = React.memo(function Layout(props) {
           fluid
         >
           {props.children}
-          {/* <Row>
-            <Col className="pt-2 pb-4">{props.children}</Col>
-          </Row> */}
         </Container>
       </Container>
     </div>

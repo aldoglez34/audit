@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import * as auditActions from "../../../redux/actions/auditActions";
 import API from "../../../utils/API";
@@ -15,6 +15,7 @@ const LoadBalanza = React.memo(function LoadBalanza() {
   const user = useSelector(state => state.user);
 
   const [file, setFile] = useState();
+  const [isUploading, setIsUploading] = useState(false);
 
   const loadFile = async e => {
     e.preventDefault();
@@ -27,6 +28,7 @@ const LoadBalanza = React.memo(function LoadBalanza() {
   };
 
   const uploadFile = () => {
+    setIsUploading(true);
     let auditId = audit.auditId;
     API.uploadBalanza({ auditId, file })
       .then(res => {
@@ -43,7 +45,7 @@ const LoadBalanza = React.memo(function LoadBalanza() {
   };
 
   return user.role === "Admin" ? (
-    <>
+    <React.Fragment>
       <p>
         La balanza no ha sido cargada aún,{" "}
         <span
@@ -58,25 +60,28 @@ const LoadBalanza = React.memo(function LoadBalanza() {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Body>
-          <h3>Cargar balanza</h3>
-          <input
-            className="mt-2"
-            type="file"
-            accept=".csv"
-            onChange={e => loadFile(e)}
-          />
-          <br />
-          <Button
-            disabled={file ? false : true}
-            className="mt-2"
-            variant="primary"
-            onClick={uploadFile}
-          >
-            Cargar
-          </Button>
+          <h3 className="mb-3">Cargar balanza</h3>
+          {isUploading ? (
+            <div className="d-flex flex-column justify-content-center align-items-center mt-4 mb-3">
+              <span className="mb-2">Cargando...</span>
+              <Spinner animation="border" />
+            </div>
+          ) : (
+            <React.Fragment>
+              <div className="mb-3">
+                <input type="file" accept=".csv" onChange={e => loadFile(e)} />
+              </div>
+              {file ? (
+                <Button className="mb-2" variant="primary" onClick={uploadFile}>
+                  <i className="fas fa-upload mr-1" />
+                  Cargar
+                </Button>
+              ) : null}
+            </React.Fragment>
+          )}
         </Modal.Body>
       </Modal>
-    </>
+    </React.Fragment>
   ) : (
     <p>La balanza no ha sido cargada aún.</p>
   );

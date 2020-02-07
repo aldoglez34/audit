@@ -127,10 +127,40 @@ class Audits extends PureComponent {
   };
 
   calculateDays = date => {
-    let lastOpened = moment().format("YYYY MM DD");
-    let b = moment([2007, 0, 28]);
-    let days = a.diff(b, "days");
-    return "Última visita: " + days;
+    // get the date from the last visit and format it to moment
+    let lastVisited = moment(moment(date).format(moment.HTML5_FMT.DATE));
+    // get the date from
+    let today = moment(moment(Date.now()).format(moment.HTML5_FMT.DATE));
+    // get the difference in days
+    let daysDiff = today.diff(lastVisited, "days");
+    //
+    if (daysDiff === 0) {
+      return "Última visita: hoy";
+    }
+    if (daysDiff === 1) {
+      return "Última visita: ayer";
+    }
+    if (daysDiff > 1 && daysDiff < 7) {
+      return `Última visita: hace ${daysDiff} días`;
+    }
+    if (daysDiff >= 7 && daysDiff < 14) {
+      return "Última visita: hace 1 semana";
+    }
+    if (daysDiff >= 14 && daysDiff < 21) {
+      return "Última visita: hace 2 semanas";
+    }
+    if (daysDiff >= 21 && daysDiff < 28) {
+      return "Última visita: hace 3 semanas";
+    }
+    if (daysDiff >= 28 && daysDiff < 35) {
+      return "Última visita: hace 1 mes";
+    }
+    if (daysDiff >= 35 && daysDiff < 42) {
+      return "Última visita: hace más de un mes";
+    }
+    if (daysDiff >= 42) {
+      return "Última visita: hace mucho tiempo";
+    }
   };
 
   render() {
@@ -195,7 +225,7 @@ class Audits extends PureComponent {
                             <p className="mb-1 text-secondary">
                               {a.AuditVisits.length
                                 ? this.calculateDays(a.AuditVisits[0].date)
-                                : "Última visita: Nunca"}
+                                : "Última visita: nunca"}
                             </p>
                             <Button
                               className="purplebttn shadow-sm"

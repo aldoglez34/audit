@@ -2,8 +2,40 @@ const router = require("express").Router();
 const model = require("../../models");
 const Sequelize = require("sequelize");
 
+// =====
+// validations
+const validateMonth = value => {
+  const months = [
+    "ENERO",
+    "FEBRERO",
+    "MARZO",
+    "ABRIL",
+    "MAYO",
+    "JUNIO",
+    "JULIO",
+    "AGOSTO",
+    "SEPTIEMBRE",
+    "OCTUBRE",
+    "NOVIEMBRE",
+    "DICIEMBRE"
+  ];
+  return months.includes(value);
+};
+
+const validateCuentaContable = value => {
+  return value.length === 12 ? true : false;
+};
+
+const validateCuentaDescripción = value => {
+  if (typeof value === "string") return true;
+  return false;
+};
+
+const validateNumber = value => {};
+
+// =====
+// formats
 const formatStringValue = value => {
-  // if (value === undefined) return "???";
   if (typeof value !== "string") return "???";
   return value.replace('"', "").trim();
 };
@@ -19,6 +51,28 @@ const formatFloatValue = value => {
   return value;
 };
 
+const validateFile = arr => {
+  let ok = true;
+  arr.forEach((value, index, array) => {
+    // split the row in an array
+    let row = value.split(",");
+    // validate values
+    if (
+      validateMonth(row[0]) &&
+      validateCuentaContable(row[1]) &&
+      validateCuentaDescripción(row[2]) &&
+      validateNumber(row[3]) &&
+      validateNumber(row[4]) &&
+      validateNumber(row[5]) &&
+      validateNumber(row[6])
+    ) {
+      console.log("el archivo está mal");
+    } else {
+      console.log("el archivo pasó la prueba");
+    }
+  });
+};
+
 // uploadBalanza()
 // matches with /api/balanza/upload
 router.post("/upload", function(req, res) {
@@ -28,6 +82,9 @@ router.post("/upload", function(req, res) {
   if (req.body.hasHeaders) fileArr.shift();
   // if last row is empty, delete it
   if (!fileArr[fileArr.length - 1]) fileArr.pop();
+  // validating file
+  let fileValidation = validateFile(fileArr);
+
   // promise
   let insertRows = new Promise((resolve, reject) => {
     // insert rows

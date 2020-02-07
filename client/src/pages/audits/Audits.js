@@ -172,7 +172,7 @@ class Audits extends PureComponent {
                             className="bg-white py-3"
                           >
                             <h4
-                              className="mr-2 mb-0"
+                              className="mr-2 mb-1"
                               style={{ color: "#2c2f33" }}
                             >
                               <i
@@ -184,7 +184,9 @@ class Audits extends PureComponent {
                             <p className="mb-0" style={{ color: "#2c2f33" }}>
                               {a.description}
                             </p>
-                            <p className="mb-1 text-secondary">{a.updatedAt}</p>
+                            <p className="mb-1 text-secondary">
+                              Último acceso: xxx
+                            </p>
                             <Button
                               className="purplebttn shadow-sm"
                               size="sm"

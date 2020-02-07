@@ -2,127 +2,19 @@
   {
     "model": "Audit",
     "data": {
-      "name": "SEV 2016",
-      "clientId": 1,
-      "year": 2016,
-      "description": "Esta es una descripción"
-    }
-  },
-  {
-    "model": "Audit",
-    "data": {
-      "name": "ALDF 2017",
-      "clientId": 3,
-      "year": 2017,
-      "description": "Esta es una descripción"
-    }
-  },
-  {
-    "model": "Audit",
-    "data": {
       "name": "CONTRALORÍA 2018",
       "clientId": 2,
       "year": 2018,
-      "description": "Esta es una descripción"
+      "description": "Auditoría de la CONTRALORÍA correspondiente al ejercicio 2018."
     }
   },
   {
     "model": "Audit",
     "data": {
-      "name": "ORFIS 2017",
-      "clientId": 4,
-      "year": 2017,
-      "description": "Esta es una descripción"
-    }
-  },
-  {
-    "model": "Audit",
-    "data": {
-      "name": "CECYTEV 2017",
-      "clientId": 6,
-      "year": 2017,
-      "description": "Esta es una descripción"
-    }
-  },
-  {
-    "model": "Audit",
-    "data": {
-      "name": "COBAEV 2017",
-      "clientId": 5,
-      "year": 2017,
-      "description": "Esta es una descripción"
-    }
-  },
-  {
-    "model": "Audit",
-    "data": {
-      "name": "COBAEV 2018",
-      "clientId": 5,
-      "year": 2018,
-      "description": "Esta es una descripción"
-    }
-  },
-  {
-    "model": "Audit",
-    "data": {
-      "name": "CONTRALORÍA 2019",
+      "name": "CONTRALORÍA 2017",
       "clientId": 2,
-      "year": 2019,
-      "description": "Esta es una descripción"
-    }
-  },
-  {
-    "model": "Audit",
-    "data": {
-      "name": "SEV 2017",
-      "clientId": 1,
       "year": 2017,
-      "description": "Esta es una descripción"
-    }
-  },
-  {
-    "model": "Audit",
-    "data": {
-      "name": "SEV 2018",
-      "clientId": 1,
-      "year": 2018,
-      "description": "Esta es una descripción"
-    }
-  },
-  {
-    "model": "Audit",
-    "data": {
-      "name": "SEV 2019",
-      "clientId": 1,
-      "year": 2019,
-      "description": "Esta es una descripción"
-    }
-  },
-  {
-    "model": "Audit",
-    "data": {
-      "name": "ORFIS 2016",
-      "clientId": 4,
-      "year": 2016,
-      "description": "Esta es una descripción"
-    }
-  },
-  {
-    "model": "Audit",
-    "data": {
-      "name": "ORFIS 2018",
-      "clientId": 4,
-      "year": 2018,
-      "description": "Esta es una descripción"
-    }
-  },
-  {
-    "model": "Audit",
-    "data": {
-      "name": "ORFIS 2019",
-      "clientId": 4,
-      "year": 2019,
-      "description": "Esta es una descripción"
+      "description": "Auditoría de la CONTRALORÍA correspondiente al ejercicio 2017."
     }
   }
 ]

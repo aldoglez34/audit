@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Button, Spinner, Form } from "react-bootstrap";
+import { Modal, Button, Spinner, Form, ListGroup } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import * as auditActions from "../../../../redux/actions/auditActions";
 import API from "../../../../utils/API";
@@ -38,7 +38,6 @@ const LoadBalanza = React.memo(function LoadBalanza() {
         if (res.data.errors) {
           alert(res.data.errors[0].message);
         } else {
-          console.log(res.data);
           setReport(res.data);
           // handleClose();
           // dispatch(auditActions.addBalanza());
@@ -67,19 +66,35 @@ const LoadBalanza = React.memo(function LoadBalanza() {
           {report.length ? (
             <React.Fragment>
               <h3 className="mb-3">Reporte balanza</h3>
-              {report.map(m => {
-                return (
-                  <dl key={m.month} className="mb-2">
-                    <dt>
-                      <strong>{m.month}</strong>
-                    </dt>
-                    <dd>Total Saldo Inicial: {m.total_si.toLocaleString()}</dd>
-                    <dd>Total Cargos: {m.total_c.toLocaleString()}</dd>
-                    <dd>Total Abonos: {m.total_a.toLocaleString()}</dd>
-                    <dd>Total Saldo Final: {m.total_sf.toLocaleString()}</dd>
-                  </dl>
-                );
-              })}
+              <ListGroup>
+                {report.map(m => {
+                  return (
+                    <ListGroup.Item key={m.month}>
+                      <dl>
+                        <dt className="mb-2">
+                          <strong>{m.month}</strong>
+                        </dt>
+                        <dd>
+                          Total Saldo Inicial:{" "}
+                          {Math.round(Number(m.total_si)).toLocaleString()}
+                        </dd>
+                        <dd>
+                          Total Cargos:{" "}
+                          {Math.round(Number(m.total_c)).toLocaleString()}
+                        </dd>
+                        <dd>
+                          Total Abonos:{" "}
+                          {Math.round(Number(m.total_a)).toLocaleString()}
+                        </dd>
+                        <dd>
+                          Total Saldo Final:{" "}
+                          {Math.round(Number(m.total_sf)).toLocaleString()}
+                        </dd>
+                      </dl>
+                    </ListGroup.Item>
+                  );
+                })}
+              </ListGroup>
             </React.Fragment>
           ) : (
             <React.Fragment>

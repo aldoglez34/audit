@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import * as auditActions from "../../redux/actions/auditActions";
 import API from "../../utils/API";
 import { Card, CardColumns } from "react-bootstrap";
@@ -8,10 +8,18 @@ import Layout from "../Layout";
 const AuditHome = React.memo(function AuditHome(props) {
   const dispatch = useDispatch();
 
+  const user = useSelector(state => state.user);
+
   useEffect(() => {
     API.fetchOneAudit(props.routeProps.match.params.auditId)
       .then(res => {
+        // save data to redux
         dispatch(auditActions.setAuditInfo(res.data));
+        // register visit
+        API.postVisit({
+          auditId: res.data.auditId,
+          userId: user.userId
+        }).catch(err => console.log(err));
       })
       .catch(err => console.log(err));
   }, []);

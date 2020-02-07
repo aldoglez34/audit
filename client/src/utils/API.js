@@ -11,8 +11,12 @@ export default {
   // =================================================================
   // AUDITS
 
-  fetchAudits: function() {
-    return axios.get("/api/audit/all");
+  postVisit: function(data) {
+    return axios.post("/api/audit/visit", data);
+  },
+
+  fetchAudits: function(userId) {
+    return axios.get("/api/audit/all/" + userId);
   },
 
   fetchUniqueClients: function() {

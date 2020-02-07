@@ -41,6 +41,7 @@ module.exports = function(sequelize, DataTypes) {
     Audit.belongsTo(models.Client, { foreignKey: "clientId" });
     Audit.hasMany(models.WorkplanAnswer, { foreignKey: "auditId" });
     Audit.hasMany(models.SurveyAnswer, { foreignKey: "auditId" });
+    Audit.hasMany(models.AuditVisit, { foreignKey: "auditId" });
   };
 
   return Audit;

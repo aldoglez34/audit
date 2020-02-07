@@ -16,6 +16,7 @@ import FilterByClientDropdown from "./components/FilterByClientDropdown";
 import SortAuditsDropdown from "./components/SortAuditsDropdown";
 import MyPagination from "../../components/MyPagination";
 import "./components/dropdowns.scss";
+const moment = require("moment");
 
 class Audits extends PureComponent {
   state = {
@@ -54,7 +55,7 @@ class Audits extends PureComponent {
     // delete info from whatever audit is open
     this.props.deleteAuditInfo();
     // fetch audits
-    API.fetchAudits()
+    API.fetchAudits(this.props.user.userId)
       .then(res => {
         // no filters
         if (!this.props.routeProps.match.params.client) {
@@ -125,6 +126,13 @@ class Audits extends PureComponent {
     }
   };
 
+  calculateDays = date => {
+    let lastOpened = moment().format("YYYY MM DD");
+    let b = moment([2007, 0, 28]);
+    let days = a.diff(b, "days");
+    return "Última visita: " + days;
+  };
+
   render() {
     return (
       <Layout homeMenu="Auditorías">
@@ -185,7 +193,9 @@ class Audits extends PureComponent {
                               {a.description}
                             </p>
                             <p className="mb-1 text-secondary">
-                              Último acceso: xxx
+                              {a.AuditVisits.length
+                                ? this.calculateDays(a.AuditVisits[0].date)
+                                : "Última visita: Nunca"}
                             </p>
                             <Button
                               className="purplebttn shadow-sm"
@@ -230,8 +240,14 @@ class Audits extends PureComponent {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
 const mapDispatchToProps = {
   deleteAuditInfo
 };
 
-export default connect(null, mapDispatchToProps)(Audits);
+export default connect(mapStateToProps, mapDispatchToProps)(Audits);

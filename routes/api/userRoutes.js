@@ -5,16 +5,20 @@ const model = require("../../models");
 // matches with /api/user/:uid
 router.get("/:uid", function(req, res) {
   model.User.findOne({
+    attributes: [
+      "userId",
+      "firebase_uid",
+      "role",
+      "name",
+      "firstSurname",
+      "email"
+    ],
     where: {
       firebase_uid: req.params.uid
     }
   })
-    .then(function(data) {
-      res.json(data);
-    })
-    .catch(function(err) {
-      res.send(err);
-    });
+    .then(data => res.json(data))
+    .catch(err => res.send(err));
 });
 
 module.exports = router;

@@ -1,5 +1,11 @@
 module.exports = function(sequelize, DataTypes) {
   const User = sequelize.define("User", {
+    userId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false
+    },
     firebase_uid: {
       type: DataTypes.STRING,
       allowNull: false
@@ -33,6 +39,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     }
   });
+
+  User.associate = function(models) {
+    User.hasMany(models.AuditVisit, { foreignKey: "userId" });
+  };
 
   return User;
 };

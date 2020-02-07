@@ -1,23 +1,37 @@
 const router = require("express").Router();
 const model = require("../../models");
 
+// postVisit()
+// matches with /api/audit/visit
+router.post("/visit", function(req, res) {
+  model.AuditVisit.create({
+    auditId: req.body.auditId,
+    userId: req.body.userId,
+    date: Date.now()
+  })
+    .then(data => res.send(data))
+    .catch(err => res.send(err));
+});
+
 // fetchAudits()
-// matches with /api/audit/all
-router.get("/all", function(req, res) {
+// matches with /api/audit/all/:userId
+router.get("/all/:userId", function(req, res) {
   model.Audit.findAll({
     order: [["name", "asc"]],
     include: [
+      { model: model.Client },
       {
-        model: model.Client
+        model: model.AuditVisit,
+        attributes: ["date"],
+        where: { userId: req.params.userId },
+        order: [["date", "DESC"]],
+        limit: 1,
+        required: false // <- this will force a LEFT JOIN
       }
     ]
   })
-    .then(function(data) {
-      res.send(data);
-    })
-    .catch(function(err) {
-      res.send(err);
-    });
+    .then(data => res.json(data))
+    .catch(err => res.json(err));
 });
 
 // fetchUniqueClients()

@@ -24,6 +24,10 @@ const formatFloatValue = value => {
 router.post("/upload", function(req, res) {
   // split file into array, \r\n marks the end of a row
   let fileArr = req.body.file.split("\r\n");
+  // if hasHeaders is true, delete the first row
+  if (req.body.hasHeaders) fileArr.shift();
+  // if last row is empty, delete it
+  if (!fileArr[fileArr.length - 1]) fileArr.pop();
   // promise
   let insertRows = new Promise((resolve, reject) => {
     // insert rows
@@ -38,27 +42,26 @@ router.post("/upload", function(req, res) {
       let cargos = formatFloatValue(row[4]);
       let abonos = formatFloatValue(row[5]);
       let saldoFinal = formatFloatValue(row[6]);
-      // exclude empty arrays (for empty lines in the csv)
-      if (row.length === 7)
-        // create the record in the db
-        model.Balanza.create({
-          auditId: req.body.auditId,
-          month,
-          cuentaContable,
-          cuentaDescripción,
-          saldoInicial,
-          cargos,
-          abonos,
-          saldoFinal
+      // create the record in the db
+      model.Balanza.create({
+        auditId: req.body.auditId,
+        month,
+        cuentaContable,
+        cuentaDescripción,
+        saldoInicial,
+        cargos,
+        abonos,
+        saldoFinal
+      })
+        .then(() => {
+          // if it's the last row in the array, resolve
+          if (index === array.length - 1) resolve();
         })
-          .then(() => {
-            // if it's the last row in the array, resolve
-            if (index === array.length - 1) resolve();
-          })
-          .catch(err => {
-            console.log("@create.catch ->", err);
-            reject("@reject -> Ocurrió un error");
-          });
+        .catch(err => {
+          console.log("@create.catch ->", err);
+          reject();
+          res.send(err);
+        });
     });
   });
   // resolving promise

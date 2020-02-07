@@ -34,15 +34,17 @@ const LoadBalanza = React.memo(function LoadBalanza() {
     let hasHeaders = document.getElementById("hasHeaders").checked;
     API.uploadBalanza({ auditId, hasHeaders, file })
       .then(res => {
+        console.log(res);
+        console.log(res.data.errors);
         // if errors
-        if (res.data.errors) {
-          alert(res.data.errors[0].message);
-        } else {
-          setReport(res.data);
-          // handleClose();
-          // dispatch(auditActions.addBalanza());
-          // window.location.reload();
-        }
+        // if (res.data.errors) {
+        //   alert(res.data.errors[0].message);
+        // } else {
+        //   setReport(res.data);
+        //   // handleClose();
+        //   // dispatch(auditActions.addBalanza());
+        //   // window.location.reload();
+        // }
       })
       .catch(err => console.log(err));
   };

@@ -13,10 +13,8 @@ import AuditHome from "./pages/auditHome/AuditHome";
 import Audits from "./pages/audits/Audits";
 import Clients from "./pages/clients/Clients";
 import Planning from "./pages/planning/Planning";
-import Balanza from "./pages/consults/Balanza";
+import Balanza from "./pages/consults/balanza/Balanza";
 import Surveys from "./pages/planning/components/Surveys";
-// import CCI from "./pages/planning/surveys/CCI";
-// import CEFS from "./pages/planning/surveys/CEFS";
 
 function App() {
   const dispatch = useDispatch();
@@ -67,16 +65,6 @@ function App() {
             path="/audit/planning/survey/:auditId/:surveyTitle"
             render={props => <Surveys routeProps={props} />}
           />
-          {/* <Route
-            exact
-            path="/audit/planning/cci/:auditId"
-            render={props => <CCI routeProps={props} />}
-          />
-          <Route
-            exact
-            path="/audit/planning/cefs/:auditId"
-            render={props => <CEFS routeProps={props} />}
-          /> */}
           <Route
             exact
             path="/audit/balanza/:auditId"

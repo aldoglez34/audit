@@ -2,41 +2,69 @@ const router = require("express").Router();
 const model = require("../../models");
 const Sequelize = require("sequelize");
 
+const formatStringValue = value => {
+  // if (value === undefined) return "???";
+  if (typeof value !== "string") return "???";
+  return value.replace('"', "").trim();
+};
+
+const formatFloatValue = value => {
+  if (typeof value === "string") {
+    value = parseFloat(
+      parseFloat(value.replace(/,/g, "").replace('"', "")).toFixed(2)
+    );
+  } else {
+    value = parseFloat(parseFloat(value).toFixed(2));
+  }
+  return value;
+};
+
 // uploadBalanza()
 // matches with /api/balanza/upload
 router.post("/upload", function(req, res) {
-  // split file into array
-  // \r\n marks the end of a row
-  let bigArr = req.body.file.split("\r\n");
-  // insert rows
+  // split file into array, \r\n marks the end of a row
+  let fileArr = req.body.file.split("\r\n");
+  // promise
   let insertRows = new Promise((resolve, reject) => {
-    bigArr.forEach((value, index, array) => {
+    // insert rows
+    fileArr.forEach((value, index, array) => {
       // split the row in an array
       let row = value.split(",");
-      // create the record in the db
-      model.Balanza.create({
-        auditId: req.body.auditId,
-        month: row[0].replace('"', "").trim(),
-        cuentaContable: row[1].replace('"', "").trim(),
-        cuentaDescripción: row[2].replace('"', "").trim(),
-        saldoInicial: Number(row[3]),
-        cargos: Number(row[4]),
-        abonos: Number(row[5]),
-        saldoFinal: Number(row[6])
-      })
-        .then(() => {
-          if (index === array.length - 1) resolve();
+      // format values before introducing them to the db
+      let month = formatStringValue(row[0]);
+      let cuentaContable = formatStringValue(row[1]);
+      let cuentaDescripción = formatStringValue(row[2]);
+      let saldoInicial = formatFloatValue(row[3]);
+      let cargos = formatFloatValue(row[4]);
+      let abonos = formatFloatValue(row[5]);
+      let saldoFinal = formatFloatValue(row[6]);
+      // exclude empty arrays (for empty lines in the csv)
+      if (row.length === 7)
+        // create the record in the db
+        model.Balanza.create({
+          auditId: req.body.auditId,
+          month,
+          cuentaContable,
+          cuentaDescripción,
+          saldoInicial,
+          cargos,
+          abonos,
+          saldoFinal
         })
-        .catch(err => {
-          console.log("@create.catch ->", err);
-          reject("@reject -> Ocurrió un error");
-        });
+          .then(() => {
+            // if it's the last row in the array, resolve
+            if (index === array.length - 1) resolve();
+          })
+          .catch(err => {
+            console.log("@create.catch ->", err);
+            reject("@reject -> Ocurrió un error");
+          });
     });
   });
-  //
+  // resolving promise
   insertRows
     .then(() => {
-      // consult the information and make validations
+      // make a monthly report
       model.Balanza.findAll({
         attributes: [
           "month",
@@ -49,19 +77,20 @@ router.post("/upload", function(req, res) {
         group: ["month"],
         raw: true
       })
-        .then(res => {
-          console.log("@report -> ", res);
+        .then(data => {
+          // send report to the front end
+          res.json(data);
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log("@findAll.catch ->", err));
 
       // model.Audit.update(
       //   { hasBalanza: true },
       //   { where: { auditId: req.body.auditId } }
       // )
-      //   .then(res => res.json(res))
+      //   .then(data => res.json(data))
       //   .catch(err => res.json(err));
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log("@insertRows.catch ->", err));
 });
 
 // fetchBalanza()

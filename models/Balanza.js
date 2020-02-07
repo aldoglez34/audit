@@ -23,19 +23,19 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     saldoInicial: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DOUBLE,
       allowNull: false
     },
     cargos: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DOUBLE,
       allowNull: false
     },
     abonos: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DOUBLE,
       allowNull: false
     },
     saldoFinal: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DOUBLE,
       allowNull: false
     }
   });

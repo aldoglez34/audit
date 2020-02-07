@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "react-bootstrap";
+import { Table, Image } from "react-bootstrap";
 import PropTypes from "prop-types";
 import API from "../../../utils/API";
 import { useSelector } from "react-redux";
@@ -25,33 +25,39 @@ const Workplan = React.memo(function Workplan(props) {
   };
 
   return (
-    <Table>
-      <tbody>
-        {props.workplan.map(w => {
-          return (
-            <tr key={w.workplanId}>
-              <td className="border-0">
-                <div className="custom-control custom-switch">
-                  <input
-                    type="checkbox"
-                    onChange={() => handleChange(w.workplanId)}
-                    className="custom-control-input checkboxStyle"
-                    id={w.workplanId}
-                    defaultChecked={w.WorkplanAnswers.length ? true : false}
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor={w.workplanId}
-                  >
-                    {w.text}
-                  </label>
-                </div>
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </Table>
+    <div className="bg-white rounded-bottom p-3 border border-top-0">
+      <div className="text-center mb-2">
+        <Image src="/images/list.png" />
+      </div>
+      <h5 className="text-center">Tareas para la fase de Planeación</h5>
+      <Table>
+        <tbody>
+          {props.workplan.map(w => {
+            return (
+              <tr key={w.workplanId}>
+                <td className="border-0">
+                  <div className="custom-control custom-switch">
+                    <input
+                      type="checkbox"
+                      onChange={() => handleChange(w.workplanId)}
+                      className="custom-control-input checkboxStyle"
+                      id={w.workplanId}
+                      defaultChecked={w.WorkplanAnswers.length ? true : false}
+                    />
+                    <label
+                      className="custom-control-label"
+                      htmlFor={w.workplanId}
+                    >
+                      {w.text}
+                    </label>
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </Table>
+    </div>
   );
 });
 

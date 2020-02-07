@@ -49,7 +49,6 @@ const Planning = React.memo(function Planning() {
             <Workplan workplan={workplan} />
           </Tab>
           <Tab eventKey="Cuestionarios" title="Cuestionarios">
-            <br />
             <SurveyTitles surveyTitles={surveyTitles} />
           </Tab>
         </Tabs>

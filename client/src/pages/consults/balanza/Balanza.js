@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../Layout";
+import Layout from "../../Layout";
 import { useSelector } from "react-redux";
-import API from "../../utils/API";
+import API from "../../../utils/API";
 import { Table, Spinner } from "react-bootstrap";
-import LoadBalanza from "./modals/LoadBalanza";
+import LoadBalanza from "./components/LoadBalanza";
 
 const Balanza = React.memo(function Balanza() {
   const audit = useSelector(state => state.audit);

@@ -34,12 +34,12 @@ app.get("*", (req, res) => {
 // sync db
 // when in dev force: true
 // when in prod force: false
-models.sequelize.sync({ force: false }).then(function() {
+models.sequelize.sync({ force: true }).then(function() {
   // load fixtures files into the db
   // it's important that the process is finished in order
-  // sequelize_fixtures.loadFile("fixtures/*.json", models).then(function() {
-  //   console.log("dev data loaded successfully");
-  // });
+  sequelize_fixtures.loadFile("fixtures/*.json", models).then(function() {
+    console.log("dev data loaded successfully");
+  });
 
   // start server
   app.listen(PORT, () => {

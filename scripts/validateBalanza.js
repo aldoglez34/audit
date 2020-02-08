@@ -35,7 +35,7 @@ export default {
     return !isNaN(number) ? true : false;
   },
 
-  validateFile: value => {
+  validateFile: arr => {
     console.log("@ validation - starting validating");
     let isArrOk = true;
     for (let i = 0; i < arr.length; i++) {

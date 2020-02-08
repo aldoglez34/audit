@@ -31,7 +31,36 @@ const validateCuentaDescripción = value => {
   return false;
 };
 
-const validateNumber = value => {};
+const validateNumber = value => {
+  // HERE CHECK IF THE NUMBER HAS INVALID CHARS SUCH AS .
+  // convert the value to a number
+  let number = parseFloat(parseFloat(value).toFixed(2));
+  // if value was a string, after converting it will return NaN (falsy)
+  return !isNaN(number) ? true : false;
+};
+
+const validateFile = arr => {
+  console.log("@ validation - starting validating");
+  let isArrOk = true;
+  for (let i = 0; i < arr.length; i++) {
+    // split the row in an array
+    let row = arr[i].split(",");
+    // validate values
+    if (
+      !validateMonth(row[0]) ||
+      !validateCuentaContable(row[1]) ||
+      !validateCuentaDescripción(row[2]) ||
+      !validateNumber(row[3]) ||
+      !validateNumber(row[4]) ||
+      !validateNumber(row[5]) ||
+      !validateNumber(row[6])
+    ) {
+      isArrOk = false;
+      break;
+    }
+    return isArrOk;
+  }
+};
 
 // =====
 // formats
@@ -51,106 +80,91 @@ const formatFloatValue = value => {
   return value;
 };
 
-const validateFile = arr => {
-  let ok = true;
-  arr.forEach((value, index, array) => {
-    // split the row in an array
-    let row = value.split(",");
-    // validate values
-    if (
-      validateMonth(row[0]) &&
-      validateCuentaContable(row[1]) &&
-      validateCuentaDescripción(row[2]) &&
-      validateNumber(row[3]) &&
-      validateNumber(row[4]) &&
-      validateNumber(row[5]) &&
-      validateNumber(row[6])
-    ) {
-      console.log("el archivo está mal");
-    } else {
-      console.log("el archivo pasó la prueba");
-    }
-  });
-};
-
 // uploadBalanza()
 // matches with /api/balanza/upload
 router.post("/upload", function(req, res) {
   // split file into array, \r\n marks the end of a row
   let fileArr = req.body.file.split("\r\n");
+
   // if hasHeaders is true, delete the first row
   if (req.body.hasHeaders) fileArr.shift();
+
   // if last row is empty, delete it
   if (!fileArr[fileArr.length - 1]) fileArr.pop();
-  // validating file
-  let fileValidation = validateFile(fileArr);
 
-  // promise
-  let insertRows = new Promise((resolve, reject) => {
-    // insert rows
-    fileArr.forEach((value, index, array) => {
-      // split the row in an array
-      let row = value.split(",");
-      // format values before introducing them to the db
-      let month = formatStringValue(row[0]);
-      let cuentaContable = formatStringValue(row[1]);
-      let cuentaDescripción = formatStringValue(row[2]);
-      let saldoInicial = formatFloatValue(row[3]);
-      let cargos = formatFloatValue(row[4]);
-      let abonos = formatFloatValue(row[5]);
-      let saldoFinal = formatFloatValue(row[6]);
-      // create the record in the db
-      model.Balanza.create({
-        auditId: req.body.auditId,
-        month,
-        cuentaContable,
-        cuentaDescripción,
-        saldoInicial,
-        cargos,
-        abonos,
-        saldoFinal
-      })
-        .then(() => {
-          // if it's the last row in the array, resolve
-          if (index === array.length - 1) resolve();
+  // insert values using a promise only if it passes the validation
+  if (validateFile(fileArr)) {
+    console.log("@ promise - beginning inserting values");
+    // promise
+    let insertRows = new Promise((resolve, reject) => {
+      // insert rows
+      fileArr.forEach((value, index, array) => {
+        // split the row in an array
+        let row = value.split(",");
+        // format values before introducing them to the db
+        let month = formatStringValue(row[0]);
+        let cuentaContable = formatStringValue(row[1]);
+        let cuentaDescripción = formatStringValue(row[2]);
+        let saldoInicial = formatFloatValue(row[3]);
+        let cargos = formatFloatValue(row[4]);
+        let abonos = formatFloatValue(row[5]);
+        let saldoFinal = formatFloatValue(row[6]);
+        // create the record in the db
+        model.Balanza.create({
+          auditId: req.body.auditId,
+          month,
+          cuentaContable,
+          cuentaDescripción,
+          saldoInicial,
+          cargos,
+          abonos,
+          saldoFinal
         })
-        .catch(err => {
-          console.log("@create.catch ->", err);
-          reject();
-          res.send(err);
-        });
+          .then(() => {
+            // if it's the last row in the array, resolve
+            if (index === array.length - 1) resolve();
+          })
+          .catch(err => {
+            console.log("@create.catch -", err);
+            reject();
+            res.send(err);
+          });
+      });
     });
-  });
-  // resolving promise
-  insertRows
-    .then(() => {
-      // make a monthly report
-      model.Balanza.findAll({
-        attributes: [
-          "month",
-          [Sequelize.fn("sum", Sequelize.col("saldoInicial")), "total_si"],
-          [Sequelize.fn("sum", Sequelize.col("cargos")), "total_c"],
-          [Sequelize.fn("sum", Sequelize.col("abonos")), "total_a"],
-          [Sequelize.fn("sum", Sequelize.col("saldoFinal")), "total_sf"]
-        ],
-        where: { auditId: req.body.auditId },
-        group: ["month"],
-        raw: true
-      })
-        .then(data => {
-          // send report to the front end
-          res.json(data);
+    // resolving promise
+    insertRows
+      .then(() => {
+        // make a monthly report
+        model.Balanza.findAll({
+          attributes: [
+            "month",
+            [Sequelize.fn("sum", Sequelize.col("saldoInicial")), "total_si"],
+            [Sequelize.fn("sum", Sequelize.col("cargos")), "total_c"],
+            [Sequelize.fn("sum", Sequelize.col("abonos")), "total_a"],
+            [Sequelize.fn("sum", Sequelize.col("saldoFinal")), "total_sf"]
+          ],
+          where: { auditId: req.body.auditId },
+          group: ["month"],
+          raw: true
         })
-        .catch(err => console.log("@findAll.catch ->", err));
+          .then(data => {
+            // send report to the front end
+            res.json(data);
+          })
+          .catch(err => console.log("@findAll.catch ->", err));
 
-      // model.Audit.update(
-      //   { hasBalanza: true },
-      //   { where: { auditId: req.body.auditId } }
-      // )
-      //   .then(data => res.json(data))
-      //   .catch(err => res.json(err));
-    })
-    .catch(err => console.log("@insertRows.catch ->", err));
+        // model.Audit.update(
+        //   { hasBalanza: true },
+        //   { where: { auditId: req.body.auditId } }
+        // )
+        //   .then(data => res.json(data))
+        //   .catch(err => res.json(err));
+      })
+      .catch(err => console.log("@insertRows.catch ->", err));
+  } else {
+    console.log("@ validation - NOT successful");
+    res.send({ error: "Ocurrió un error al validar tu archivo" });
+  }
 });
 
 // fetchBalanza()

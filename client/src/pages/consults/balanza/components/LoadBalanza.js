@@ -34,19 +34,21 @@ const LoadBalanza = React.memo(function LoadBalanza() {
     let hasHeaders = document.getElementById("hasHeaders").checked;
     API.uploadBalanza({ auditId, hasHeaders, file })
       .then(res => {
-        console.log(res);
-        console.log(res.data.errors);
-        // if errors
-        // if (res.data.errors) {
-        //   alert(res.data.errors[0].message);
-        // } else {
-        //   setReport(res.data);
-        //   // handleClose();
-        //   // dispatch(auditActions.addBalanza());
-        //   // window.location.reload();
-        // }
+        console.log("@res", res);
+        // check errors (custom)
+        if (res.data.error) {
+          alert(res.data.error);
+        } else {
+          // setReport(res.data);
+          // handleClose();
+          // dispatch(auditActions.addBalanza());
+          // window.location.reload();
+        }
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        alert(err);
+      });
   };
 
   return user.role === "Admin" ? (

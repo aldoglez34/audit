@@ -32,17 +32,18 @@ const LoadBalanza = React.memo(function LoadBalanza() {
     setIsUploading(true);
     let auditId = audit.auditId;
     let hasHeaders = document.getElementById("hasHeaders").checked;
+    //
     API.uploadBalanza({ auditId, hasHeaders, file })
       .then(res => {
-        console.log("@res", res);
         // check errors (custom)
         if (res.data.error) {
           alert(res.data.error);
+          setFile();
+          setIsUploading(false);
+          handleClose();
         } else {
-          // setReport(res.data);
-          // handleClose();
-          // dispatch(auditActions.addBalanza());
-          // window.location.reload();
+          setReport(res.data);
+          dispatch(auditActions.addBalanza());
         }
       })
       .catch(err => {
@@ -99,6 +100,16 @@ const LoadBalanza = React.memo(function LoadBalanza() {
                   );
                 })}
               </ListGroup>
+              <Button
+                className="mt-2"
+                variant="secondary"
+                onClick={() => {
+                  handleClose();
+                  window.location.reload();
+                }}
+              >
+                Cerrar
+              </Button>
             </React.Fragment>
           ) : (
             <React.Fragment>

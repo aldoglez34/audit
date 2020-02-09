@@ -1,11 +1,7 @@
-import {
-  validateFile,
-  formatStringValue,
-  formatFloatValue
-} from "../../scripts/validateBalanza";
 const router = require("express").Router();
 const model = require("../../models");
 const Sequelize = require("sequelize");
+const validateBalanza = require("../../scripts/validateBalanza");
 
 // uploadBalanza()
 // matches with /api/balanza/upload
@@ -19,46 +15,44 @@ router.post("/upload", function(req, res) {
   // if last row is empty, delete it
   if (!fileArr[fileArr.length - 1]) fileArr.pop();
 
-  // insert values using a promise only if it passes the validation
-  if (validateFile(fileArr)) {
-    console.log("@ promise - beginning inserting values");
-    // promise
+  // validateBalanza.validate will return an array in which
+  // the first element will be true/false
+  // and the second will contain a text description if there was an error
+  const [isValid, text] = validateBalanza.validate(fileArr);
+
+  // if there was an error, send a msg to the front end
+  if (!isValid) {
+    res.send({ error: "Ocurrió un error con tu archivo\n" + text });
+  }
+  // if theres no error, insert file into db
+  else {
     let insertRows = new Promise((resolve, reject) => {
       // insert rows
       fileArr.forEach((value, index, array) => {
         // split the row in an array
         let row = value.split(",");
-        // format values before introducing them to the db
-        let month = formatStringValue(row[0]);
-        let cuentaContable = formatStringValue(row[1]);
-        let cuentaDescripción = formatStringValue(row[2]);
-        let saldoInicial = formatFloatValue(row[3]);
-        let cargos = formatFloatValue(row[4]);
-        let abonos = formatFloatValue(row[5]);
-        let saldoFinal = formatFloatValue(row[6]);
         // create the record in the db
         model.Balanza.create({
           auditId: req.body.auditId,
-          month,
-          cuentaContable,
-          cuentaDescripción,
-          saldoInicial,
-          cargos,
-          abonos,
-          saldoFinal
+          month: row[0].toUpperCase(),
+          cuentaContable: row[1],
+          cuentaDescripción: row[2].trim(),
+          saldoInicial: parseFloat(parseFloat(row[3]).toFixed(2)),
+          cargos: parseFloat(parseFloat(row[4]).toFixed(2)),
+          abonos: parseFloat(parseFloat(row[5]).toFixed(2)),
+          saldoFinal: parseFloat(parseFloat(row[6]).toFixed(2))
         })
           .then(() => {
             // if it's the last row in the array, resolve
             if (index === array.length - 1) resolve();
           })
           .catch(err => {
-            console.log("@create.catch -", err);
             reject();
-            res.send(err);
+            console.log("@create.catch -", err);
+            res.send({ error: "Ocurrió un error con tu archivo" });
           });
       });
     });
-    // resolving promise
     insertRows
       .then(() => {
         // make a monthly report
@@ -78,19 +72,22 @@ router.post("/upload", function(req, res) {
             // send report to the front end
             res.json(data);
           })
-          .catch(err => console.log("@findAll.catch ->", err));
-
-        // model.Audit.update(
-        //   { hasBalanza: true },
-        //   { where: { auditId: req.body.auditId } }
-        // )
-        //   .then(data => res.json(data))
-        //   .catch(err => res.json(err));
+          .then(() => {
+            // update audit and set hasBalanza to true
+            model.Audit.update(
+              { hasBalanza: true },
+              { where: { auditId: req.body.auditId } }
+            ).catch(err => console.log(err));
+          })
+          .catch(err => {
+            console.log("@findAll.catch ->", err);
+            res.send({ error: "Ocurrió un error con tu archivo" });
+          });
       })
-      .catch(err => console.log("@insertRows.catch ->", err));
-  } else {
-    console.log("@ validation - NOT successful");
-    res.send({ error: "Ocurrió un error al validar tu archivo" });
+      .catch(err => {
+        console.log("@insertRows.catch ->", err);
+        res.send({ error: "Ocurrió un error con tu archivo" });
+      });
   }
 });
 

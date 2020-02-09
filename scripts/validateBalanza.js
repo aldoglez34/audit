@@ -1,77 +1,82 @@
-export default {
-  // VALIDATIONS
-  validateMonth: value => {
-    const months = [
-      "ENERO",
-      "FEBRERO",
-      "MARZO",
-      "ABRIL",
-      "MAYO",
-      "JUNIO",
-      "JULIO",
-      "AGOSTO",
-      "SEPTIEMBRE",
-      "OCTUBRE",
-      "NOVIEMBRE",
-      "DICIEMBRE"
-    ];
-    return months.includes(value);
-  },
+// ====================================
+// VALIDATIONS
+const validateMonth = value => {
+  // value must be one of the twelve months in spanish
+  const months = [
+    "ENERO",
+    "FEBRERO",
+    "MARZO",
+    "ABRIL",
+    "MAYO",
+    "JUNIO",
+    "JULIO",
+    "AGOSTO",
+    "SEPTIEMBRE",
+    "OCTUBRE",
+    "NOVIEMBRE",
+    "DICIEMBRE"
+  ];
+  let result = months.includes(value.toUpperCase());
+  return [result, result ? "" : `"${value}" no es un mes válido`];
+};
 
-  validateCuentaContable: value => {
-    return value.length === 12 ? true : false;
-  },
+const validateCuentaContable = value => {
+  // value must have length of 12
+  let result = value.length === 12 ? true : false;
+  return [result, result ? "" : `"${value}" no tiene 12 digitos`];
+};
 
-  validateCuentaDescripción: value => {
-    if (typeof value === "string") return true;
-    return false;
-  },
+const validateCuentaDescripción = value => {
+  // value has to be a string
+  let result = typeof value === "string" ? true : false;
+  return [result, result ? "" : `"${value}" no es una texto válido`];
+};
 
-  validateNumber: value => {
-    // HERE CHECK IF THE NUMBER HAS INVALID CHARS SUCH AS .
-    // convert the value to a number
-    let number = parseFloat(parseFloat(value).toFixed(2));
-    // if value was a string, after converting it will return NaN (falsy)
-    return !isNaN(number) ? true : false;
-  },
+const validateNumber = value => {
+  // CHECK IF THE NUMBER HAS INVALID CHARS SUCH AS .
+  // convert value to number and check if it returns NaN, if so it means it wasn't a number
+  // if value was a string, after converting it will return NaN (falsy)
+  let result = !isNaN(parseFloat(parseFloat(value).toFixed(2))) ? true : false;
+  return [result, result ? "" : `"${value}" no es un número válido`];
+};
 
-  validateFile: arr => {
-    console.log("@ validation - starting validating");
-    let isArrOk = true;
-    for (let i = 0; i < arr.length; i++) {
-      // split the row in an array
-      let row = arr[i].split(",");
-      // validate values
-      if (
-        !validateMonth(row[0]) ||
-        !validateCuentaContable(row[1]) ||
-        !validateCuentaDescripción(row[2]) ||
-        !validateNumber(row[3]) ||
-        !validateNumber(row[4]) ||
-        !validateNumber(row[5]) ||
-        !validateNumber(row[6])
-      ) {
-        isArrOk = false;
-        break;
-      }
-      return isArrOk;
+// ====================================
+// EXPORTED
+const validateBalanza = {
+  // this function will recieve an arr containing the balanza
+  // and will return an array with the first item being true/false
+  // and the second a description if there was an error
+  validate: balanza => {
+    let isValid = true;
+    let text = "";
+    // iterate balanza
+    for (let i = 0; i < balanza.length; i++) {
+      // split row into an array
+      let row = balanza[i].split(",");
+      // validate month
+      [isValid, text] = validateMonth(row[0]);
+      if (!isValid) return [isValid, text];
+      // validate cuenta contable
+      [isValid, text] = validateCuentaContable(row[1]);
+      if (!isValid) return [isValid, text];
+      // validate cuenta descripción
+      [isValid, text] = validateCuentaDescripción(row[2]);
+      if (!isValid) return [isValid, text];
+      // validate saldo inicial
+      [isValid, text] = validateNumber(row[3]);
+      if (!isValid) return [isValid, text];
+      // validate cargos
+      [isValid, text] = validateNumber(row[4]);
+      if (!isValid) return [isValid, text];
+      // validate abonos
+      [isValid, text] = validateNumber(row[5]);
+      if (!isValid) return [isValid, text];
+      // validate saldo final
+      [isValid, text] = validateNumber(row[6]);
+      if (!isValid) return [isValid, text];
     }
-  },
-
-  // FORMATS
-  formatStringValue: value => {
-    if (typeof value !== "string") return "???";
-    return value.replace('"', "").trim();
-  },
-
-  formatFloatValue: value => {
-    if (typeof value === "string") {
-      value = parseFloat(
-        parseFloat(value.replace(/,/g, "").replace('"', "")).toFixed(2)
-      );
-    } else {
-      value = parseFloat(parseFloat(value).toFixed(2));
-    }
-    return value;
+    return [isValid, text];
   }
 };
+
+module.exports = validateBalanza;

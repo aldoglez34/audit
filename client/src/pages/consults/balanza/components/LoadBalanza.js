@@ -36,14 +36,14 @@ const LoadBalanza = React.memo(function LoadBalanza() {
     API.uploadBalanza({ auditId, hasHeaders, file })
       .then(res => {
         // check errors (custom)
-        if (res.data.error) {
+        if (!res.data.error) {
+          setReport(res.data);
+          // dispatch(auditActions.addBalanza());
+        } else {
           alert(res.data.error);
           setFile();
           setIsUploading(false);
           handleClose();
-        } else {
-          setReport(res.data);
-          dispatch(auditActions.addBalanza());
         }
       })
       .catch(err => {
@@ -81,19 +81,43 @@ const LoadBalanza = React.memo(function LoadBalanza() {
                         </dt>
                         <dd>
                           Total Saldo Inicial:{" "}
-                          {Math.round(Number(m.total_si)).toLocaleString()}
+                          {Math.round(
+                            Number(
+                              parseFloat(m.total_si)
+                                .toLocaleString()
+                                .replace(/,/g, "")
+                            )
+                          )}
                         </dd>
                         <dd>
                           Total Cargos:{" "}
-                          {Math.round(Number(m.total_c)).toLocaleString()}
+                          {Math.round(
+                            Number(
+                              parseFloat(m.total_c)
+                                .toLocaleString()
+                                .replace(/,/g, "")
+                            )
+                          )}
                         </dd>
                         <dd>
                           Total Abonos:{" "}
-                          {Math.round(Number(m.total_a)).toLocaleString()}
+                          {Math.round(
+                            Number(
+                              parseFloat(m.total_a)
+                                .toLocaleString()
+                                .replace(/,/g, "")
+                            )
+                          )}
                         </dd>
                         <dd>
                           Total Saldo Final:{" "}
-                          {Math.round(Number(m.total_sf)).toLocaleString()}
+                          {Math.round(
+                            Number(
+                              parseFloat(m.total_sf)
+                                .toLocaleString()
+                                .replace(/,/g, "")
+                            )
+                          )}
                         </dd>
                       </dl>
                     </ListGroup.Item>
@@ -137,7 +161,7 @@ const LoadBalanza = React.memo(function LoadBalanza() {
                       className="my-3 p-2 border rounded"
                       style={{ borderColor: "#264bc4" }}
                     >
-                      <Form>
+                      <Form className="mt-4 mb-3">
                         <Form.Check
                           custom
                           inline

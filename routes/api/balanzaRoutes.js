@@ -20,7 +20,7 @@ router.post("/upload", function(req, res) {
   // and the second will contain a text description if there was an error
   const [isValid, text] = validateBalanza.validate(fileArr);
 
-  // if there was an error, send a msg to the front end
+  // if it's not valid, send the msg error to the front end
   if (!isValid) {
     res.send({ error: "Ocurrió un error con tu archivo\n" + text });
   }
@@ -70,6 +70,7 @@ router.post("/upload", function(req, res) {
         })
           .then(data => {
             // send report to the front end
+            // console.log(data);
             res.json(data);
           })
           .then(() => {

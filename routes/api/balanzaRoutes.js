@@ -69,7 +69,7 @@ router.post("/upload", function(req, res) {
           raw: true
         })
           .then(data => {
-            // send report to the front end
+            // elaborate report
             let report = data.reduce((acc, obj) => {
               let total_si = Math.round(
                 Number(

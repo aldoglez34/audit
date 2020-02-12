@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Button, Spinner, Form, ListGroup } from "react-bootstrap";
+import { Modal, Button, Spinner, Form, Table } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import * as auditActions from "../../../../redux/actions/auditActions";
 import API from "../../../../utils/API";
@@ -7,6 +7,7 @@ import API from "../../../../utils/API";
 const LoadBalanza = React.memo(function LoadBalanza() {
   const dispatch = useDispatch();
 
+  const [size, setSize] = useState("md");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -37,6 +38,7 @@ const LoadBalanza = React.memo(function LoadBalanza() {
       .then(res => {
         // check errors (custom)
         if (!res.data.error) {
+          setSize("lg");
           setReport(res.data);
           // dispatch(auditActions.addBalanza());
         } else {
@@ -66,64 +68,43 @@ const LoadBalanza = React.memo(function LoadBalanza() {
         para cargarla.
       </p>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} size={size}>
         <Modal.Body>
           {report.length ? (
             <React.Fragment>
               <h3 className="mb-3">Reporte balanza</h3>
-              <ListGroup>
-                {report.map(m => {
-                  return (
-                    <ListGroup.Item key={m.month}>
-                      <dl>
-                        <dt className="mb-2">
-                          <strong>{m.month}</strong>
-                        </dt>
-                        <dd>
-                          Total Saldo Inicial:{" "}
-                          {Math.round(
-                            Number(
-                              parseFloat(m.total_si)
-                                .toLocaleString()
-                                .replace(/,/g, "")
-                            )
+              <Table striped bordered>
+                <thead>
+                  <tr>
+                    <th>Mes</th>
+                    <th>Total Saldo Inicial</th>
+                    <th>Total Cargos</th>
+                    <th>Total Abonos</th>
+                    <th>Total Saldo Final</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {report.map(m => {
+                    return (
+                      <tr key={m.month}>
+                        <td>{m.month}</td>
+                        <td>{m.total_si}</td>
+                        <td>{m.total_c}</td>
+                        <td>{m.total_a}</td>
+                        <td>{m.total_sf}</td>
+                        <td>
+                          {m.isSIZero && m.isSFZero && m.isCandATheSame ? (
+                            <i className="fas fa-check text-success" />
+                          ) : (
+                            <i className="fas fa-times text-danger" />
                           )}
-                        </dd>
-                        <dd>
-                          Total Cargos:{" "}
-                          {Math.round(
-                            Number(
-                              parseFloat(m.total_c)
-                                .toLocaleString()
-                                .replace(/,/g, "")
-                            )
-                          )}
-                        </dd>
-                        <dd>
-                          Total Abonos:{" "}
-                          {Math.round(
-                            Number(
-                              parseFloat(m.total_a)
-                                .toLocaleString()
-                                .replace(/,/g, "")
-                            )
-                          )}
-                        </dd>
-                        <dd>
-                          Total Saldo Final:{" "}
-                          {Math.round(
-                            Number(
-                              parseFloat(m.total_sf)
-                                .toLocaleString()
-                                .replace(/,/g, "")
-                            )
-                          )}
-                        </dd>
-                      </dl>
-                    </ListGroup.Item>
-                  );
-                })}
-              </ListGroup>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
               <Button
                 className="mt-2"
                 variant="secondary"

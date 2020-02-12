@@ -42,7 +42,7 @@ const validateNumber = value => {
 
 // ====================================
 // EXPORTED
-const validateBalanza = {
+const balanzaValidations = {
   // this function will recieve an arr containing the balanza
   // and will return an array with the first item being true/false
   // and the second a description if there was an error
@@ -79,4 +79,4 @@ const validateBalanza = {
   }
 };
 
-module.exports = validateBalanza;
+module.exports = balanzaValidations;

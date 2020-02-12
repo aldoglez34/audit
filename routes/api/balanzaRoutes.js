@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const model = require("../../models");
 const Sequelize = require("sequelize");
-const validateBalanza = require("../../scripts/validateBalanza");
+const balanzaValidations = require("../../scripts/balanzaValidations");
+const balanzaReports = require("../../scripts/balanzaReports");
 
 // uploadBalanza()
 // matches with /api/balanza/upload
@@ -15,10 +16,10 @@ router.post("/upload", function(req, res) {
   // if last row is empty, delete it
   if (!fileArr[fileArr.length - 1]) fileArr.pop();
 
-  // validateBalanza.validate will return an array in which
+  // balanzaValidations.validate will return an array in which
   // the first element will be true/false
   // and the second will contain a text description if there was an error
-  const [isValid, text] = validateBalanza.validate(fileArr);
+  const [isValid, text] = balanzaValidations.validate(fileArr);
 
   // if it's not valid, send the msg error to the front end
   if (!isValid) {
@@ -26,8 +27,8 @@ router.post("/upload", function(req, res) {
   }
   // if theres no error, insert file into db
   else {
+    // insert rows Promise
     let insertRows = new Promise((resolve, reject) => {
-      // insert rows
       fileArr.forEach((value, index, array) => {
         // split the row in an array
         let row = value.split(",");
@@ -53,6 +54,7 @@ router.post("/upload", function(req, res) {
           });
       });
     });
+    // after Promise is done
     insertRows
       .then(() => {
         // make a monthly report
@@ -69,65 +71,32 @@ router.post("/upload", function(req, res) {
           raw: true
         })
           .then(data => {
-            // elaborate report
-            let report = data.reduce((acc, obj) => {
-              let total_si = Math.round(
-                Number(
-                  parseFloat(obj.total_si)
-                    .toLocaleString()
-                    .replace(/,/g, "")
-                )
-              );
-              let total_c = Math.round(
-                Number(
-                  parseFloat(obj.total_c)
-                    .toLocaleString()
-                    .replace(/,/g, "")
-                )
-              );
-              let total_a = Math.round(
-                Number(
-                  parseFloat(obj.total_a)
-                    .toLocaleString()
-                    .replace(/,/g, "")
-                )
-              );
-              let total_sf = Math.round(
-                Number(
-                  parseFloat(obj.total_sf)
-                    .toLocaleString()
-                    .replace(/,/g, "")
-                )
-              );
+            // generate monthly report
+            let report = balanzaReports(data);
 
-              let isSIZero = total_si === 0 ? true : false;
-              let isSFZero = total_sf === 0 ? true : false;
-              let diff_CyA = total_c - total_a;
-              let isCandATheSame = total_sf === 0 ? true : false;
+            // check if the report is fine
+            let isReportOk = report.every(
+              month => month.isSIZero && month.isSFZero && month.isCandATheSame
+            );
 
-              let month = {
-                month: obj.month,
-                total_si,
-                total_c,
-                total_a,
-                total_sf,
-                isSIZero,
-                isSFZero,
-                isCandATheSame,
-                diff_CyA
-              };
-              acc.push(month);
-              return acc;
-            }, []);
-            console.log(report);
-            res.json(data);
-          })
-          .then(() => {
-            // update audit and set hasBalanza to true
-            model.Audit.update(
-              { hasBalanza: true },
-              { where: { auditId: req.body.auditId } }
-            ).catch(err => console.log(err));
+            if (isReportOk) {
+              // update audit and set hasBalanza to true and then send the report
+              model.Audit.update(
+                { hasBalanza: true },
+                { where: { auditId: req.body.auditId } }
+              )
+                .then(() => res.json(report))
+                .catch(err => console.log(err));
+            } else {
+              // delete balanza from the db and then send the report
+              model.Audit.destroy({
+                where: { auditId: req.body.auditId }
+              })
+                .then(() => res.json(report))
+                .catch(err => console.log(err));
+              // send report
+              res.json(report);
+            }
           })
           .catch(err => {
             console.log("@findAll.catch ->", err);

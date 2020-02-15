@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Button, Spinner, Form, Table } from "react-bootstrap";
+import { Modal, Button, Spinner, Form, Table, Alert } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import * as auditActions from "../../../../redux/actions/auditActions";
 import API from "../../../../utils/API";
@@ -73,6 +73,18 @@ const LoadBalanza = React.memo(function LoadBalanza() {
           {report.length ? (
             <React.Fragment>
               <h3 className="mb-3">Reporte balanza</h3>
+              {report.every(
+                month =>
+                  month.isSIZero && month.isSFZero && month.isCandATheSame
+              ) ? (
+                <Alert variant="success">
+                  La balanza fue agregada correctamente
+                </Alert>
+              ) : (
+                <Alert variant="danger">
+                  Ocurrió un eror con la validación de la balanza
+                </Alert>
+              )}
               <Table striped bordered>
                 <thead>
                   <tr>

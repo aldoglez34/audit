@@ -38,7 +38,7 @@ const validateNumber = value => {
   return [result, result ? "" : `"${value}" no es un número válido`];
 };
 
-const initValidation = balanza => {
+const initSyntaxValidation = balanza => {
   // this function will recieve an arr containing the balanza
   // and will return an array with the first item being true/false
   // and the second a description if there was an error
@@ -86,10 +86,11 @@ const validateBalanza = () => {
     // if last row is empty, delete it
     if (!balanza[balanza.length - 1]) balanza.pop();
 
-    // initialize validation
+    // ==========
+    // initialize SYNTAX validation
     // the first element will be true/false
     // and the second will contain a text description if there was an error
-    const [isValid, errormsg] = initValidation(balanza);
+    const [isValid, errormsg] = initSyntaxValidation(balanza);
 
     // if it's not valid, send the msg error to the front end
     if (!isValid) {
@@ -99,7 +100,58 @@ const validateBalanza = () => {
     }
     // if it's valid carry on
     else {
-      next();
+      // ==========
+      // initialize REPORT validation
+      // generate array of objects
+      const balanzaArrOfObjs = balanza.reduce((acc, cv) => {
+        let row = cv.split(",");
+        return acc.concat({
+          auditId: req.body.auditId,
+          month: row[0].toUpperCase(),
+          cuentaContable: row[1],
+          cuentaDescripción: row[2].trim(),
+          saldoInicial: parseFloat(parseFloat(row[3]).toFixed(2)),
+          cargos: parseFloat(parseFloat(row[4]).toFixed(2)),
+          abonos: parseFloat(parseFloat(row[5]).toFixed(2)),
+          saldoFinal: parseFloat(parseFloat(row[6]).toFixed(2))
+        });
+      }, []);
+
+      // generate monthly report
+      let report = balanzaArrOfObjs.reduce((acc, cv) => {
+        if (!cv.saldoInicial) {
+          console.log(cv);
+        } else {
+          // if the month of the current value already exists in the accumulator
+          if (acc.filter(i => i.month === cv.month).length ? true : false) {
+            // get the index of the month and sum the cv to the object from that index
+            let index = balanzaArrOfObjs.map(i => i.month).indexOf(cv.month);
+            let temp = acc[index];
+            acc[index] = {
+              ...temp,
+              saldoInicial: temp.saldoInicial + cv.saldoInicial,
+              cargos: temp.cargos + cv.cargos,
+              abonos: temp.abonos + cv.abonos,
+              saldoFinal: temp.saldoFinal + cv.saldoFinal
+            };
+          } else {
+            // if not then push the object with only the values needed
+            acc.push({
+              month: cv.month,
+              saldoInicial: cv.saldoInicial,
+              cargos: cv.cargos,
+              abonos: cv.abonos,
+              saldoFinal: cv.saldoFinal
+            });
+          }
+        }
+
+        return acc;
+      }, []);
+
+      // console.log("@report", report);
+
+      // next();
     }
   };
 };

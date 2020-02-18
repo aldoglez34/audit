@@ -1,3 +1,5 @@
+// =================
+// syntax validations
 const validateMonth = value => {
   // value must be one of the twelve months in spanish
   const months = [
@@ -73,6 +75,68 @@ const initSyntaxValidation = balanza => {
   return [isValid, text];
 };
 
+// =================
+// report validation
+const generateArrOfObjs = balanza => {
+  return balanza.reduce((acc, cv) => {
+    let row = cv.split(",");
+    return acc.concat({
+      auditId: req.body.auditId,
+      month: row[0].toUpperCase(),
+      cuentaContable: row[1],
+      cuentaDescripción: row[2].trim(),
+      saldoInicial: parseFloat(parseFloat(row[3]).toFixed(2)),
+      cargos: parseFloat(parseFloat(row[4]).toFixed(2)),
+      abonos: parseFloat(parseFloat(row[5]).toFixed(2)),
+      saldoFinal: parseFloat(parseFloat(row[6]).toFixed(2))
+    });
+  }, []);
+};
+
+const generateMonthlyReport = balanzaArrOfObjs => {
+  return balanzaArrOfObjs.reduce((acc, cv) => {
+    if (!cv.saldoInicial) {
+      console.log(cv);
+    } else {
+      // if the month of the current value already exists in the accumulator
+      if (acc.filter(i => i.month === cv.month).length ? true : false) {
+        // get the index of the month and sum the cv to the object from that index
+        let index = balanzaArrOfObjs.map(i => i.month).indexOf(cv.month);
+        let temp = acc[index];
+        acc[index] = {
+          ...temp,
+          saldoInicial: temp.saldoInicial + cv.saldoInicial,
+          cargos: temp.cargos + cv.cargos,
+          abonos: temp.abonos + cv.abonos,
+          saldoFinal: temp.saldoFinal + cv.saldoFinal
+        };
+      } else {
+        // if not then push the object with only the values needed
+        acc.push({
+          month: cv.month,
+          saldoInicial: cv.saldoInicial,
+          cargos: cv.cargos,
+          abonos: cv.abonos,
+          saldoFinal: cv.saldoFinal
+        });
+      }
+    }
+    return acc;
+  }, []);
+};
+
+const initReportValidation = balanza => {
+  // first generate an array of objects
+  const balanzaArrOfObjs = generateArrOfObjs(balanza);
+
+  // then generate a monthly report
+  const monthlyReport = generateMonthlyReport(balanzaArrOfObjs);
+
+  console.log(monthlyReport);
+
+  // compare results
+};
+
 // ====================================
 // middleware exported
 const validateBalanza = () => {
@@ -86,72 +150,34 @@ const validateBalanza = () => {
     // if last row is empty, delete it
     if (!balanza[balanza.length - 1]) balanza.pop();
 
-    // ==========
     // initialize SYNTAX validation
     // the first element will be true/false
     // and the second will contain a text description if there was an error
-    const [isValid, errormsg] = initSyntaxValidation(balanza);
+    const [isSyntaxValid, syntaxErrorMsg] = initSyntaxValidation(balanza);
 
     // if it's not valid, send the msg error to the front end
-    if (!isValid) {
+    if (!isSyntaxValid) {
       res.status(422).send({
-        error: "Ocurrió un error con la validación de tu archivo\n" + errormsg
+        error:
+          "Ocurrió un error con la validación de tu archivo\n" + syntaxErrorMsg
       });
     }
     // if it's valid carry on
     else {
-      // ==========
       // initialize REPORT validation
-      // generate array of objects
-      const balanzaArrOfObjs = balanza.reduce((acc, cv) => {
-        let row = cv.split(",");
-        return acc.concat({
-          auditId: req.body.auditId,
-          month: row[0].toUpperCase(),
-          cuentaContable: row[1],
-          cuentaDescripción: row[2].trim(),
-          saldoInicial: parseFloat(parseFloat(row[3]).toFixed(2)),
-          cargos: parseFloat(parseFloat(row[4]).toFixed(2)),
-          abonos: parseFloat(parseFloat(row[5]).toFixed(2)),
-          saldoFinal: parseFloat(parseFloat(row[6]).toFixed(2))
+      // the first element will be true/false
+      // and the second will contain a text description if there was an error
+      const [isReportValid, reportErrorMsg] = initReportValidation(balanza);
+
+      if (!isReportValid) {
+        res.status(422).send({
+          error:
+            "Ocurrió un error con el reporte mensual de tu archivo\n" +
+            reportErrorMsg
         });
-      }, []);
-
-      // generate monthly report
-      let report = balanzaArrOfObjs.reduce((acc, cv) => {
-        if (!cv.saldoInicial) {
-          console.log(cv);
-        } else {
-          // if the month of the current value already exists in the accumulator
-          if (acc.filter(i => i.month === cv.month).length ? true : false) {
-            // get the index of the month and sum the cv to the object from that index
-            let index = balanzaArrOfObjs.map(i => i.month).indexOf(cv.month);
-            let temp = acc[index];
-            acc[index] = {
-              ...temp,
-              saldoInicial: temp.saldoInicial + cv.saldoInicial,
-              cargos: temp.cargos + cv.cargos,
-              abonos: temp.abonos + cv.abonos,
-              saldoFinal: temp.saldoFinal + cv.saldoFinal
-            };
-          } else {
-            // if not then push the object with only the values needed
-            acc.push({
-              month: cv.month,
-              saldoInicial: cv.saldoInicial,
-              cargos: cv.cargos,
-              abonos: cv.abonos,
-              saldoFinal: cv.saldoFinal
-            });
-          }
-        }
-
-        return acc;
-      }, []);
-
-      // console.log("@report", report);
-
-      // next();
+      } else {
+        next();
+      }
     }
   };
 };

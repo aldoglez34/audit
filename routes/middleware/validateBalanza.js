@@ -95,31 +95,27 @@ const generateArrOfObjs = balanza => {
 
 const generateMonthlyReport = balanzaArrOfObjs => {
   return balanzaArrOfObjs.reduce((acc, cv) => {
-    if (!cv.saldoInicial) {
-      console.log(cv);
+    // if the month of the current value already exists in the accumulator
+    if (acc.filter(i => i.month === cv.month).length ? true : false) {
+      // get the index of the month and sum the cv to the object from that index
+      let index = balanzaArrOfObjs.map(i => i.month).indexOf(cv.month);
+      let temp = acc[index];
+      acc[index] = {
+        ...temp,
+        saldoInicial: temp.saldoInicial + cv.saldoInicial,
+        cargos: temp.cargos + cv.cargos,
+        abonos: temp.abonos + cv.abonos,
+        saldoFinal: temp.saldoFinal + cv.saldoFinal
+      };
     } else {
-      // if the month of the current value already exists in the accumulator
-      if (acc.filter(i => i.month === cv.month).length ? true : false) {
-        // get the index of the month and sum the cv to the object from that index
-        let index = balanzaArrOfObjs.map(i => i.month).indexOf(cv.month);
-        let temp = acc[index];
-        acc[index] = {
-          ...temp,
-          saldoInicial: temp.saldoInicial + cv.saldoInicial,
-          cargos: temp.cargos + cv.cargos,
-          abonos: temp.abonos + cv.abonos,
-          saldoFinal: temp.saldoFinal + cv.saldoFinal
-        };
-      } else {
-        // if not then push the object with only the values needed
-        acc.push({
-          month: cv.month,
-          saldoInicial: cv.saldoInicial,
-          cargos: cv.cargos,
-          abonos: cv.abonos,
-          saldoFinal: cv.saldoFinal
-        });
-      }
+      // if not then push the object with only the values needed
+      acc.push({
+        month: cv.month,
+        saldoInicial: cv.saldoInicial,
+        cargos: cv.cargos,
+        abonos: cv.abonos,
+        saldoFinal: cv.saldoFinal
+      });
     }
     return acc;
   }, []);
@@ -134,7 +130,7 @@ const initReportValidation = balanza => {
 
   console.log(monthlyReport);
 
-  // compare results
+  // evaluate report
 };
 
 // ====================================

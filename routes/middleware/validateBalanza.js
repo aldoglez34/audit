@@ -17,19 +17,22 @@ const validateMonth = value => {
     "DICIEMBRE"
   ];
   let result = months.includes(value.toUpperCase());
-  return [result, result ? "" : `"${value}" no es un mes válido`];
+  return [result, result ? "" : `El mes "${value}" no es válido`];
 };
 
 const validateCuentaContable = value => {
   // value must have length of 12
   let result = value.length === 12 ? true : false;
-  return [result, result ? "" : `"${value}" no tiene 12 digitos`];
+  return [
+    result,
+    result ? "" : `La cuenta contable "${value}" no tiene 12 digitos`
+  ];
 };
 
 const validateCuentaDescripción = value => {
   // value has to be a string
   let result = typeof value === "string" ? true : false;
-  return [result, result ? "" : `"${value}" no es una texto válido`];
+  return [result, result ? "" : `La descripción "${value}" no es válida`];
 };
 
 const validateNumber = value => {
@@ -37,7 +40,7 @@ const validateNumber = value => {
   // convert value to number and check if it returns NaN, if so it means it wasn't a number
   // if value was a string, after converting it will return NaN (falsy)
   let result = !isNaN(parseFloat(parseFloat(value).toFixed(2))) ? true : false;
-  return [result, result ? "" : `"${value}" no es un número válido`];
+  return [result, result ? "" : `El número "${value}" no es válido`];
 };
 
 const initSyntaxValidation = balanza => {
@@ -77,11 +80,14 @@ const initSyntaxValidation = balanza => {
 
 // =================
 // report validation
-const generateArrOfObjs = balanza => {
-  return balanza.reduce((acc, cv) => {
+const generateMonthlyReport = ({ balanza, auditId }) => {
+  // first generate an array of objects with each string in the balanza array
+  const arrOfObjs = balanza.reduce((acc, cv) => {
+    // split current value into an array (separated by commas)
     let row = cv.split(",");
+    // concat values as an object into the acc array
     return acc.concat({
-      auditId: req.body.auditId,
+      auditId,
       month: row[0].toUpperCase(),
       cuentaContable: row[1],
       cuentaDescripción: row[2].trim(),
@@ -91,46 +97,102 @@ const generateArrOfObjs = balanza => {
       saldoFinal: parseFloat(parseFloat(row[6]).toFixed(2))
     });
   }, []);
-};
 
-const generateMonthlyReport = balanzaArrOfObjs => {
-  return balanzaArrOfObjs.reduce((acc, cv) => {
-    // if the month of the current value already exists in the accumulator
+  // then generate a monthly report based on previous array of objs
+  const monthlyReport = arrOfObjs.reduce((acc, cv) => {
+    // check if the month of cv is already in the acc
     if (acc.filter(i => i.month === cv.month).length ? true : false) {
-      // get the index of the month and sum the cv to the object from that index
-      let index = balanzaArrOfObjs.map(i => i.month).indexOf(cv.month);
+      // if so, sum the values
+      let index = acc.map(i => i.month).indexOf(cv.month);
       let temp = acc[index];
       acc[index] = {
         ...temp,
-        saldoInicial: temp.saldoInicial + cv.saldoInicial,
-        cargos: temp.cargos + cv.cargos,
-        abonos: temp.abonos + cv.abonos,
-        saldoFinal: temp.saldoFinal + cv.saldoFinal
+        total_si: temp.total_si + cv.saldoInicial,
+        total_c: temp.total_c + cv.cargos,
+        total_a: temp.total_a + cv.abonos,
+        total_sf: temp.total_sf + cv.saldoFinal
       };
     } else {
       // if not then push the object with only the values needed
       acc.push({
         month: cv.month,
-        saldoInicial: cv.saldoInicial,
-        cargos: cv.cargos,
-        abonos: cv.abonos,
-        saldoFinal: cv.saldoFinal
+        total_si: cv.saldoInicial,
+        total_c: cv.cargos,
+        total_a: cv.abonos,
+        total_sf: cv.saldoFinal
       });
     }
     return acc;
   }, []);
+
+  // finally set differences
+  const monthlyReportWithDiff = monthlyReport.reduce((acc, obj) => {
+    let total_si = Math.round(
+      Number(
+        parseFloat(obj.total_si)
+          .toLocaleString()
+          .replace(/,/g, "")
+      )
+    );
+    let total_c = Math.round(
+      Number(
+        parseFloat(obj.total_c)
+          .toLocaleString()
+          .replace(/,/g, "")
+      )
+    );
+    let total_a = Math.round(
+      Number(
+        parseFloat(obj.total_a)
+          .toLocaleString()
+          .replace(/,/g, "")
+      )
+    );
+    let total_sf = Math.round(
+      Number(
+        parseFloat(obj.total_sf)
+          .toLocaleString()
+          .replace(/,/g, "")
+      )
+    );
+
+    let isSIZero = total_si === 0 ? true : false;
+    let isSFZero = total_sf === 0 ? true : false;
+    let diff_CyA = total_c - total_a;
+    let isCandATheSame = total_sf === 0 ? true : false;
+
+    let month = {
+      month: obj.month,
+      total_si,
+      total_c,
+      total_a,
+      total_sf,
+      isSIZero,
+      isSFZero,
+      isCandATheSame,
+      diff_CyA
+    };
+    acc.push(month);
+    return acc;
+  }, []);
+
+  // return the whole thing
+  return monthlyReportWithDiff;
 };
 
-const initReportValidation = balanza => {
-  // first generate an array of objects
-  const balanzaArrOfObjs = generateArrOfObjs(balanza);
-
-  // then generate a monthly report
-  const monthlyReport = generateMonthlyReport(balanzaArrOfObjs);
-
-  console.log(monthlyReport);
+const initReportValidation = ({ balanza, auditId }) => {
+  // generate monthly report with differences
+  const report = generateMonthlyReport({ balanza, auditId });
 
   // evaluate report
+  let monthsWithProblems = report.reduce((acc, cv) => {
+    if (!cv.isSIZero || !cv.isSFZero || !cv.isCandATheSame) acc.push(cv.month);
+    return acc;
+  }, []);
+
+  // if monthsWithProblems is NOT empty, return false, else return true
+  // as a second item return the array spreaded
+  return [monthsWithProblems.length ? false : true, ...monthsWithProblems];
 };
 
 // ====================================
@@ -154,21 +216,23 @@ const validateBalanza = () => {
     // if it's not valid, send the msg error to the front end
     if (!isSyntaxValid) {
       res.status(422).send({
-        error:
-          "Ocurrió un error con la validación de tu archivo\n" + syntaxErrorMsg
+        msg:
+          "Ocurrió un error con la validación de tu archivo:\n" + syntaxErrorMsg
       });
-    }
-    // if it's valid carry on
-    else {
+    } else {
       // initialize REPORT validation
       // the first element will be true/false
       // and the second will contain a text description if there was an error
-      const [isReportValid, reportErrorMsg] = initReportValidation(balanza);
+      const auditId = req.body.auditId;
+      const [isReportValid, reportErrorMsg] = initReportValidation({
+        balanza,
+        auditId
+      });
 
       if (!isReportValid) {
         res.status(422).send({
-          error:
-            "Ocurrió un error con el reporte mensual de tu archivo\n" +
+          msg:
+            "Ocurrió un error con los totales de tu archivo en los siguientes meses:\n" +
             reportErrorMsg
         });
       } else {

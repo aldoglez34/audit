@@ -24,7 +24,7 @@ const LoadBalanza = React.memo(function LoadBalanza() {
       const text = e.target.result;
       setFile(text);
     };
-    reader.readAsText(e.target.files[0]);
+    reader.readAsText(e.target.files[0], "ISO-8859-1"); // ISO-8859-1 will accept tildes and ñ's
   };
 
   const uploadFile = () => {

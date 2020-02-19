@@ -1,5 +1,5 @@
 // =================
-// syntax validations
+// SYNTAX validations
 const validateMonth = value => {
   // value must be one of the twelve months in spanish
   const months = [
@@ -17,30 +17,29 @@ const validateMonth = value => {
     "DICIEMBRE"
   ];
   let result = months.includes(value.toUpperCase());
-  return [result, result ? "" : `El mes "${value}" no es válido`];
+  return [result, result ? null : `El mes "${value}" no es válido`];
 };
 
 const validateCuentaContable = value => {
   // value must have length of 12
-  let result = value.length === 12 ? true : false;
+  let result = value.length === 12 || value.length === 14 ? true : false;
   return [
     result,
-    result ? "" : `La cuenta contable "${value}" no tiene 12 digitos`
+    result ? null : `La cuenta contable "${value}" no tiene 12 o 14 digitos`
   ];
 };
 
 const validateCuentaDescripción = value => {
   // value has to be a string
   let result = typeof value === "string" ? true : false;
-  return [result, result ? "" : `La descripción "${value}" no es válida`];
+  return [result, result ? null : `La descripción "${value}" no es válida`];
 };
 
 const validateNumber = value => {
-  // CHECK IF THE NUMBER HAS INVALID CHARS SUCH AS .
-  // convert value to number and check if it returns NaN, if so it means it wasn't a number
-  // if value was a string, after converting it will return NaN (falsy)
-  let result = !isNaN(parseFloat(parseFloat(value).toFixed(2))) ? true : false;
-  return [result, result ? "" : `El número "${value}" no es válido`];
+  // check if the value is a valid number
+  // by converting it and then checking if is not a number
+  let result = !isNaN(Number(value));
+  return [result, result ? null : `El número "${value}" no es válido`];
 };
 
 const initSyntaxValidation = balanza => {
@@ -79,7 +78,7 @@ const initSyntaxValidation = balanza => {
 };
 
 // =================
-// report validation
+// REPORT validation
 const generateMonthlyReport = ({ balanza, auditId }) => {
   // first generate an array of objects with each string in the balanza array
   const arrOfObjs = balanza.reduce((acc, cv) => {
@@ -159,7 +158,7 @@ const generateMonthlyReport = ({ balanza, auditId }) => {
     let isSIZero = total_si === 0 ? true : false;
     let isSFZero = total_sf === 0 ? true : false;
     let diff_CyA = total_c - total_a;
-    let isCandATheSame = total_sf === 0 ? true : false;
+    let isCandATheSame = diff_CyA === 0 ? true : false;
 
     let month = {
       month: obj.month,
@@ -192,7 +191,10 @@ const initReportValidation = ({ balanza, auditId }) => {
 
   // if monthsWithProblems is NOT empty, return false, else return true
   // as a second item return the array spreaded
-  return [monthsWithProblems.length ? false : true, ...monthsWithProblems];
+  return [
+    monthsWithProblems.length ? false : true,
+    monthsWithProblems.toString()
+  ];
 };
 
 // ====================================

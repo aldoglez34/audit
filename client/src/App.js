@@ -14,7 +14,8 @@ import Audits from "./pages/audits/Audits";
 import Clients from "./pages/clients/Clients";
 import Planning from "./pages/planning/Planning";
 import Balanza from "./pages/consults/balanza/Balanza";
-import Surveys from "./pages/planning/components/Surveys";
+import Survey from "./pages/planning/components/Survey";
+import Amdg from "./pages/planning/reports/Amdg";
 
 function App() {
   const dispatch = useDispatch();
@@ -63,7 +64,12 @@ function App() {
           <Route
             exact
             path="/audit/planning/survey/:auditId/:surveyTitle"
-            render={props => <Surveys routeProps={props} />}
+            render={props => <Survey routeProps={props} />}
+          />
+          <Route
+            exact
+            path="/audit/planning/report/amdg/:auditId"
+            component={Amdg}
           />
           <Route
             exact

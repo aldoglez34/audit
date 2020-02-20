@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const model = require("../../models");
-const Sequelize = require("sequelize");
 const validateBalanza = require("../middleware/validateBalanza");
+const { Op } = require("sequelize");
+const sequelize = require("sequelize");
 
 // uploadBalanza()
 // matches with /api/balanza/upload
@@ -60,5 +61,26 @@ router.get("/:auditId", function(req, res) {
       res.send(err);
     });
 });
+
+// =======================================================
+// REPORTS
+
+// balanzaReport_amg()
+// matches with /api/balanza/report/amdg/:auditId
+router.get("/report/amdg/:auditId", function(req, res) {
+  // monthly report
+  model.Balanza.findAll({
+    attributes: [
+      "month",
+      [sequelize.fn("sum", sequelize.col("cargos")), "total_cargos"]
+    ],
+    group: ["month"],
+    where: { cuentaContable: { [Op.startsWith]: "5" } }
+  })
+    .then(data => res.send(data))
+    .catch(err => res.send(err));
+});
+
+router.get("/");
 
 module.exports = router;

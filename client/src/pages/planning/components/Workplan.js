@@ -47,6 +47,7 @@ const Workplan = React.memo(function Workplan(props) {
                     <label
                       className="custom-control-label"
                       htmlFor={w.workplanId}
+                      style={{ cursor: "pointer" }}
                     >
                       {w.text}
                     </label>

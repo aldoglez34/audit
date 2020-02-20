@@ -7,7 +7,7 @@ import API from "../../../utils/API";
 import SurveyDropdown from "./SurveyDropdown";
 import { diff } from "deep-object-diff";
 
-const Surveys = React.memo(function Surveys(props) {
+const Survey = React.memo(function Survey(props) {
   const audit = useSelector(state => state.audit);
 
   const [survey, setSurvey] = useState([]);
@@ -179,4 +179,4 @@ const Surveys = React.memo(function Surveys(props) {
   );
 });
 
-export default Surveys;
+export default Survey;

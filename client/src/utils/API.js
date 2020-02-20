@@ -98,5 +98,9 @@ export default {
 
   fetchBalanza: function(auditId) {
     return axios.get("/api/balanza/" + auditId);
+  },
+
+  reportAmdg: function(auditId) {
+    return axios.get("/api/balanza/report/amdg/" + auditId);
   }
 };

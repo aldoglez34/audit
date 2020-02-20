@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { Image } from "react-bootstrap";
 
-const Surveys = React.memo(function Surveys(props) {
+const SurveyTitles = React.memo(function SurveyTitles(props) {
   const audit = useSelector(state => state.audit);
 
   return (
@@ -11,7 +11,9 @@ const Surveys = React.memo(function Surveys(props) {
       <div className="text-center mt-4">
         <Image src="/images/webpage.png" />
       </div>
-      <h5 className="text-center mt-3">Cuestionarios para la fase de Planeación</h5>
+      <h5 className="text-center mt-3">
+        Cuestionarios para la fase de Planeación
+      </h5>
       <ul className="mt-4">
         {props.surveyTitles.map(st => {
           return (
@@ -31,8 +33,8 @@ const Surveys = React.memo(function Surveys(props) {
   );
 });
 
-Surveys.propTypes = {
+SurveyTitles.propTypes = {
   surveyTitles: PropTypes.array.isRequired
 };
 
-export default Surveys;
+export default SurveyTitles;

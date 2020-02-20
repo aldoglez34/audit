@@ -4,7 +4,7 @@ import "./planning.scss";
 import HelpTooltip from "./components/HelpTooltip";
 import Workplan from "./components/Workplan";
 import SurveyTitles from "./components/SurveyTitles";
-import Reports from "./components/Reports";
+import ReportTitles from "./components/ReportTitles";
 import API from "../../utils/API";
 import { Tabs, Tab, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
@@ -60,7 +60,7 @@ const Planning = React.memo(function Planning(props) {
             title="Reportes"
             disabled={audit.hasBalanza ? false : true}
           >
-            <Reports />
+            <ReportTitles />
           </Tab>
         </Tabs>
       ) : (

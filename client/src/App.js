@@ -15,7 +15,7 @@ import Clients from "./pages/clients/Clients";
 import Planning from "./pages/planning/Planning";
 import Balanza from "./pages/consults/balanza/Balanza";
 import Survey from "./pages/planning/components/Survey";
-import Amdg from "./pages/planning/reports/Amdg";
+import Amdg from "./pages/planning/reports/amdg/Amdg";
 
 function App() {
   const dispatch = useDispatch();

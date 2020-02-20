@@ -64,6 +64,7 @@ const LeftNav = React.memo(function LeftNav(props) {
             className="navLinkStyle"
             href={"/audit/execution/" + audit.auditId}
             active={props.auditMenu === "Ejecución" ? true : false}
+            disabled
           >
             <i className="fas fa-chess" style={{ width: "32px" }} />
             Ejecución
@@ -72,6 +73,7 @@ const LeftNav = React.memo(function LeftNav(props) {
             className="navLinkStyle"
             href={"/audit/reporting/" + audit.auditId}
             active={props.auditMenu === "Informes" ? true : false}
+            disabled
           >
             <i className="fas fa-chart-bar" style={{ width: "32px" }} />
             Informes
@@ -80,6 +82,7 @@ const LeftNav = React.memo(function LeftNav(props) {
             className="navLinkStyle"
             href={"/audit/followup/" + audit.auditId}
             active={props.auditMenu === "Seguimiento" ? true : false}
+            disabled
           >
             <i className="fas fa-forward" style={{ width: "32px" }} />
             Seguimiento
@@ -91,6 +94,7 @@ const LeftNav = React.memo(function LeftNav(props) {
             className="navLinkStyle"
             href={"/audit/nómina/" + audit.auditId}
             active={props.auditMenu === "Nómina" ? true : false}
+            disabled
           >
             <i className="far fa-file-alt" style={{ width: "32px" }} />
             Nómina

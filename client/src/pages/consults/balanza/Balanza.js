@@ -10,6 +10,13 @@ const Balanza = React.memo(function Balanza() {
 
   const [balanza, setBalanza] = useState();
 
+  const formatNumber = num => {
+    return num
+      .toFixed(2)
+      .toString()
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
+
   useEffect(() => {
     if (audit.hasBalanza)
       API.fetchBalanza(audit.auditId)
@@ -45,10 +52,10 @@ const Balanza = React.memo(function Balanza() {
                       <td>{b.month}</td>
                       <td>{b.cuentaContable}</td>
                       <td>{b.cuentaDescripción}</td>
-                      <td>{b.saldoInicial}</td>
-                      <td>{b.cargos}</td>
-                      <td>{b.abonos}</td>
-                      <td>{b.saldoFinal}</td>
+                      <td>{formatNumber(b.saldoInicial)}</td>
+                      <td>{formatNumber(b.cargos)}</td>
+                      <td>{formatNumber(b.abonos)}</td>
+                      <td>{formatNumber(b.saldoFinal)}</td>
                     </tr>
                   );
                 })}

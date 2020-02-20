@@ -65,17 +65,42 @@ router.get("/:auditId", function(req, res) {
 // =======================================================
 // REPORTS
 
-// balanzaReport_amg()
-// matches with /api/balanza/report/amdg/:auditId
-router.get("/report/amdg/:auditId", function(req, res) {
-  // monthly report
+// report_Amdg_topCuentas()
+// matches with /api/balanza/report/amdg/topCuentas/:auditId
+router.get("/report/amdg/topCuentas/:auditId", function(req, res) {
+  model.Balanza.findAll({
+    attributes: [
+      "cuentaContable",
+      "cuentaDescripción",
+      [sequelize.fn("sum", sequelize.col("cargos")), "total_cargos"]
+    ],
+    group: ["cuentaContable"],
+    where: { cuentaContable: { [Op.startsWith]: "5" } },
+    order: [[sequelize.fn("sum", sequelize.col("cargos")), "DESC"]],
+    limit: 10
+  })
+    .then(data => res.send(data))
+    .catch(err => res.send(err));
+});
+
+// report_Amdg_cuenta()
+// matches with /api/balanza/report/amdg/cuenta/:auditId/:cuentaContable
+router.get("/report/amdg/topCuentas/:auditId/:cuentaContable", function(
+  req,
+  res
+) {
   model.Balanza.findAll({
     attributes: [
       "month",
+      "cuentaContable",
+      "cuentaDescripción",
       [sequelize.fn("sum", sequelize.col("cargos")), "total_cargos"]
     ],
     group: ["month"],
-    where: { cuentaContable: { [Op.startsWith]: "5" } }
+    where: {
+      auditId: req.params.auditId,
+      cuentaContable: req.params.cuentaContable
+    }
   })
     .then(data => res.send(data))
     .catch(err => res.send(err));

@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../../Layout";
+import Layout from "../../../Layout";
 import { useSelector } from "react-redux";
-import API from "../../../utils/API";
+import API from "../../../../utils/API";
 import Chart from "chart.js";
+import AmdgTop15 from "./components/AmdgTop15";
+import { Spinner } from "react-bootstrap";
 
 const Amdg = React.memo(function Amdg() {
   const audit = useSelector(state => state.audit);
 
-  const [monthlyReport, setMonthlyReport] = useState([]);
+  const [top15, setTop15] = useState([]);
 
   const generateChart = report => {
-    console.log(report);
-
+    // get month indexes
     let eneroIndex = report.map(m => m.month).indexOf("ENERO");
     let febreroIndex = report.map(m => m.month).indexOf("FEBRERO");
     let marzoIndex = report.map(m => m.month).indexOf("MARZO");
@@ -25,6 +26,7 @@ const Amdg = React.memo(function Amdg() {
     let noviembreIndex = report.map(m => m.month).indexOf("NOVIEMBRE");
     let diciembreIndex = report.map(m => m.month).indexOf("DICIEMBRE");
 
+    // create chart
     let ctx = document.getElementById("myChart").getContext("2d");
     let myChart = new Chart(ctx, {
       type: "horizontalBar",
@@ -102,10 +104,6 @@ const Amdg = React.memo(function Amdg() {
             bottom: 0
           }
         },
-        // title: {
-        //   display: true,
-        //   text: "Análisis mensual de gastos"
-        // },
         scales: {
           yAxes: [
             {
@@ -120,13 +118,12 @@ const Amdg = React.memo(function Amdg() {
   };
 
   useEffect(() => {
-    API.reportAmdg()
+    API.report_Amdg_topCuentas()
       .then(res => {
-        setMonthlyReport(res.data);
-        generateChart(res.data);
+        setTop15(res.data);
+        // generateChart(res.data);
       })
       .catch(err => console.log(err));
-    //
   }, []);
 
   return (
@@ -142,8 +139,14 @@ const Amdg = React.memo(function Amdg() {
         </div>
       </div>
       {/* content */}
-      <div className="bg-white rounded p-4">
-        <canvas id="myChart" />
+      <div className="mt-3">
+        {top15.length ? (
+          <AmdgTop15 top15={top15} />
+        ) : (
+          <div className="text-center mt-4 pt-4">
+            <Spinner animation="border" />
+          </div>
+        )}
       </div>
     </Layout>
   );

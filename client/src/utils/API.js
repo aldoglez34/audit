@@ -100,7 +100,13 @@ export default {
     return axios.get("/api/balanza/" + auditId);
   },
 
-  reportAmdg: function(auditId) {
-    return axios.get("/api/balanza/report/amdg/" + auditId);
+  report_Amdg_topCuentas: function(auditId) {
+    return axios.get("/api/balanza/report/amdg/topCuentas/" + auditId);
+  },
+
+  report_Amdg_cuenta: function({ auditId, cuentaContable }) {
+    return axios.get(
+      "/api/balanza/report/amdg/cuenta/" + auditId + "/" + cuentaContable
+    );
   }
 };

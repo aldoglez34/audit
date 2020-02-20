@@ -9,7 +9,7 @@ import { Spinner } from "react-bootstrap";
 const Amdg = React.memo(function Amdg() {
   const audit = useSelector(state => state.audit);
 
-  const [top15, setTop15] = useState([]);
+  const [top, setTop] = useState([]);
 
   const generateChart = report => {
     // get month indexes
@@ -120,7 +120,7 @@ const Amdg = React.memo(function Amdg() {
   useEffect(() => {
     API.report_Amdg_topCuentas()
       .then(res => {
-        setTop15(res.data);
+        setTop(res.data);
         // generateChart(res.data);
       })
       .catch(err => console.log(err));
@@ -140,8 +140,8 @@ const Amdg = React.memo(function Amdg() {
       </div>
       {/* content */}
       <div className="mt-3">
-        {top15.length ? (
-          <AmdgTop15 top15={top15} />
+        {top.length ? (
+          <AmdgTop15 top={top} />
         ) : (
           <div className="text-center mt-4 pt-4">
             <Spinner animation="border" />

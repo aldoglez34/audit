@@ -3,7 +3,7 @@ import { Row, Col, Tab, ListGroup } from "react-bootstrap";
 import PropTypes from "prop-types";
 import AmdgChart from "./AmdgChart";
 
-const AmdgTop15 = React.memo(function AmdgTop15(props) {
+const AmdgTop = React.memo(function AmdgTop(props) {
   const formatNumber = num => {
     return num
       .toFixed(2)
@@ -15,12 +15,12 @@ const AmdgTop15 = React.memo(function AmdgTop15(props) {
     <React.Fragment>
       <Tab.Container
         id="list-group-tabs-example"
-        defaultActiveKey={"#" + props.top15[0].cuentaContable}
+        defaultActiveKey={"#" + props.top[0].cuentaContable}
       >
         <Row>
           <Col sm={4}>
             <ListGroup>
-              {props.top15.map(c => {
+              {props.top.map(c => {
                 return (
                   <ListGroup.Item
                     action
@@ -38,7 +38,7 @@ const AmdgTop15 = React.memo(function AmdgTop15(props) {
           </Col>
           <Col sm={8}>
             <Tab.Content>
-              {props.top15.map(c => {
+              {props.top.map(c => {
                 return (
                   <Tab.Pane
                     key={c.cuentaContable}
@@ -56,8 +56,8 @@ const AmdgTop15 = React.memo(function AmdgTop15(props) {
   );
 });
 
-AmdgTop15.propTypes = {
-  top15: PropTypes.array.isRequired
+AmdgTop.propTypes = {
+  top: PropTypes.array.isRequired
 };
 
-export default AmdgTop15;
+export default AmdgTop;

@@ -85,10 +85,7 @@ router.get("/report/amdg/topCuentas/:auditId", function(req, res) {
 
 // report_Amdg_cuenta()
 // matches with /api/balanza/report/amdg/cuenta/:auditId/:cuentaContable
-router.get("/report/amdg/topCuentas/:auditId/:cuentaContable", function(
-  req,
-  res
-) {
+router.get("/report/amdg/cuenta/:auditId/:cuentaContable", function(req, res) {
   model.Balanza.findAll({
     attributes: [
       "month",

@@ -26,11 +26,11 @@ const Workplan = React.memo(function Workplan(props) {
 
   return (
     <div className="bg-white rounded-bottom p-3 border border-top-0">
-      <div className="text-center mb-2">
-        <Image src="/images/list.png" />
+      <div className="text-center mt-4">
+        <Image src="/images/checklist.png" />
       </div>
-      <h5 className="text-center">Tareas para la fase de Planeación</h5>
-      <Table>
+      <h5 className="text-center mt-3">Tareas para la fase de Planeación</h5>
+      <Table className="mt-4">
         <tbody>
           {props.workplan.map(w => {
             return (

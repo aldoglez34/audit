@@ -7,5 +7,12 @@
 }
 
 .customTabs > a {
-  color: gray;
+  color: rgb(44, 47, 51) !important;
+  &:disabled {
+    color: red !important;
+  }
+}
+
+.customTabs > a.disabled {
+  color: gray !important;
 }

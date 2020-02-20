@@ -57,7 +57,7 @@ function App() {
           />
           <Route
             exact
-            path="/audit/planning/:auditId"
+            path="/audit/planning/:auditId/:tab"
             render={props => <Planning routeProps={props} />}
           />
           <Route

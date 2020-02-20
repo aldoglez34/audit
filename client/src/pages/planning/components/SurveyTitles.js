@@ -8,11 +8,11 @@ const Surveys = React.memo(function Surveys(props) {
 
   return (
     <div className="bg-white rounded-bottom p-3 border border-top-0">
-      <div className="text-center mb-2">
-        <Image src="/images/note.png" />
+      <div className="text-center mt-4">
+        <Image src="/images/webpage.png" />
       </div>
-      <h5 className="text-center">Cuestionarios para la fase de Planeación</h5>
-      <ul>
+      <h5 className="text-center mt-3">Cuestionarios para la fase de Planeación</h5>
+      <ul className="mt-4">
         {props.surveyTitles.map(st => {
           return (
             <li key={st.title}>

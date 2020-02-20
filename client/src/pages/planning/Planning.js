@@ -4,17 +4,21 @@ import "./planning.scss";
 import HelpTooltip from "./components/HelpTooltip";
 import Workplan from "./components/Workplan";
 import SurveyTitles from "./components/SurveyTitles";
+import Reports from "./components/Reports";
 import API from "../../utils/API";
 import { Tabs, Tab, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
-const Planning = React.memo(function Planning() {
+const Planning = React.memo(function Planning(props) {
   const audit = useSelector(state => state.audit);
 
   const [workplan, setWorkplan] = useState([]);
   const [surveyTitles, setSurveyTitles] = useState([]);
+  const [tab, setTab] = useState("");
 
   useEffect(() => {
+    setTab(props.routeProps.match.params.tab);
+    //
     API.fetchWorkplan(audit.auditId)
       .then(res => setWorkplan(res.data))
       .catch(err => console.log(err));
@@ -44,12 +48,19 @@ const Planning = React.memo(function Planning() {
       </div>
       {/* tabs */}
       {workplan.length && surveyTitles.length ? (
-        <Tabs defaultActiveKey="Guía de trabajo" className="customTabs">
-          <Tab eventKey="Guía de trabajo" title="Guía de trabajo">
+        <Tabs activeKey={tab} onSelect={t => setTab(t)} className="customTabs">
+          <Tab eventKey="guía" title="Guía de trabajo">
             <Workplan workplan={workplan} />
           </Tab>
-          <Tab eventKey="Cuestionarios" title="Cuestionarios">
+          <Tab eventKey="cuestionarios" title="Cuestionarios">
             <SurveyTitles surveyTitles={surveyTitles} />
+          </Tab>
+          <Tab
+            eventKey="reportes"
+            title="Reportes"
+            disabled={audit.hasBalanza ? false : true}
+          >
+            <Reports />
           </Tab>
         </Tabs>
       ) : (

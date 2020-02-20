@@ -54,7 +54,7 @@ const LeftNav = React.memo(function LeftNav(props) {
           </Nav.Item>
           <Nav.Link
             className="navLinkStyle"
-            href={"/audit/planning/" + audit.auditId}
+            href={"/audit/planning/" + audit.auditId + "/guía"}
             active={props.auditMenu === "Planeación" ? true : false}
           >
             <i className="fas fa-tasks" style={{ width: "32px" }} />

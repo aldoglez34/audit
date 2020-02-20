@@ -42,7 +42,7 @@ const Surveys = React.memo(function Surveys(props) {
   return (
     <Layout
       auditMenu="Planeación"
-      backButton={"/audit/planning/" + audit.auditId}
+      backButton={"/audit/planning/" + audit.auditId + "/cuestionarios"}
     >
       {/* title */}
       <div className="d-flex flex-row">

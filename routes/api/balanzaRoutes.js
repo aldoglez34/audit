@@ -103,6 +103,4 @@ router.get("/report/amdg/cuenta/:auditId/:cuentaContable", function(req, res) {
     .catch(err => res.send(err));
 });
 
-router.get("/");
-
 module.exports = router;

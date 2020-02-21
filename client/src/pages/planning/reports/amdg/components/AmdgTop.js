@@ -44,7 +44,7 @@ const AmdgTop = React.memo(function AmdgTop(props) {
                     key={c.cuentaContable}
                     eventKey={"#" + c.cuentaContable}
                   >
-                    <AmdgChart cuentaContable={c.cuentaContable} />
+                    <AmdgChart cuenta={c} />
                   </Tab.Pane>
                 );
               })}

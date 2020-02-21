@@ -29,7 +29,11 @@ const Amdg = React.memo(function Amdg() {
         </div>
       </div>
       {/* content */}
-      <div className="mt-3">
+      <span className="lead">
+        A continuación se muestran las 10 cuentas de gastos con un mayor total
+        de cargos en orden descendente
+      </span>
+      <div className="mt-4">
         {top.length ? (
           <AmdgTop top={top} />
         ) : (

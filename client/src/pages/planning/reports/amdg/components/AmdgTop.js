@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Tab, ListGroup } from "react-bootstrap";
 import PropTypes from "prop-types";
 import AmdgChart from "./AmdgChart";
@@ -10,6 +10,12 @@ const AmdgTop = React.memo(function AmdgTop(props) {
       .toString()
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   };
+
+  const [cuenta, setCuenta] = useState("");
+
+  useEffect(() => {
+    setCuenta(props.top[0].cuentaContable);
+  }, []);
 
   return (
     <React.Fragment>
@@ -27,6 +33,7 @@ const AmdgTop = React.memo(function AmdgTop(props) {
                     className="d-flex flex-column"
                     href={"#" + c.cuentaContable}
                     key={c.cuentaContable}
+                    onClick={() => setCuenta(c.cuentaContable)}
                   >
                     <strong>{c.cuentaContable}</strong>
                     <span>{c.cuentaDescripción}</span>
@@ -44,7 +51,7 @@ const AmdgTop = React.memo(function AmdgTop(props) {
                     key={c.cuentaContable}
                     eventKey={"#" + c.cuentaContable}
                   >
-                    <AmdgChart cuenta={c} />
+                    <AmdgChart cuenta={c} cuenta={cuenta} />
                   </Tab.Pane>
                 );
               })}

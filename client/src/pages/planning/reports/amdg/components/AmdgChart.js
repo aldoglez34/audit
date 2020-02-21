@@ -33,9 +33,7 @@ const AmdgChart = React.memo(function AmdgChart(props) {
     let diciembreIndex = report.map(m => m.month).indexOf("DICIEMBRE");
 
     // create chart
-    let ctx = document
-      .getElementById(report.cuentaContable + "_chart")
-      .getContext("2d");
+    let ctx = document.getElementById("myChart").getContext("2d");
     let myChart = new Chart(ctx, {
       type: "horizontalBar",
       data: {
@@ -151,7 +149,7 @@ const AmdgChart = React.memo(function AmdgChart(props) {
 
   useEffect(() => {
     let auditId = audit.auditId;
-    let cuentaContable = props.cuenta.cuentaContable;
+    let cuentaContable = props.cuenta;
     API.report_Amdg_cuenta({ auditId, cuentaContable })
       .then(res => {
         setChart(res.data);
@@ -162,19 +160,19 @@ const AmdgChart = React.memo(function AmdgChart(props) {
 
   return chart.length ? (
     <React.Fragment>
-      <h4>
+      <h5>
         <small className="text-muted mr-2">Cuenta:</small>
         {props.cuenta.cuentaContable}
-      </h4>
-      <h4>
+      </h5>
+      <h5>
         <small className="text-muted mr-2">Descripción:</small>
         {props.cuenta.cuentaDescripción}
-      </h4>
-      <h4>
+      </h5>
+      <h5>
         <small className="text-muted mr-2">Total cargos:</small>
         {formatNumber(props.cuenta.total_cargos)}
-      </h4>
-      <canvas id={props.cuenta.cuentaContable + "_chart"} className="w-100" />
+      </h5>
+      <canvas id="myChart" className="w-100" />
     </React.Fragment>
   ) : (
     <div className="text-center mt-4 pt-4">

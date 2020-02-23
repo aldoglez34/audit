@@ -8,14 +8,18 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
+// pages
 import Login from "./pages/login/Login";
-import AuditHome from "./pages/auditHome/AuditHome";
-import Audits from "./pages/audits/Audits";
 import Clients from "./pages/clients/Clients";
+import Audits from "./pages/audits/Audits";
+import AuditHome from "./pages/auditHome/AuditHome";
+// planning
 import Planning from "./pages/planning/Planning";
-import Balanza from "./pages/consults/balanza/Balanza";
 import Survey from "./pages/planning/components/Survey";
 import Amdg from "./pages/planning/reports/amdg/Amdg";
+import Ads from "./pages/planning/reports/ads/Ads";
+// consult
+import Balanza from "./pages/consults/balanza/Balanza";
 
 function App() {
   const dispatch = useDispatch();
@@ -65,6 +69,12 @@ function App() {
             exact
             path="/audit/planning/survey/:auditId/:surveyTitle"
             render={props => <Survey routeProps={props} />}
+          />
+          {/* reportes */}
+          <Route
+            exact
+            path="/audit/planning/report/ads/:auditId"
+            component={Ads}
           />
           <Route
             exact

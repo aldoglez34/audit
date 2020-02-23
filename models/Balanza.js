@@ -10,11 +10,19 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    year: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     month: {
       type: DataTypes.STRING,
       allowNull: false
     },
     cuentaContable: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    rubro: {
       type: DataTypes.STRING,
       allowNull: false
     },

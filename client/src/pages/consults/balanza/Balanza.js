@@ -38,6 +38,7 @@ const Balanza = React.memo(function Balanza() {
                 <tr>
                   <th>Mes</th>
                   <th>CuentaContable</th>
+                  <th>Rubro</th>
                   <th>CuentaDescripción</th>
                   <th>SaldoInicial</th>
                   <th>Cargos</th>
@@ -51,6 +52,7 @@ const Balanza = React.memo(function Balanza() {
                     <tr key={b.balanzaId}>
                       <td>{b.month}</td>
                       <td>{b.cuentaContable}</td>
+                      <td>{b.rubro}</td>
                       <td>{b.cuentaDescripción}</td>
                       <td>{formatNumber(b.saldoInicial)}</td>
                       <td>{formatNumber(b.cargos)}</td>

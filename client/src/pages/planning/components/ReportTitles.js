@@ -11,7 +11,12 @@ const ReportTitles = React.memo(function ReportTitles() {
         <Image src="/images/business.png" />
       </div>
       <h5 className="text-center mt-3">Reportes para la fase de Planeación</h5>
-      <ul className="mt-4">
+      <ol className="mt-4">
+        <li>
+          <a href={"/audit/planning/report/ads/" + audit.auditId}>
+            Análisis de saldos
+          </a>
+        </li>
         <li>
           <a href={"/audit/planning/report/amdg/" + audit.auditId}>
             Análisis mensual de gastos
@@ -37,7 +42,7 @@ const ReportTitles = React.memo(function ReportTitles() {
             Cédula sumaria de saldos comparativos
           </a>
         </li>
-      </ul>
+      </ol>
     </div>
   );
 });

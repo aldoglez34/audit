@@ -5,6 +5,7 @@ const auditReducers = (state = {}, action) => {
         isOpen: true,
         auditId: action.data.auditId,
         name: action.data.name,
+        year: action.data.year,
         hasNómina: action.data.hasNómina,
         hasBalanza: action.data.hasBalanza
       };

@@ -30,7 +30,7 @@ const Layout = React.memo(function Layout(props) {
 });
 
 Layout.propTypes = {
-  children: PropTypes.array.isRequired,
+  children: PropTypes.node.isRequired,
   homeMenu: PropTypes.string,
   auditMenu: PropTypes.string,
   auditOpened: PropTypes.string

@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const model = require("../../models");
-const validateBalanza = require("../middleware/validateBalanza");
+const validateBalanza = require("../middleware/balanzaValidation/validateBalanza");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
 
@@ -23,13 +23,15 @@ router.post("/upload", validateBalanza(), function(req, res, next) {
     // concat values as an object into the acc array
     return acc.concat({
       auditId: req.body.auditId,
+      year: req.body.year,
       month: row[0].toUpperCase(),
       cuentaContable: row[1],
-      cuentaDescripción: row[2].trim(),
-      saldoInicial: parseFloat(parseFloat(row[3]).toFixed(2)),
-      cargos: parseFloat(parseFloat(row[4]).toFixed(2)),
-      abonos: parseFloat(parseFloat(row[5]).toFixed(2)),
-      saldoFinal: parseFloat(parseFloat(row[6]).toFixed(2))
+      rubro: row[2].trim(),
+      cuentaDescripción: row[3].trim(),
+      saldoInicial: parseFloat(parseFloat(row[4]).toFixed(2)),
+      cargos: parseFloat(parseFloat(row[5]).toFixed(2)),
+      abonos: parseFloat(parseFloat(row[6]).toFixed(2)),
+      saldoFinal: parseFloat(parseFloat(row[7]).toFixed(2))
     });
   }, []);
 

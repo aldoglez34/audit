@@ -92,20 +92,20 @@ const LeftNav = React.memo(function LeftNav(props) {
           </Nav.Item>
           <Nav.Link
             className="navLinkStyle"
-            href={"/audit/nómina/" + audit.auditId}
-            active={props.auditMenu === "Nómina" ? true : false}
-            disabled
-          >
-            <i className="far fa-file-alt" style={{ width: "32px" }} />
-            Nómina
-          </Nav.Link>
-          <Nav.Link
-            className="navLinkStyle"
             href={"/audit/balanza/" + audit.auditId}
             active={props.auditMenu === "Balanza" ? true : false}
           >
             <i className="far fa-file-alt" style={{ width: "32px" }} />
             Balanza
+          </Nav.Link>
+          <Nav.Link
+            className="navLinkStyle"
+            href={"/audit/auxiliares/" + audit.auditId}
+            active={props.auditMenu === "Auxiliares" ? true : false}
+            disabled
+          >
+            <i className="far fa-file-alt" style={{ width: "32px" }} />
+            Auxiliares
           </Nav.Link>
           <div className="mt-auto p-3">
             <Button variant="danger" href="/audits" block>

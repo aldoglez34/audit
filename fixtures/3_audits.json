@@ -16,5 +16,14 @@
       "year": 2017,
       "description": "Auditoría de la CONTRALORÍA correspondiente al ejercicio 2017."
     }
+  },
+  {
+    "model": "Audit",
+    "data": {
+      "name": "ALDF 2019",
+      "clientId": 3,
+      "year": 2019,
+      "description": "Auditoría de la ALDF correspondiente al ejercicio 2019."
+    }
   }
 ]

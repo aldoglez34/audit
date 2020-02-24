@@ -23,6 +23,7 @@ router.post("/upload", validateBalanza(), function(req, res, next) {
     // concat values as an object into the acc array
     return acc.concat({
       auditId: req.body.auditId,
+      clientId: req.body.clientId,
       year: req.body.year,
       month: row[0].toUpperCase(),
       cuentaContable: row[1],
@@ -80,7 +81,7 @@ router.get("/report/ads/:auditId", function(req, res) {
       [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
     ],
     group: ["year", "month", "rubro", "cuentaContable", "cuentaDescripción"],
-    where: { year: 2018, month: "DICIEMBRE" },
+    where: { auditId: req.params.auditId, month: "DICIEMBRE" },
     order: [
       ["rubro", "ASC"],
       ["cuentaContable", "ASC"]
@@ -90,20 +91,66 @@ router.get("/report/ads/:auditId", function(req, res) {
     .catch(err => res.send(err));
 });
 
-// balanzaReport_ads()
-// matches with /api/balanza/report/ads/:auditId
-router.get("/report/ads/:auditId", function(req, res) {
+// balanzaReport_csdsc()
+// matches with /api/balanza/report/csdsc/:clientId/:year
+router.get("/report/csdsc/:clientId/:year", function(req, res) {
   model.Balanza.findAll({
     attributes: [
+      "cuentaContable",
       "year",
       "month",
+      [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
+    ],
+    group: ["cuentaContable", "year", "month"],
+    where: {
+      clientId: req.params.clientId,
+      year: { [Op.or]: [req.params.year, req.params.year - 1] },
+      month: "DICIEMBRE"
+    },
+    order: [
+      ["cuentaContable", "ASC"],
+      ["year", "ASC"]
+    ]
+  })
+    .then(data => res.send(data))
+    .catch(err => res.send(err));
+});
+
+// balanzaReport_amds()
+// matches with /api/balanza/report/amds/:auditId
+router.get("/report/amds/:auditId", function(req, res) {
+  model.Balanza.findAll({
+    attributes: [
       "rubro",
       "cuentaContable",
       "cuentaDescripción",
+      "month",
       [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
     ],
-    group: ["year", "month", "rubro", "cuentaContable", "cuentaDescripción"],
-    where: { year: 2018, month: "DICIEMBRE" },
+    group: ["rubro", "cuentaContable", "month"],
+    where: { auditId: req.params.auditId },
+    order: [
+      ["rubro", "ASC"],
+      ["cuentaContable", "ASC"]
+    ]
+  })
+    .then(data => res.send(data))
+    .catch(err => res.send(err));
+});
+
+// balanzaReport_amdm()
+// matches with /api/balanza/report/amdm/:auditId
+router.get("/report/amds/:auditId", function(req, res) {
+  model.Balanza.findAll({
+    attributes: [
+      "rubro",
+      "cuentaContable",
+      "cuentaDescripción",
+      "month",
+      [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
+    ],
+    group: ["rubro", "cuentaContable", "month"],
+    where: { auditId: req.params.auditId },
     order: [
       ["rubro", "ASC"],
       ["cuentaContable", "ASC"]

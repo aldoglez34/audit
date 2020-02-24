@@ -42,6 +42,7 @@ module.exports = function(sequelize, DataTypes) {
     Audit.hasMany(models.WorkplanAnswer, { foreignKey: "auditId" });
     Audit.hasMany(models.SurveyAnswer, { foreignKey: "auditId" });
     Audit.hasMany(models.AuditVisit, { foreignKey: "auditId" });
+    Audit.hasMany(models.Balanza, { foreignKey: "auditId" });
   };
 
   return Audit;

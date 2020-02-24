@@ -10,6 +10,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    clientId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     year: {
       type: DataTypes.INTEGER,
       allowNull: false
@@ -50,6 +54,7 @@ module.exports = function(sequelize, DataTypes) {
 
   Balanza.associate = function(models) {
     Balanza.belongsTo(models.Audit, { foreignKey: "auditId" });
+    Balanza.belongsTo(models.Client, { foreignKey: "clientId" });
   };
 
   return Balanza;

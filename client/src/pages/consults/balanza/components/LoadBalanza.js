@@ -30,10 +30,11 @@ const LoadBalanza = React.memo(function LoadBalanza() {
   const uploadFile = () => {
     setIsUploading(true);
     let auditId = audit.auditId;
+    let clientId = audit.clientId;
     let year = audit.year;
     let hasHeaders = document.getElementById("hasHeaders").checked;
     //
-    API.uploadBalanza({ auditId, year, hasHeaders, file })
+    API.uploadBalanza({ auditId, clientId, year, hasHeaders, file })
       .then(res => {
         console.log(res);
         alert(res.data.msg);

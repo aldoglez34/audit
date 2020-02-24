@@ -67,6 +67,52 @@ router.get("/:auditId", function(req, res) {
 // =======================================================
 // REPORTS
 
+// balanzaReport_ads()
+// matches with /api/balanza/report/ads/:auditId
+router.get("/report/ads/:auditId", function(req, res) {
+  model.Balanza.findAll({
+    attributes: [
+      "year",
+      "month",
+      "rubro",
+      "cuentaContable",
+      "cuentaDescripción",
+      [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
+    ],
+    group: ["year", "month", "rubro", "cuentaContable", "cuentaDescripción"],
+    where: { year: 2018, month: "DICIEMBRE" },
+    order: [
+      ["rubro", "ASC"],
+      ["cuentaContable", "ASC"]
+    ]
+  })
+    .then(data => res.send(data))
+    .catch(err => res.send(err));
+});
+
+// balanzaReport_ads()
+// matches with /api/balanza/report/ads/:auditId
+router.get("/report/ads/:auditId", function(req, res) {
+  model.Balanza.findAll({
+    attributes: [
+      "year",
+      "month",
+      "rubro",
+      "cuentaContable",
+      "cuentaDescripción",
+      [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
+    ],
+    group: ["year", "month", "rubro", "cuentaContable", "cuentaDescripción"],
+    where: { year: 2018, month: "DICIEMBRE" },
+    order: [
+      ["rubro", "ASC"],
+      ["cuentaContable", "ASC"]
+    ]
+  })
+    .then(data => res.send(data))
+    .catch(err => res.send(err));
+});
+
 // report_Amdg_topCuentas()
 // matches with /api/balanza/report/amdg/topCuentas/:auditId
 router.get("/report/amdg/topCuentas/:auditId", function(req, res) {

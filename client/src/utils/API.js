@@ -100,6 +100,9 @@ export default {
     return axios.get("/api/balanza/" + auditId);
   },
 
+  balanzaReport_ads: auditId =>
+    axios.get("/api/balanza/report/amdg/topCuentas/" + auditId),
+
   report_Amdg_topCuentas: function(auditId) {
     return axios.get("/api/balanza/report/amdg/topCuentas/" + auditId);
   },

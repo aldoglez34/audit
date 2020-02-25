@@ -100,16 +100,28 @@ export default {
     return axios.get("/api/balanza/" + auditId);
   },
 
-  balanzaReport_ads: auditId =>
-    axios.get("/api/balanza/report/amdg/topCuentas/" + auditId),
+  balanzaReport_ads: auditId => axios.get("/api/balanza/report/ads/" + auditId),
 
-  report_Amdg_topCuentas: function(auditId) {
-    return axios.get("/api/balanza/report/amdg/topCuentas/" + auditId);
-  },
+  balanzaReport_csdsc: (clientId, year) =>
+    axios.get("/api/balanza/report/csdsc/" + clientId + "/" + year),
 
-  report_Amdg_cuenta: function({ auditId, cuentaContable }) {
-    return axios.get(
-      "/api/balanza/report/amdg/cuenta/" + auditId + "/" + cuentaContable
-    );
-  }
+  balanzaReport_amds: auditId =>
+    axios.get("/api/balanza/report/amds/" + auditId),
+
+  balanzaReport_amdm: auditId =>
+    axios.get("/api/balanza/report/amdm/" + auditId),
+
+  balanzaReport_sdi: auditId => axios.get("/api/balanza/report/sdi/" + auditId),
+
+  balanzaReport_sdg: auditId => axios.get("/api/balanza/report/sdg/" + auditId)
+
+  // report_Amdg_topCuentas: function(auditId) {
+  //   return axios.get("/api/balanza/report/amdg/topCuentas/" + auditId);
+  // },
+
+  // report_Amdg_cuenta: function({ auditId, cuentaContable }) {
+  //   return axios.get(
+  //     "/api/balanza/report/amdg/cuenta/" + auditId + "/" + cuentaContable
+  //   );
+  // }
 };

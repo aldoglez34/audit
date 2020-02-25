@@ -2,18 +2,29 @@ import React, { useState, useEffect } from "react";
 import Layout from "../../../Layout";
 import { useSelector } from "react-redux";
 import HelpTooltip from "../../components/HelpTooltip";
-// import API from "../../../../utils/API";
-// import AmdgTop from "./components/AmdgTop";
+import API from "../../../../utils/API";
+import { Table, Spinner } from "react-bootstrap";
 
 const Ads = React.memo(function Ads() {
+  const formatNumber = num => {
+    return num
+      .toFixed(2)
+      .toString()
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
+
   const audit = useSelector(state => state.audit);
 
-  const [top, setTop] = useState([]);
+  const [rubros, setRubros] = useState([]);
+  const [report, setReport] = useState([]);
 
   useEffect(() => {
-    // API.report_Amdg_topCuentas()
-    //   .then(res => setTop(res.data))
-    //   .catch(err => console.log(err));
+    API.balanzaReport_ads(audit.auditId)
+      .then(res => {
+        setRubros(res.data.rubros);
+        setReport(res.data.report);
+      })
+      .catch(err => console.log(err));
   }, []);
 
   return (
@@ -30,24 +41,46 @@ const Ads = React.memo(function Ads() {
         <div className="ml-auto d-flex align-items-center">
           <HelpTooltip
             title="Análisis de saldos"
-            text="Esta es una descripción sobre el reporte"
+            text="Sólo diciembre, agrupado por rubro, cuenta, descripción de de cuenta y suma de saldo final."
           />
         </div>
       </div>
       {/* content */}
-      {/* <span className="lead">
-        A continuación se muestran las 10 cuentas de gastos con un mayor total
-        de cargos en orden descendente
-      </span>
-      <div className="mt-4">
-        {top.length ? (
-          <AmdgTop top={top} />
+      <section className="mt-3">
+        {rubros.length && report.length ? (
+          rubros.map(rub => {
+            return (
+              <React.Fragment key={rub.rubro}>
+                <h5>{rub.rubro}</h5>
+                <Table striped bordered hover size="sm">
+                  <thead>
+                    <tr>
+                      <th>CuentaContable</th>
+                      <th>CuentaDescripción</th>
+                      <th>SaldoFinal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {report.map(rep => {
+                      return rep.rubro === rub.rubro ? (
+                        <tr key={rep.cuentaContable}>
+                          <td>{rep.cuentaContable}</td>
+                          <td>{rep.cuentaDescripción}</td>
+                          <td>{formatNumber(rep.total_saldoFinal)}</td>
+                        </tr>
+                      ) : null;
+                    })}
+                  </tbody>
+                </Table>
+              </React.Fragment>
+            );
+          })
         ) : (
           <div className="text-center mt-4 pt-4">
             <Spinner animation="border" />
           </div>
         )}
-      </div> */}
+      </section>
     </Layout>
   );
 });

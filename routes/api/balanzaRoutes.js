@@ -71,23 +71,34 @@ router.get("/:auditId", function(req, res) {
 // balanzaReport_ads()
 // matches with /api/balanza/report/ads/:auditId
 router.get("/report/ads/:auditId", function(req, res) {
+  let data = {};
   model.Balanza.findAll({
-    attributes: [
-      "year",
-      "month",
-      "rubro",
-      "cuentaContable",
-      "cuentaDescripción",
-      [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
-    ],
-    group: ["year", "month", "rubro", "cuentaContable", "cuentaDescripción"],
+    attributes: ["rubro"],
+    group: ["rubro"],
     where: { auditId: req.params.auditId, month: "DICIEMBRE" },
-    order: [
-      ["rubro", "ASC"],
-      ["cuentaContable", "ASC"]
-    ]
+    order: [["rubro", "ASC"]]
   })
-    .then(data => res.send(data))
+    .then(rubros => {
+      data.rubros = rubros;
+      return model.Balanza.findAll({
+        attributes: [
+          "rubro",
+          "cuentaContable",
+          "cuentaDescripción",
+          [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
+        ],
+        group: ["month", "rubro", "cuentaContable", "cuentaDescripción"],
+        where: { auditId: req.params.auditId, month: "DICIEMBRE" },
+        order: [
+          ["rubro", "ASC"],
+          [sequelize.fn("sum", sequelize.col("saldoFinal")), "DESC"]
+        ]
+      });
+    })
+    .then(report => {
+      data.report = report;
+      res.send(data);
+    })
     .catch(err => res.send(err));
 });
 
@@ -140,16 +151,17 @@ router.get("/report/amds/:auditId", function(req, res) {
 
 // balanzaReport_amdm()
 // matches with /api/balanza/report/amdm/:auditId
-router.get("/report/amds/:auditId", function(req, res) {
+router.get("/report/amdm/:auditId", function(req, res) {
   model.Balanza.findAll({
     attributes: [
       "rubro",
       "cuentaContable",
       "cuentaDescripción",
       "month",
-      [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
+      [sequelize.fn("sum", sequelize.col("cargos")), "total_cargos"],
+      [sequelize.fn("sum", sequelize.col("abonos")), "total_abonos"]
     ],
-    group: ["rubro", "cuentaContable", "month"],
+    group: ["rubro", "cuentaContable", "cuentaDescripción", "month"],
     where: { auditId: req.params.auditId },
     order: [
       ["rubro", "ASC"],
@@ -160,39 +172,53 @@ router.get("/report/amds/:auditId", function(req, res) {
     .catch(err => res.send(err));
 });
 
-// report_Amdg_topCuentas()
-// matches with /api/balanza/report/amdg/topCuentas/:auditId
-router.get("/report/amdg/topCuentas/:auditId", function(req, res) {
+// balanzaReport_sdi()
+// matches with /api/balanza/report/sdi/:auditId
+router.get("/report/sdi/:auditId", function(req, res) {
   model.Balanza.findAll({
     attributes: [
-      "cuentaContable",
-      "cuentaDescripción",
-      [sequelize.fn("sum", sequelize.col("cargos")), "total_cargos"]
+      "rubro",
+      "month",
+      [
+        sequelize.fn("sum", sequelize.col("saldoInicial")),
+        "total_saldoInicial"
+      ],
+      [sequelize.fn("sum", sequelize.col("cargos")), "total_cargos"],
+      [sequelize.fn("sum", sequelize.col("abonos")), "total_abonos"],
+      [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
     ],
-    group: ["cuentaContable"],
-    where: { cuentaContable: { [Op.startsWith]: "5" } },
-    order: [[sequelize.fn("sum", sequelize.col("cargos")), "DESC"]],
-    limit: 10
+    group: ["rubro", "month"],
+    where: {
+      auditId: req.params.auditId,
+      rubro: { [Op.substring]: "INGRESOS" }
+    },
+    order: [["rubro", "ASC"]]
   })
     .then(data => res.send(data))
     .catch(err => res.send(err));
 });
 
-// report_Amdg_cuenta()
-// matches with /api/balanza/report/amdg/cuenta/:auditId/:cuentaContable
-router.get("/report/amdg/cuenta/:auditId/:cuentaContable", function(req, res) {
+// balanzaReport_sdg()
+// matches with /api/balanza/report/sdg/:auditId
+router.get("/report/sdg/:auditId", function(req, res) {
   model.Balanza.findAll({
     attributes: [
+      "rubro",
       "month",
-      "cuentaContable",
-      "cuentaDescripción",
-      [sequelize.fn("sum", sequelize.col("cargos")), "total_cargos"]
+      [
+        sequelize.fn("sum", sequelize.col("saldoInicial")),
+        "total_saldoInicial"
+      ],
+      [sequelize.fn("sum", sequelize.col("cargos")), "total_cargos"],
+      [sequelize.fn("sum", sequelize.col("abonos")), "total_abonos"],
+      [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
     ],
-    group: ["month"],
+    group: ["rubro", "month"],
     where: {
       auditId: req.params.auditId,
-      cuentaContable: req.params.cuentaContable
-    }
+      cuentaContable: { [Op.startsWith]: "5" }
+    },
+    order: [["rubro", "ASC"]]
   })
     .then(data => res.send(data))
     .catch(err => res.send(err));

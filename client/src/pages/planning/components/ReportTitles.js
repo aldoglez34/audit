@@ -17,7 +17,7 @@ const ReportTitles = React.memo(function ReportTitles() {
             Análisis de saldos
           </a>
         </li>
-        <li>
+        {/* <li>
           <a href={"/audit/planning/report/amdg/" + audit.auditId}>
             Análisis mensual de gastos
           </a>
@@ -41,7 +41,7 @@ const ReportTitles = React.memo(function ReportTitles() {
           <a href={"/audit/planning/report/amdg/" + audit.auditId}>
             Cédula sumaria de saldos comparativos
           </a>
-        </li>
+        </li> */}
       </ol>
     </div>
   );

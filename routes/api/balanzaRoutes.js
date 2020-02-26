@@ -105,25 +105,41 @@ router.get("/report/ads/:auditId", function(req, res) {
 // balanzaReport_csdsc()
 // matches with /api/balanza/report/csdsc/:clientId/:year
 router.get("/report/csdsc/:clientId/:year", function(req, res) {
+  let data = {};
   model.Balanza.findAll({
-    attributes: [
-      "cuentaContable",
-      "year",
-      "month",
-      [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
-    ],
-    group: ["cuentaContable", "year", "month"],
+    attributes: ["cuentaContable", "cuentaDescripción"],
+    group: ["cuentaContable"],
     where: {
       clientId: req.params.clientId,
       year: { [Op.or]: [req.params.year, req.params.year - 1] },
       month: "DICIEMBRE"
     },
-    order: [
-      ["cuentaContable", "ASC"],
-      ["year", "ASC"]
-    ]
+    order: [["cuentaContable", "ASC"]]
   })
-    .then(data => res.send(data))
+    .then(cuentas => {
+      data.cuentas = cuentas;
+      return model.Balanza.findAll({
+        attributes: [
+          "cuentaContable",
+          "year",
+          [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
+        ],
+        group: ["cuentaContable", "year"],
+        where: {
+          clientId: req.params.clientId,
+          year: { [Op.or]: [req.params.year, req.params.year - 1] },
+          month: "DICIEMBRE"
+        },
+        order: [
+          ["cuentaContable", "ASC"],
+          ["year", "ASC"]
+        ]
+      });
+    })
+    .then(report => {
+      data.report = report;
+      res.send(data);
+    })
     .catch(err => res.send(err));
 });
 

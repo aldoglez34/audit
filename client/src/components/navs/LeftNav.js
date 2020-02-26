@@ -54,7 +54,7 @@ const LeftNav = React.memo(function LeftNav(props) {
           </Nav.Item>
           <Nav.Link
             className="navLinkStyle"
-            href={"/audit/planning/" + audit.auditId + "/guía"}
+            href={"/audit/planning/guía"}
             active={props.auditMenu === "Planeación" ? true : false}
           >
             <i className="fas fa-tasks" style={{ width: "32px" }} />
@@ -62,7 +62,7 @@ const LeftNav = React.memo(function LeftNav(props) {
           </Nav.Link>
           <Nav.Link
             className="navLinkStyle"
-            href={"/audit/execution/" + audit.auditId}
+            href={"/audit/execution"}
             active={props.auditMenu === "Ejecución" ? true : false}
             disabled
           >
@@ -71,7 +71,7 @@ const LeftNav = React.memo(function LeftNav(props) {
           </Nav.Link>
           <Nav.Link
             className="navLinkStyle"
-            href={"/audit/reporting/" + audit.auditId}
+            href={"/audit/reporting/"}
             active={props.auditMenu === "Informes" ? true : false}
             disabled
           >
@@ -80,7 +80,7 @@ const LeftNav = React.memo(function LeftNav(props) {
           </Nav.Link>
           <Nav.Link
             className="navLinkStyle"
-            href={"/audit/followup/" + audit.auditId}
+            href={"/audit/followup/"}
             active={props.auditMenu === "Seguimiento" ? true : false}
             disabled
           >
@@ -92,7 +92,7 @@ const LeftNav = React.memo(function LeftNav(props) {
           </Nav.Item>
           <Nav.Link
             className="navLinkStyle"
-            href={"/audit/balanza/" + audit.auditId}
+            href={"/audit/balanza/"}
             active={props.auditMenu === "Balanza" ? true : false}
           >
             <i className="far fa-file-alt" style={{ width: "32px" }} />
@@ -100,7 +100,7 @@ const LeftNav = React.memo(function LeftNav(props) {
           </Nav.Link>
           <Nav.Link
             className="navLinkStyle"
-            href={"/audit/auxiliares/" + audit.auditId}
+            href={"/audit/auxiliares/"}
             active={props.auditMenu === "Auxiliares" ? true : false}
             disabled
           >

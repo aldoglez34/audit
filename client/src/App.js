@@ -16,8 +16,9 @@ import AuditHome from "./pages/auditHome/AuditHome";
 // planning
 import Planning from "./pages/planning/Planning";
 import Survey from "./pages/planning/components/Survey";
-import Amdg from "./pages/planning/reports/amdg/Amdg";
 import Ads from "./pages/planning/reports/ads/Ads";
+import Csdsc from "./pages/planning/reports/csdsc/Csdsc";
+import Amds from "./pages/planning/reports/amds/Amds";
 // consult
 import Balanza from "./pages/consults/balanza/Balanza";
 
@@ -62,30 +63,20 @@ function App() {
           />
           <Route
             exact
-            path="/audit/planning/:auditId/:tab"
+            path="/audit/planning/:tab"
             render={props => <Planning routeProps={props} />}
           />
           <Route
             exact
-            path="/audit/planning/survey/:auditId/:surveyTitle"
+            path="/audit/planning/survey/:surveyTitle"
             render={props => <Survey routeProps={props} />}
           />
-          {/* reportes */}
-          <Route
-            exact
-            path="/audit/planning/report/ads/:auditId"
-            component={Ads}
-          />
-          <Route
-            exact
-            path="/audit/planning/report/amdg/:auditId"
-            component={Amdg}
-          />
-          <Route
-            exact
-            path="/audit/balanza/:auditId"
-            render={props => <Balanza routeProps={props} />}
-          />
+          {/* planning reports */}
+          <Route exact path="/audit/planning/report/ads" component={Ads} />
+          <Route exact path="/audit/planning/report/csdsc" component={Csdsc} />
+          <Route exact path="/audit/planning/report/amds" component={Amds} />
+          {/* consult */}
+          <Route exact path="/audit/balanza" component={Balanza} />
           <Redirect from="/" to="/audits" />
         </Switch>
       )}

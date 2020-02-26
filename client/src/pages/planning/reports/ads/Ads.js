@@ -28,10 +28,7 @@ const Ads = React.memo(function Ads() {
   }, []);
 
   return (
-    <Layout
-      auditMenu="Planeación"
-      backButton={"/audit/planning/" + audit.auditId + "/reportes"}
-    >
+    <Layout auditMenu="Planeación" backButton={"/audit/planning/reportes"}>
       {/* title */}
       <div className="d-flex flex-row">
         <div>
@@ -50,7 +47,7 @@ const Ads = React.memo(function Ads() {
         {rubros.length && report.length ? (
           rubros.map(rub => {
             return (
-              <React.Fragment key={rub.rubro}>
+              <div key={rub.rubro} className="pb-3">
                 <h5>{rub.rubro}</h5>
                 <Table striped bordered hover size="sm">
                   <thead>
@@ -72,7 +69,7 @@ const Ads = React.memo(function Ads() {
                     })}
                   </tbody>
                 </Table>
-              </React.Fragment>
+              </div>
             );
           })
         ) : (

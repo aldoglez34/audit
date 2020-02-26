@@ -23,7 +23,41 @@ const Csdsc = React.memo(function Csdsc() {
       .then(res => {
         console.log(res.data);
         setCuentas(res.data.cuentas);
-        setReport(res.data.report);
+
+        let report = res.data.report.reduce((acc, cv) => {
+          let index = acc.map(i => i.cuentaContable).indexOf(cv.cuentaContable);
+          if (index === -1) {
+            // wasn't found
+            if (cv.year === audit.year) {
+              acc.push({
+                cuentaContable: cv.cuentaContable,
+                [audit.year + "_totalSaldoFinal"]: cv.total_saldoFinal
+              });
+            } else {
+              acc.push({
+                cuentaContable: cv.cuentaContable,
+                [audit.year - 1 + "_totalSaldoFinal"]: cv.total_saldoFinal
+              });
+            }
+          } else {
+            // was found
+            let temp = acc[index];
+            if (cv.year === audit.year) {
+              acc[index] = {
+                ...temp,
+                [audit.year + "_totalSaldoFinal"]: cv.total_saldoFinal
+              };
+            } else {
+              acc[index] = {
+                ...temp,
+                [audit.year - 1 + "_totalSaldoFinal"]: cv.total_saldoFinal
+              };
+            }
+          }
+          return acc;
+        }, []);
+        console.log(report);
+        // setReport(res.data.report);
       })
       .catch(err => console.log(err));
   }, []);

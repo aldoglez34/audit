@@ -72,34 +72,60 @@ router.get("/:auditId", function(req, res) {
 // matches with /api/balanza/report/ads/:auditId
 router.get("/report/ads/:auditId", function(req, res) {
   let data = {};
+  // get report
   model.Balanza.findAll({
-    attributes: ["rubro"],
-    group: ["rubro"],
+    attributes: [
+      "rubro",
+      "cuentaContable",
+      "cuentaDescripción",
+      [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
+    ],
+    group: ["month", "rubro", "cuentaContable", "cuentaDescripción"],
     where: { auditId: req.params.auditId, month: "DICIEMBRE" },
-    order: [["rubro", "ASC"]]
+    order: [
+      ["rubro", "ASC"],
+      ["cuentaContable", "ASC"]
+    ]
   })
-    .then(rubros => {
-      data.rubros = rubros;
+    .then(report => {
+      data.report = report;
+      // get destacadas
       return model.Balanza.findAll({
         attributes: [
-          "rubro",
           "cuentaContable",
+          "rubro",
           "cuentaDescripción",
           [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
         ],
-        group: ["month", "rubro", "cuentaContable", "cuentaDescripción"],
+        group: ["cuentaContable"],
+        limit: 6,
         where: { auditId: req.params.auditId, month: "DICIEMBRE" },
-        order: [
-          ["rubro", "ASC"],
-          [sequelize.fn("sum", sequelize.col("saldoFinal")), "DESC"]
-        ]
+        order: [[sequelize.fn("sum", sequelize.col("saldoFinal")), "DESC"]]
       });
     })
-    .then(report => {
-      data.report = report;
+    .then(destacadas => {
+      data.destacadas = destacadas;
+      // get total rubros report
+      return model.Balanza.findAll({
+        attributes: [
+          "rubro",
+          [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
+        ],
+        group: ["rubro"],
+        where: { auditId: req.params.auditId, month: "DICIEMBRE" },
+        order: [["rubro", "ASC"]]
+      });
+    })
+    .then(totalRubros => {
+      data.totalRubros = totalRubros;
       res.send(data);
     })
-    .catch(err => res.send(err));
+    .catch(err => {
+      console.log(err);
+      res.status(422).send({
+        msg: "Ocurrió un error"
+      });
+    });
 });
 
 // balanzaReport_csdsc()
@@ -136,8 +162,34 @@ router.get("/report/csdsc/:clientId/:year", function(req, res) {
         ]
       });
     })
-    .then(report => {
+    .then(consult => {
+      let report = consult.reduce((acc, cv) => {
+        // get index
+        let index = acc
+          .map(i => i.cuentaContable)
+          .indexOf(cv.dataValues.cuentaContable);
+        // if cuenta doesn't exist
+        if (index === -1) {
+          acc.push({
+            cuentaContable: cv.dataValues.cuentaContable,
+            [cv.dataValues.year + "_totalSaldoFinal"]: cv.dataValues
+              .total_saldoFinal
+          });
+        }
+        // if it already exists in the acc array
+        else {
+          let temp = acc[index];
+          acc[index] = {
+            ...temp,
+            [cv.dataValues.year + "_totalSaldoFinal"]: cv.dataValues
+              .total_saldoFinal
+          };
+        }
+        return acc;
+      }, []);
+
       data.report = report;
+
       res.send(data);
     })
     .catch(err => res.send(err));

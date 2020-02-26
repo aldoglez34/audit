@@ -21,43 +21,9 @@ const Csdsc = React.memo(function Csdsc() {
   useEffect(() => {
     API.balanzaReport_csdsc(audit.clientId, audit.year)
       .then(res => {
-        console.log(res.data);
+        console.log("@res.data", res.data);
         setCuentas(res.data.cuentas);
-
-        let report = res.data.report.reduce((acc, cv) => {
-          let index = acc.map(i => i.cuentaContable).indexOf(cv.cuentaContable);
-          if (index === -1) {
-            // wasn't found
-            if (cv.year === audit.year) {
-              acc.push({
-                cuentaContable: cv.cuentaContable,
-                [audit.year + "_totalSaldoFinal"]: cv.total_saldoFinal
-              });
-            } else {
-              acc.push({
-                cuentaContable: cv.cuentaContable,
-                [audit.year - 1 + "_totalSaldoFinal"]: cv.total_saldoFinal
-              });
-            }
-          } else {
-            // was found
-            let temp = acc[index];
-            if (cv.year === audit.year) {
-              acc[index] = {
-                ...temp,
-                [audit.year + "_totalSaldoFinal"]: cv.total_saldoFinal
-              };
-            } else {
-              acc[index] = {
-                ...temp,
-                [audit.year - 1 + "_totalSaldoFinal"]: cv.total_saldoFinal
-              };
-            }
-          }
-          return acc;
-        }, []);
-        console.log(report);
-        // setReport(res.data.report);
+        setReport(res.data.report);
       })
       .catch(err => console.log(err));
   }, []);
@@ -78,7 +44,7 @@ const Csdsc = React.memo(function Csdsc() {
         </div>
       </div>
       {/* content */}
-      {cuentas.length && report.length ? (
+      {/* {cuentas.length && report.length ? (
         <Table striped bordered hover size="sm">
           <thead>
             <tr>
@@ -119,7 +85,7 @@ const Csdsc = React.memo(function Csdsc() {
         <div className="text-center mt-4 pt-4">
           <Spinner animation="border" />
         </div>
-      )}
+      )} */}
     </Layout>
   );
 });

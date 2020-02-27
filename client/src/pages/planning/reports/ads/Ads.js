@@ -6,13 +6,6 @@ import ReportTitle from "../components/ReportTitle";
 import { Table, Spinner, ListGroup, Row, Col } from "react-bootstrap";
 
 const Ads = React.memo(function Ads() {
-  const formatNumber = num => {
-    return num
-      .toFixed(2)
-      .toString()
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-  };
-
   const audit = useSelector(state => state.audit);
 
   const [destacadas, setDestacadas] = useState([]);
@@ -22,6 +15,7 @@ const Ads = React.memo(function Ads() {
   useEffect(() => {
     API.balanzaReport_ads(audit.auditId)
       .then(res => {
+        console.log(res.data);
         setDestacadas(res.data.destacadas);
         setTotalRubros(res.data.totalRubros);
         setReport(res.data.report);
@@ -31,21 +25,6 @@ const Ads = React.memo(function Ads() {
         alert(err.response.data.msg);
       });
   }, []);
-
-  const calculatePercentage = ({ saldoFinal, rubro }) => {
-    // get the total of that rubro
-    let totalRubro = totalRubros.filter(tr => tr.rubro === rubro)[0]
-      .total_saldoFinal;
-
-    let percentage = saldoFinal / totalRubro;
-
-    return isNaN(percentage)
-      ? ""
-      : percentage
-          .toFixed(2)
-          .toString()
-          .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + "%";
-  };
 
   return (
     <Layout auditMenu="Planeación" backButton={"/audit/planning/reportes"}>
@@ -73,7 +52,7 @@ const Ads = React.memo(function Ads() {
                       <strong>{des.cuentaContable}</strong>
                       <span>{des.cuentaDescripción}</span>
                       <span>{des.rubro}</span>
-                      <span>{"$ " + formatNumber(des.total_saldoFinal)}</span>
+                      <span>{des.total_saldoFinal}</span>
                     </ListGroup.Item>
                   );
                 })}
@@ -90,7 +69,7 @@ const Ads = React.memo(function Ads() {
                       className="d-flex flex-column"
                     >
                       <strong>{tr.rubro}</strong>
-                      <span>{"$ " + formatNumber(tr.total_saldoFinal)}</span>
+                      <span>{tr.total_saldoFinal}</span>
                     </ListGroup.Item>
                   );
                 })}
@@ -133,15 +112,8 @@ const Ads = React.memo(function Ads() {
                         <td>{rep.rubro}</td>
                         <td>{rep.cuentaContable}</td>
                         <td>{rep.cuentaDescripción}</td>
-                        <td className="text-right">
-                          {formatNumber(rep.total_saldoFinal)}
-                        </td>
-                        <td className="text-center">
-                          {calculatePercentage({
-                            saldoFinal: rep.total_saldoFinal,
-                            rubro: rep.rubro
-                          })}
-                        </td>
+                        <td className="text-right">{rep.total_saldoFinal}</td>
+                        <td className="text-right">{rep.percentage}</td>
                       </tr>
                     );
                   })}

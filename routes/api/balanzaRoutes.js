@@ -4,6 +4,29 @@ const validateBalanza = require("../middleware/balanzaValidation/validateBalanza
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
 
+const formatNumber = num => {
+  return num
+    ? num
+        .toFixed(2)
+        .toString()
+        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    : 0;
+};
+
+const formatPercentage = num => {
+  return num ? Math.round(num) + "%" : 0;
+};
+
+const calculatePercentage = ({ saldoFinal, rubro, totalRubros }) => {
+  // get the total of that rubro
+  let totalRubro = totalRubros.filter(tr => tr.rubro === rubro)[0]
+    .total_saldoFinal_raw;
+
+  let percentage = Math.round((saldoFinal / totalRubro) * 100);
+
+  return isNaN(percentage) ? "" : percentage + "%";
+};
+
 // uploadBalanza()
 // matches with /api/balanza/upload
 router.post("/upload", validateBalanza(), function(req, res, next) {
@@ -72,52 +95,80 @@ router.get("/:auditId", function(req, res) {
 // matches with /api/balanza/report/ads/:auditId
 router.get("/report/ads/:auditId", function(req, res) {
   let data = {};
-  // get report
+  // get total rubros report
   model.Balanza.findAll({
     attributes: [
       "rubro",
-      "cuentaContable",
-      "cuentaDescripción",
       [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
     ],
-    group: ["month", "rubro", "cuentaContable", "cuentaDescripción"],
+    group: ["rubro"],
     where: { auditId: req.params.auditId, month: "DICIEMBRE" },
-    order: [
-      ["rubro", "ASC"],
-      ["cuentaContable", "ASC"]
-    ]
+    order: [["rubro", "ASC"]]
   })
-    .then(report => {
-      data.report = report;
-      // get destacadas
+    .then(totalRubros => {
+      // format values
+      data.totalRubros = totalRubros.reduce((acc, cv) => {
+        acc.push({
+          rubro: cv.dataValues.rubro,
+          total_saldoFinal_raw: cv.dataValues.total_saldoFinal,
+          total_saldoFinal: formatNumber(cv.dataValues.total_saldoFinal)
+        });
+        return acc;
+      }, []);
+      // get report
       return model.Balanza.findAll({
         attributes: [
-          "cuentaContable",
           "rubro",
+          "cuentaContable",
           "cuentaDescripción",
           [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
         ],
-        group: ["cuentaContable"],
-        limit: 6,
+        group: ["month", "rubro", "cuentaContable", "cuentaDescripción"],
         where: { auditId: req.params.auditId, month: "DICIEMBRE" },
-        order: [[sequelize.fn("sum", sequelize.col("saldoFinal")), "DESC"]]
+        order: [
+          ["rubro", "ASC"],
+          ["cuentaContable", "ASC"]
+        ]
       });
     })
-    .then(destacadas => {
-      data.destacadas = destacadas;
-      // get total rubros report
-      return model.Balanza.findAll({
-        attributes: [
-          "rubro",
-          [sequelize.fn("sum", sequelize.col("saldoFinal")), "total_saldoFinal"]
-        ],
-        group: ["rubro"],
-        where: { auditId: req.params.auditId, month: "DICIEMBRE" },
-        order: [["rubro", "ASC"]]
-      });
-    })
-    .then(totalRubros => {
-      data.totalRubros = totalRubros;
+    .then(report => {
+      // format numbers for report
+      data.report = report.reduce((acc, cv) => {
+        acc.push({
+          rubro: cv.dataValues.rubro,
+          cuentaContable: cv.dataValues.cuentaContable,
+          cuentaDescripción: cv.dataValues.cuentaDescripción,
+          total_saldoFinal: formatNumber(cv.dataValues.total_saldoFinal),
+          percentage: calculatePercentage({
+            saldoFinal: cv.dataValues.total_saldoFinal,
+            rubro: cv.dataValues.rubro,
+            totalRubros: data.totalRubros
+          })
+        });
+        return acc;
+      }, []);
+      // get destacadas
+      data.destacadas = report
+        .sort((a, b) =>
+          Math.abs(a.dataValues.total_saldoFinal) >
+          Math.abs(b.dataValues.total_saldoFinal)
+            ? -1
+            : Math.abs(b.dataValues.total_saldoFinal) >
+              Math.abs(a.dataValues.total_saldoFinal)
+            ? 1
+            : 0
+        )
+        .slice(0, 10)
+        .reduce((acc, cv) => {
+          acc.push({
+            rubro: cv.dataValues.rubro,
+            cuentaContable: cv.dataValues.cuentaContable,
+            cuentaDescripción: cv.dataValues.cuentaDescripción,
+            total_saldoFinal: formatNumber(cv.dataValues.total_saldoFinal)
+          });
+          return acc;
+        }, []);
+      //
       res.send(data);
     })
     .catch(err => {
@@ -132,6 +183,7 @@ router.get("/report/ads/:auditId", function(req, res) {
 // matches with /api/balanza/report/csdsc/:clientId/:year
 router.get("/report/csdsc/:clientId/:year", function(req, res) {
   let uniqueCuentas = [];
+  // get unique cuentas
   model.Balanza.findAll({
     attributes: ["cuentaContable", "cuentaDescripción"],
     group: ["cuentaContable"],
@@ -144,7 +196,7 @@ router.get("/report/csdsc/:clientId/:year", function(req, res) {
   })
     .then(cuentas => {
       uniqueCuentas = cuentas;
-      // get unique cuentas
+      // report
       return model.Balanza.findAll({
         attributes: [
           "cuentaContable",
@@ -210,6 +262,22 @@ router.get("/report/csdsc/:clientId/:year", function(req, res) {
                 cv[req.params.year - 1 + "_totalSaldoFinal"]) *
               100;
         acc.push({ ...cv, variaciónImporte, variaciónPorcentaje });
+        return acc;
+      }, []);
+      // format numbers
+      report = report.reduce((acc, cv) => {
+        let temp = cv;
+        temp[req.params.year - 1 + "_totalSaldoFinal"] = formatNumber(
+          cv[req.params.year - 1 + "_totalSaldoFinal"]
+        );
+        temp[req.params.year + "_totalSaldoFinal"] = formatNumber(
+          cv[req.params.year + "_totalSaldoFinal"]
+        );
+        temp.variaciónImporte = formatNumber(cv.variaciónImporte);
+        temp.variaciónPorcentaje = formatPercentage(cv.variaciónPorcentaje);
+        //
+        acc.push(temp);
+        //
         return acc;
       }, []);
       // send final report

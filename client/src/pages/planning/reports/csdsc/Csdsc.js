@@ -1,81 +1,87 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../../Layout";
 import { useSelector } from "react-redux";
-import HelpTooltip from "../../components/HelpTooltip";
 import API from "../../../../utils/API";
-import { Table, Spinner } from "react-bootstrap";
+import { Table, Spinner, Alert, Image } from "react-bootstrap";
+import ReportTitle from "../components/ReportTitle";
 
 const Csdsc = React.memo(function Csdsc() {
   const formatNumber = num => {
     return num
-      .toFixed(2)
-      .toString()
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+      ? num
+          .toFixed(2)
+          .toString()
+          .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+      : 0;
   };
 
   const audit = useSelector(state => state.audit);
 
-  const [cuentas, setCuentas] = useState([]);
   const [report, setReport] = useState([]);
 
   useEffect(() => {
     API.balanzaReport_csdsc(audit.clientId, audit.year)
       .then(res => {
-        console.log("@res.data", res.data);
-        setCuentas(res.data.cuentas);
-        setReport(res.data.report);
+        // console.log(res.data);
+        setReport(res.data);
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err.response);
+        alert(err.response.data.msg);
+      });
   }, []);
 
   return (
     <Layout auditMenu="Planeación" backButton={"/audit/planning/reportes"}>
       {/* title */}
-      <div className="d-flex flex-row">
-        <div>
-          <h2>Cédula sumaria de saldos comparativos</h2>
-          <hr className="myDivider" />
-        </div>
-        <div className="ml-auto d-flex align-items-center">
-          <HelpTooltip
-            title="Cédula sumaria de saldos comparativos"
-            text="Descripción del reporte"
-          />
-        </div>
-      </div>
+      <ReportTitle
+        title="Cédula sumaria de saldos comparativos"
+        description="Comparativo de saldos de balanza al 31 de diciembre del ejercicio de
+        revisón con los saldos al 31 de diciembre del año anterior"
+      />
+      <br />
       {/* content */}
-      {/* {cuentas.length && report.length ? (
+      {report.length ? (
         <Table striped bordered hover size="sm">
           <thead>
-            <tr>
-              <th>CuentaContable</th>
-              <th>CuentaDescripción</th>
-              <th>{audit.year - 1}</th>
-              <th>{audit.year}</th>
+            <tr
+              style={{
+                backgroundColor: "rgb(62, 67, 74)",
+                color: "ghostwhite"
+              }}
+            >
+              <th className="text-center" style={{ fontWeight: "500" }}>
+                CuentaContable
+              </th>
+              <th className="text-center" style={{ fontWeight: "500" }}>
+                CuentaDescripción
+              </th>
+              <th className="text-center" style={{ fontWeight: "500" }}>
+                {audit.year}
+              </th>
+              <th className="text-center" style={{ fontWeight: "500" }}>
+                {audit.year - 1}
+              </th>
+              <th className="text-center" style={{ fontWeight: "500" }}>
+                VariaciónImporte
+              </th>
+              <th className="text-center" style={{ fontWeight: "500" }}>
+                VariaciónPorcentaje
+              </th>
             </tr>
           </thead>
           <tbody>
-            {cuentas.map(cu => {
+            {report.map(cu => {
               return (
                 <tr key={cu.cuentaContable}>
                   <td>{cu.cuentaContable}</td>
                   <td>{cu.cuentaDescripción}</td>
-                  {report.map(rep => {
-                    return rep.cuentaContable === cu.cuentaContable &&
-                      rep.year === audit.year - 1 ? (
-                      <td key={rep.cuentaContable}>
-                        {formatNumber(rep.total_saldoFinal)}
-                      </td>
-                    ) : null;
-                  })}
-                  {report.map(rep => {
-                    return rep.cuentaContable === cu.cuentaContable &&
-                      rep.year === audit.year ? (
-                      <td key={rep.cuentaContable}>
-                        {formatNumber(rep.total_saldoFinal)}
-                      </td>
-                    ) : null;
-                  })}
+                  <td className="text-right">
+                    {formatNumber(cu[audit.year + "_totalSaldoFinal"])}
+                  </td>
+                  <td className="text-right">
+                    {formatNumber(cu[audit.year - 1 + "_totalSaldoFinal"])}
+                  </td>
                 </tr>
               );
             })}
@@ -85,7 +91,7 @@ const Csdsc = React.memo(function Csdsc() {
         <div className="text-center mt-4 pt-4">
           <Spinner animation="border" />
         </div>
-      )} */}
+      )}
     </Layout>
   );
 });

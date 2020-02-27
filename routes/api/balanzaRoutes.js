@@ -131,7 +131,7 @@ router.get("/report/ads/:auditId", function(req, res) {
 // balanzaReport_csdsc()
 // matches with /api/balanza/report/csdsc/:clientId/:year
 router.get("/report/csdsc/:clientId/:year", function(req, res) {
-  let data = {};
+  let uniqueCuentas = [];
   model.Balanza.findAll({
     attributes: ["cuentaContable", "cuentaDescripción"],
     group: ["cuentaContable"],
@@ -143,7 +143,8 @@ router.get("/report/csdsc/:clientId/:year", function(req, res) {
     order: [["cuentaContable", "ASC"]]
   })
     .then(cuentas => {
-      data.cuentas = cuentas;
+      uniqueCuentas = cuentas;
+      // get unique cuentas
       return model.Balanza.findAll({
         attributes: [
           "cuentaContable",
@@ -163,6 +164,7 @@ router.get("/report/csdsc/:clientId/:year", function(req, res) {
       });
     })
     .then(consult => {
+      // prepare report
       let report = consult.reduce((acc, cv) => {
         // get index
         let index = acc
@@ -187,12 +189,24 @@ router.get("/report/csdsc/:clientId/:year", function(req, res) {
         }
         return acc;
       }, []);
-
-      data.report = report;
-
-      res.send(data);
+      // get cuenta description
+      let finalReport = report.reduce((acc, cv) => {
+        let description = uniqueCuentas.filter(
+          uc => uc.cuentaContable === cv.cuentaContable
+        )[0].cuentaDescripción;
+        let temp = { ...cv, cuentaDescripción: description };
+        acc.push(temp);
+        return acc;
+      }, []);
+      // send final report
+      res.send(finalReport);
     })
-    .catch(err => res.send(err));
+    .catch(err => {
+      console.log(err);
+      res.status(422).send({
+        msg: "Ocurrió un error"
+      });
+    });
 });
 
 // balanzaReport_amds()

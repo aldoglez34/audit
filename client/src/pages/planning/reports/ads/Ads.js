@@ -2,15 +2,8 @@ import React, { useState, useEffect } from "react";
 import Layout from "../../../Layout";
 import { useSelector } from "react-redux";
 import API from "../../../../utils/API";
-import {
-  Alert,
-  Image,
-  Table,
-  Spinner,
-  ListGroup,
-  Row,
-  Col
-} from "react-bootstrap";
+import ReportTitle from "../components/ReportTitle";
+import { Table, Spinner, ListGroup, Row, Col } from "react-bootstrap";
 
 const Ads = React.memo(function Ads() {
   const formatNumber = num => {
@@ -29,7 +22,6 @@ const Ads = React.memo(function Ads() {
   useEffect(() => {
     API.balanzaReport_ads(audit.auditId)
       .then(res => {
-        console.log(res.data);
         setDestacadas(res.data.destacadas);
         setTotalRubros(res.data.totalRubros);
         setReport(res.data.report);
@@ -40,22 +32,29 @@ const Ads = React.memo(function Ads() {
       });
   }, []);
 
+  const calculatePercentage = ({ saldoFinal, rubro }) => {
+    // get the total of that rubro
+    let totalRubro = totalRubros.filter(tr => tr.rubro === rubro)[0]
+      .total_saldoFinal;
+
+    let percentage = saldoFinal / totalRubro;
+
+    return isNaN(percentage)
+      ? ""
+      : percentage
+          .toFixed(2)
+          .toString()
+          .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + "%";
+  };
+
   return (
     <Layout auditMenu="Planeación" backButton={"/audit/planning/reportes"}>
       {/* title */}
-      <h2>Análisis de saldos</h2>
-      <hr className="myDivider" />
-      <br />
-      <Alert variant="info" style={{ fontSize: "18px" }}>
-        <Image
-          src="/images/warning.png"
-          width="45px"
-          height="45px"
-          className="mr-3"
-        />
-        Con datos de la balanza analizar por rubro los saldos al cierre del
-        ejercicio
-      </Alert>
+      <ReportTitle
+        title="Análisis de saldos"
+        description="Con datos de la balanza analizar por rubro los saldos al cierre del
+        ejercicio"
+      />
       <br />
       {/* content */}
       {report.length && destacadas.length && totalRubros.length ? (
@@ -102,19 +101,29 @@ const Ads = React.memo(function Ads() {
           <Row>
             <Col>
               <h4 className="mb-3">Resumen por rubro</h4>
-              <Table striped bordered hover size="sm" className="rounded">
+              <Table striped bordered hover size="sm">
                 <thead>
                   <tr
                     style={{
-                      backgroundColor: "rgb(44, 47, 51)",
-                      color: "rgb(153, 170, 181)"
+                      backgroundColor: "rgb(62, 67, 74)",
+                      color: "ghostwhite"
                     }}
                   >
-                    <th className="text-center">Rubro</th>
-                    <th className="text-center">CuentaContable</th>
-                    <th className="text-center">CuentaDescripción</th>
-                    <th className="text-center">SaldoFinal</th>
-                    <th className="text-center">SaldoFinal</th>
+                    <th className="text-center" style={{ fontWeight: "500" }}>
+                      Rubro
+                    </th>
+                    <th className="text-center" style={{ fontWeight: "500" }}>
+                      CuentaContable
+                    </th>
+                    <th className="text-center" style={{ fontWeight: "500" }}>
+                      CuentaDescripción
+                    </th>
+                    <th className="text-center" style={{ fontWeight: "500" }}>
+                      SaldoFinal
+                    </th>
+                    <th className="text-center" style={{ fontWeight: "500" }}>
+                      Porcentaje
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -127,7 +136,12 @@ const Ads = React.memo(function Ads() {
                         <td className="text-right">
                           {formatNumber(rep.total_saldoFinal)}
                         </td>
-                        <td className="text-center">0%</td>
+                        <td className="text-center">
+                          {calculatePercentage({
+                            saldoFinal: rep.total_saldoFinal,
+                            rubro: rep.rubro
+                          })}
+                        </td>
                       </tr>
                     );
                   })}

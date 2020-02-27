@@ -163,9 +163,9 @@ router.get("/report/csdsc/:clientId/:year", function(req, res) {
         ]
       });
     })
-    .then(consult => {
+    .then(report => {
       // prepare report
-      let report = consult.reduce((acc, cv) => {
+      report = report.reduce((acc, cv) => {
         // get index
         let index = acc
           .map(i => i.cuentaContable)
@@ -190,7 +190,7 @@ router.get("/report/csdsc/:clientId/:year", function(req, res) {
         return acc;
       }, []);
       // get cuenta description
-      let finalReport = report.reduce((acc, cv) => {
+      report = report.reduce((acc, cv) => {
         let description = uniqueCuentas.filter(
           uc => uc.cuentaContable === cv.cuentaContable
         )[0].cuentaDescripción;
@@ -198,8 +198,22 @@ router.get("/report/csdsc/:clientId/:year", function(req, res) {
         acc.push(temp);
         return acc;
       }, []);
+      // sum values
+      report = report.reduce((acc, cv) => {
+        let variaciónImporte =
+          cv[req.params.year + "_totalSaldoFinal"] -
+          cv[req.params.year - 1 + "_totalSaldoFinal"];
+        let variaciónPorcentaje =
+          variaciónImporte === 0
+            ? 0
+            : (variaciónImporte /
+                cv[req.params.year - 1 + "_totalSaldoFinal"]) *
+              100;
+        acc.push({ ...cv, variaciónImporte, variaciónPorcentaje });
+        return acc;
+      }, []);
       // send final report
-      res.send(finalReport);
+      res.send(report);
     })
     .catch(err => {
       console.log(err);

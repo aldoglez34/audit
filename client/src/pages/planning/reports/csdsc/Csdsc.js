@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Layout from "../../../Layout";
 import { useSelector } from "react-redux";
 import API from "../../../../utils/API";
-import { Table, Spinner, Alert, Image } from "react-bootstrap";
+import { Table, Spinner } from "react-bootstrap";
 import ReportTitle from "../components/ReportTitle";
 
 const Csdsc = React.memo(function Csdsc() {
@@ -15,6 +15,10 @@ const Csdsc = React.memo(function Csdsc() {
       : 0;
   };
 
+  const formatPercentage = num => {
+    return num ? Math.round(num) + "%" : 0;
+  };
+
   const audit = useSelector(state => state.audit);
 
   const [report, setReport] = useState([]);
@@ -22,7 +26,7 @@ const Csdsc = React.memo(function Csdsc() {
   useEffect(() => {
     API.balanzaReport_csdsc(audit.clientId, audit.year)
       .then(res => {
-        // console.log(res.data);
+        console.log(res.data);
         setReport(res.data);
       })
       .catch(err => {
@@ -81,6 +85,12 @@ const Csdsc = React.memo(function Csdsc() {
                   </td>
                   <td className="text-right">
                     {formatNumber(cu[audit.year - 1 + "_totalSaldoFinal"])}
+                  </td>
+                  <td className="text-right">
+                    {formatNumber(cu.variaciónImporte)}
+                  </td>
+                  <td className="text-right">
+                    {formatPercentage(cu.variaciónPorcentaje)}
                   </td>
                 </tr>
               );

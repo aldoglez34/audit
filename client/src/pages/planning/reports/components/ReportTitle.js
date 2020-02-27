@@ -8,14 +8,14 @@ const ReportTitle = React.memo(({ title, description }) => {
       <h2>{title}</h2>
       <hr className="myDivider" />
       <br />
-      <Alert variant="info" style={{ fontSize: "18px" }}>
+      <Alert variant="info" className="d-flex flex-row align-items-center">
         <Image
           src="/images/warning.png"
           width="45px"
           height="45px"
           className="mr-3"
         />
-        {description}
+        <span>{description}</span>
       </Alert>
     </>
   );

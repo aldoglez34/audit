@@ -111,6 +111,7 @@ const Ads = React.memo(function Ads() {
                       <tr key={rep.cuentaContable}>
                         <td>{rep.rubro}</td>
                         <td>{rep.cuentaContable}</td>
+                        <td>{}</td>
                         <td>{rep.cuentaDescripción}</td>
                         <td className="text-right">{rep.total_saldoFinal}</td>
                         <td className="text-right">{rep.percentage}</td>

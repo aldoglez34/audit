@@ -3,7 +3,7 @@ import Layout from "../../../Layout";
 import { useSelector } from "react-redux";
 import API from "../../../../utils/API";
 import ReportTitle from "../components/ReportTitle";
-import { Table, Spinner, ListGroup, Row, Col } from "react-bootstrap";
+import { Badge, Table, Spinner, ListGroup, Row, Col } from "react-bootstrap";
 
 const Ads = React.memo(function Ads() {
   const audit = useSelector(state => state.audit);

@@ -24,7 +24,7 @@ const calculatePercentage = ({ saldoFinal, rubro, totalRubros }) => {
 
   let percentage = Math.round((saldoFinal / totalRubro) * 100);
 
-  return isNaN(percentage) ? "" : percentage + "%";
+  return isNaN(percentage) ? "0%" : percentage + "%";
 };
 
 // uploadBalanza()

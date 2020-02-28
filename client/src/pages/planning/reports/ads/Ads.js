@@ -15,7 +15,7 @@ const Ads = React.memo(function Ads() {
   useEffect(() => {
     API.balanzaReport_ads(audit.auditId)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         setDestacadas(res.data.destacadas);
         setTotalRubros(res.data.totalRubros);
         setReport(res.data.report);
@@ -111,7 +111,6 @@ const Ads = React.memo(function Ads() {
                       <tr key={rep.cuentaContable}>
                         <td>{rep.rubro}</td>
                         <td>{rep.cuentaContable}</td>
-                        <td>{}</td>
                         <td>{rep.cuentaDescripción}</td>
                         <td className="text-right">{rep.total_saldoFinal}</td>
                         <td className="text-right">{rep.percentage}</td>

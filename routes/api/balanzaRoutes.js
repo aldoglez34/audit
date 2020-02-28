@@ -264,6 +264,16 @@ router.get("/report/csdsc/:clientId/:year", function(req, res) {
         acc.push({ ...cv, variaciónImporte, variaciónPorcentaje });
         return acc;
       }, []);
+      // get destacadas
+      let destacadas = report
+        .sort((a, b) =>
+          Math.abs(a.variaciónImporte) > Math.abs(b.variaciónImporte)
+            ? -1
+            : Math.abs(b.variaciónImporte) > Math.abs(a.variaciónImporte)
+            ? 1
+            : 0
+        )
+        .slice(0, 10);
       // format numbers
       report = report.reduce((acc, cv) => {
         let temp = cv;
@@ -281,7 +291,7 @@ router.get("/report/csdsc/:clientId/:year", function(req, res) {
         return acc;
       }, []);
       // send final report
-      res.send(report);
+      res.send({ report, destacadas });
     })
     .catch(err => {
       console.log(err);

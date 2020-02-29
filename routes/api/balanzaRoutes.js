@@ -265,7 +265,8 @@ router.get("/report/csdsc/:clientId/:year", function(req, res) {
         return acc;
       }, []);
       // get destacadas
-      let destacadas = report
+      let reportDuplicate = [...report];
+      let destacadas = reportDuplicate
         .sort((a, b) =>
           Math.abs(a.variaciónImporte) > Math.abs(b.variaciónImporte)
             ? -1

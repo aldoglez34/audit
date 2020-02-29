@@ -15,7 +15,6 @@ const Ads = React.memo(function Ads() {
   useEffect(() => {
     API.balanzaReport_ads(audit.auditId)
       .then(res => {
-        // console.log(res.data);
         setDestacadas(res.data.destacadas);
         setTotalRubros(res.data.totalRubros);
         setReport(res.data.report);
@@ -107,13 +106,37 @@ const Ads = React.memo(function Ads() {
                 </thead>
                 <tbody>
                   {report.map(rep => {
-                    return (
+                    return destacadas
+                      .map(des => des.cuentaContable)
+                      .indexOf(rep.cuentaContable) === -1 ? (
                       <tr key={rep.cuentaContable}>
                         <td>{rep.rubro}</td>
                         <td>{rep.cuentaContable}</td>
                         <td>{rep.cuentaDescripción}</td>
                         <td className="text-right">{rep.total_saldoFinal}</td>
                         <td className="text-right">{rep.percentage}</td>
+                      </tr>
+                    ) : (
+                      <tr key={rep.cuentaContable}>
+                        <td>
+                          <strong className="text-danger">{rep.rubro}</strong>
+                        </td>
+                        <td>
+                          <strong className="text-danger">
+                            {rep.cuentaContable}
+                          </strong>
+                        </td>
+                        <td>
+                          <strong className="text-danger">
+                            {rep.cuentaDescripción}
+                          </strong>
+                        </td>
+                        <td className="text-right text-danger">
+                          <strong>{rep.total_saldoFinal}</strong>
+                        </td>
+                        <td className="text-right text-danger">
+                          <strong>{rep.percentage}</strong>
+                        </td>
                       </tr>
                     );
                   })}

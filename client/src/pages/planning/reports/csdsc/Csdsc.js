@@ -40,17 +40,26 @@ const Csdsc = React.memo(function Csdsc() {
             <Row>
               <Col>
                 <h4>Destacadas</h4>
-                <ListGroup>
-                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                  <ListGroup.Item>Morbi leo risus</ListGroup.Item>
-                  <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
-                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
-                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                  <ListGroup.Item>Morbi leo risus</ListGroup.Item>
-                  <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
-                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                <ListGroup
+                  defaultActiveKey={"#" + destacadas[0].cuentaContable}
+                >
+                  {destacadas.map(des => {
+                    return (
+                      <ListGroup.Item
+                        action
+                        href={"#" + des.cuentaContable}
+                        onClick={() => {
+                          alert("seleccionaste: " + des.cuentaContable);
+                        }}
+                        className="d-flex flex-column"
+                        key={des.cuentaContable}
+                      >
+                        <strong>{des.cuentaContable}</strong>
+                        <span>{des.cuentaDescripción}</span>
+                        <span>{des.total_cargos}</span>
+                      </ListGroup.Item>
+                    );
+                  })}
                 </ListGroup>
               </Col>
               <Col>
@@ -97,7 +106,9 @@ const Csdsc = React.memo(function Csdsc() {
               </thead>
               <tbody>
                 {report.map(cu => {
-                  return (
+                  return destacadas
+                    .map(des => des.cuentaContable)
+                    .indexOf(cu.cuentaContable) === -1 ? (
                     <tr key={cu.cuentaContable}>
                       <td>{cu.cuentaContable}</td>
                       <td>{cu.cuentaDescripción}</td>
@@ -109,6 +120,33 @@ const Csdsc = React.memo(function Csdsc() {
                       </td>
                       <td className="text-right">{cu.variaciónImporte}</td>
                       <td className="text-right">{cu.variaciónPorcentaje}</td>
+                    </tr>
+                  ) : (
+                    <tr key={cu.cuentaContable}>
+                      <td>
+                        <strong className="text-danger">
+                          {cu.cuentaContable}
+                        </strong>
+                      </td>
+                      <td>
+                        <strong className="text-danger">
+                          {cu.cuentaDescripción}
+                        </strong>
+                      </td>
+                      <td className="text-right text-danger">
+                        <strong>{cu[audit.year + "_totalSaldoFinal"]}</strong>
+                      </td>
+                      <td className="text-right text-danger">
+                        <strong>
+                          {cu[audit.year - 1 + "_totalSaldoFinal"]}
+                        </strong>
+                      </td>
+                      <td className="text-right text-danger">
+                        <strong>{cu.variaciónImporte}</strong>
+                      </td>
+                      <td className="text-right text-danger">
+                        <strong>{cu.variaciónPorcentaje}</strong>
+                      </td>
                     </tr>
                   );
                 })}
